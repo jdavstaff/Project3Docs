@@ -14,12 +14,11 @@ app.use(express.static(path.join(__dirname + "/public")))
 // start database connection
 const connectionParams = {
     connectionString: process.env.URL,
-    password: process.env.PASSWORD,
-    user: process.env.USER,
     ssl: {
         rejectUnauthorized: false
     }
 }
+console.log(connectionParams)
 const pool = new Pool(connectionParams);
 pool.connect()
 
