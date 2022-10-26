@@ -7,7 +7,7 @@ export default function Cashier() {
   return (
     <div>
       <Header name={"cashier"} />;
-      <OrderView />
+      <OrderView user={"cashier"} />
       <Link to="/">
         <Button variant="outlined">Back</Button>
       </Link>

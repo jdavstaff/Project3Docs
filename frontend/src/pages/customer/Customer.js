@@ -7,7 +7,7 @@ export default function Customer() {
   return (
     <div>
       <Header name={"customer"} />;
-      <OrderView />
+      <OrderView user={"customer"} />
       <Link to="/">
         <Button variant="outlined">Back</Button>
       </Link>

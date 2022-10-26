@@ -17,7 +17,11 @@ function App() {
         <Route path="/driver" element={<Driver />} />
         <Route path="/manager" element={<Manager />} />
         <Route path="/customer" element={<Customer />} />
-        <Route path="/plate" element={<PlateView />} />
+        <Route path="/cashier/plate" element={<PlateView user={"cashier"} />} />
+        <Route
+          path="/customer/plate"
+          element={<PlateView user={"customer"} />}
+        />
       </Routes>
     </Router>
   );

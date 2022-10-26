@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 
-export default function PlateView() {
+// user will either be "cashier" or "client"
+export default function PlateView({ user }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
@@ -45,6 +48,16 @@ export default function PlateView() {
         selected: true,
         id: 3,
       },
+      {
+        name: "walnut beef",
+        selected: false,
+        id: 651453,
+      },
+      {
+        name: "brocolli shrimp",
+        selected: false,
+        id: 89543,
+      },
     ]);
   }, []);
 
@@ -79,6 +92,11 @@ export default function PlateView() {
           <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
         </div>
       </div>
+      <Link to={`/${user}`}>
+        <Button variant="outlined" color="secondary">
+          Back
+        </Button>
+      </Link>
     </div>
   );
 }
