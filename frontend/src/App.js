@@ -6,6 +6,7 @@ import Cashier from "./pages/cashier/Cashier";
 import Driver from "./pages/driver/Driver";
 import Manager from "./pages/manager/Manager";
 import Customer from "./pages/customer/Customer";
+import PlateView from "./pages/view/PlateView";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/driver" element={<Driver />} />
         <Route path="/manager" element={<Manager />} />
         <Route path="/customer" element={<Customer />} />
+        <Route path="/plate" element={<PlateView />} />
       </Routes>
     </Router>
   );

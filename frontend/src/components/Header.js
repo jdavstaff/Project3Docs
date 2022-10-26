@@ -1,6 +1,6 @@
 export default function Header({ name }) {
   const headerStyle = {
-    border: "1px solid black",
+    border: "5px solid black",
     textAlign: "center",
   };
 
