@@ -77,6 +77,10 @@ export default function PlateView({ user }) {
     setEntreeData(updatedData);
   };
 
+  const handleAddBtn = () => {
+    console.log("Add...");
+  };
+
   return (
     <div>
       <h1>PLATE</h1>
@@ -94,7 +98,12 @@ export default function PlateView({ user }) {
       </div>
       <Link to={`/${user}`}>
         <Button variant="outlined" color="secondary">
-          Back
+          Cancel
+        </Button>
+      </Link>
+      <Link to={`/${user}`}>
+        <Button variant="outlined" color="secondary" onClick={handleAddBtn}>
+          Add
         </Button>
       </Link>
     </div>
