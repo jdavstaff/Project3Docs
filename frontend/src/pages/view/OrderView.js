@@ -45,7 +45,6 @@ export default function OrderView({ user }) {
         </div>
       </div>
       <div>
-        <h3>Summary</h3>
         <Summary data={summaryData} />
       </div>
     </div>
