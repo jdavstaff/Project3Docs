@@ -38,9 +38,9 @@ export default function Driver() {
       <div>
         <Box sx={{ width: "100%" }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Item One" />
-            <Tab label="Item TWO" />
-            <Tab label="Item three" />
+            <Tab label="Inventory" />
+            <Tab label="Menu" />
+            <Tab label="Reports" />
           </Tabs>
           <TabPanel value={tabValue} index={0}>
             <Inventory />
