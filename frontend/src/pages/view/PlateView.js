@@ -41,15 +41,19 @@ const dummyData = [
   },
 ];
 
-const dummyData2 = dummyData;
-
 // user will either be "cashier" or "client"
-export default function PlateView({ user, handleView }) {
+export default function PlateView({ user, handleView, view }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
   const [entreeData2, setEntreeData2] = useState([]);
   const [entreeData3, setEntreeData3] = useState([]);
+
+  const getTitle = () => {
+    if (view == 1) return "Bowl";
+    else if (view == 2) return "Plate";
+    else if (view == 3) return "Bigger Plate";
+  };
 
   useEffect(() => {
     // FIXME: AXIOS call to get entree and side data
@@ -135,7 +139,7 @@ export default function PlateView({ user, handleView }) {
 
   return (
     <div>
-      <h1>PLATE</h1>
+      <h1>{getTitle()}</h1>
       <div>
         <h4>Sides</h4>
         <div>
@@ -146,14 +150,18 @@ export default function PlateView({ user, handleView }) {
         entreeData={entreeData}
         handleEntreeSelect={handleEntreeSelect}
       />
-      <EntreeSelection
-        entreeData={entreeData2}
-        handleEntreeSelect={handleEntreeSelect2}
-      />
-      <EntreeSelection
-        entreeData={entreeData3}
-        handleEntreeSelect={handleEntreeSelect3}
-      />
+      {view >= 2 && (
+        <EntreeSelection
+          entreeData={entreeData2}
+          handleEntreeSelect={handleEntreeSelect2}
+        />
+      )}
+      {view >= 3 && (
+        <EntreeSelection
+          entreeData={entreeData3}
+          handleEntreeSelect={handleEntreeSelect3}
+        />
+      )}
       <Button
         variant="outlined"
         color="secondary"
@@ -161,7 +169,6 @@ export default function PlateView({ user, handleView }) {
       >
         Cancel
       </Button>
-
       <Button variant="outlined" color="secondary" onClick={handleAddBtn}>
         Add
       </Button>

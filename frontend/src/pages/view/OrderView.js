@@ -57,7 +57,7 @@ export default function OrderView({ user }) {
   } else {
     return (
       <div>
-        <PlateView user={user} handleView={handleBtnClick} />
+        <PlateView user={user} handleView={handleBtnClick} view={view} />
       </div>
     );
   }
