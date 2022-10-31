@@ -24,11 +24,17 @@ pool.connect()
 
 // start listening
 app.listen(PORT, () => console.log('Server on PORT: ' + PORT))
-pool.query(`SELECT * FROM ORDERS`, (err, res) => {
-    if(err) {
-        console.log(err)
-    }
-    else {
+
+app.get('/orders', (req, response) => {})
+
+app.get('/inventory', (req, response) => {
+    pool.query(`SELECT * FROM INVENTORY ORDER BY INGREDIENT_ID`, (err, res) => {
+        if(err) {
+            response.json({err: err})
+            console.log(err)
+            return
+        }
         console.log(res.rows)
-    }
+        response.json({rows: res.rows})
+    })
 })
