@@ -52,6 +52,12 @@ export default function OrderView({ user }) {
         <div>
           <Summary data={summaryData} />
         </div>
+        <Link to="/">
+          <Button variant="outlined">Back</Button>
+        </Link>
+        <Link to="checkout">
+          <Button variant="outlined">CHECKOUT</Button>
+        </Link>
       </div>
     );
   } else {
