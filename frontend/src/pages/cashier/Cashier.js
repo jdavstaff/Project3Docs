@@ -8,12 +8,6 @@ export default function Cashier() {
     <div>
       <Header name={"cashier"} />;
       <OrderView user={"cashier"} />
-      <Link to="/">
-        <Button variant="outlined">Back</Button>
-      </Link>
-      <Link to="checkout">
-        <Button variant="outlined"> Checkout </Button>
-      </Link>
     </div>
   );
 }

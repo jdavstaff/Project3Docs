@@ -1,8 +1,12 @@
-import { Button, Card } from "@mui/material";
+import { useState } from "react";
+import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
+import PlateView from "./PlateView";
 
 export default function OrderView({ user }) {
+  const [view, setView] = useState(0);
+
   const summaryData = [
     {
       size: "Bowl",
@@ -18,35 +22,49 @@ export default function OrderView({ user }) {
     },
   ];
 
-  return (
-    <div>
+  const handleBtnClick = (v) => {
+    setView(v);
+  };
+
+  if (view === 0) {
+    return (
       <div>
-        <h3>Size:</h3>
         <div>
-          <Link to={`/${user}/plate`}>
-            <Button variant="outlined">Bowl</Button>
-          </Link>
-          <Button variant="outlined">Plate</Button>
-          <Button variant="outlined">Bigger Plate</Button>
+          <h3>Size:</h3>
+          <div>
+            <Button variant="outlined" onClick={() => handleBtnClick(1)}>
+              Bowl
+            </Button>
+            <Button variant="outlined" onClick={() => handleBtnClick(2)}>
+              Plate
+            </Button>
+            <Button variant="outlined" onClick={() => handleBtnClick(3)}>
+              Bigger Plate
+            </Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <h3>Drinks:</h3>
         <div>
-          <Button variant="outlined">Small</Button>
-          <Button variant="outlined">Medium</Button>
-          <Button variant="outlined">Large</Button>
+          <h3>Extra:</h3>
+          <div>
+            <Button variant="outlined">Appetizer</Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <h3>Type:</h3>
         <div>
-          <Button variant="outlined">Appetizer</Button>
+          <Summary data={summaryData} />
         </div>
+        <Link to="/">
+          <Button variant="outlined">Back</Button>
+        </Link>
+        <Link to="checkout">
+          <Button variant="outlined">CHECKOUT</Button>
+        </Link>
       </div>
+    );
+  } else {
+    return (
       <div>
-        <Summary data={summaryData} />
+        <PlateView user={user} handleView={handleBtnClick} view={view} />
       </div>
-    </div>
-  );
+    );
+  }
 }
