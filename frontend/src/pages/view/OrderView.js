@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
+
+  const navigate = useNavigate();
 
   const summaryData = [
     {
@@ -22,6 +24,10 @@ export default function OrderView({ user }) {
     },
   ];
 
+  const toCheckout = () => {
+    console.log("checking out");
+    navigate("/cashier/checkout", { state: { id: 1, name: "hola" } });
+  };
   const handleBtnClick = (v) => {
     setView(v);
   };
@@ -55,9 +61,9 @@ export default function OrderView({ user }) {
         <Link to="/">
           <Button variant="outlined">Back</Button>
         </Link>
-        <Link to="checkout">
-          <Button variant="outlined">CHECKOUT</Button>
-        </Link>
+        <Button variant="outlined" onClick={toCheckout}>
+          CHECKOUT
+        </Button>
       </div>
     );
   } else {

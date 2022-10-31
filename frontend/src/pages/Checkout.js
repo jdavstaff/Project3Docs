@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Summary from "../components/Summary/Summary";
 
 export default function Checkout({ user }) {
+  const location = useLocation();
   const getSummaryData = () => {
     var data = [
       {
@@ -24,6 +25,7 @@ export default function Checkout({ user }) {
   return (
     <div>
       <Header name={`${user} Checkout`} />
+      <div>{location.state.summaryData}</div>
       <div>
         <Summary data={getSummaryData()} />
       </div>
