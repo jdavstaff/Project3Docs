@@ -3,6 +3,9 @@ import { Button, Tabs, Tab, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Typography from "@mui/material/Typography";
+import Inventory from "./Inventory";
+import MyMenu from "./MyMenu";
+import Reports from "./Reports";
 export default function Driver() {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (e, newTabVal) => {
@@ -40,13 +43,13 @@ export default function Driver() {
             <Tab label="Item three" />
           </Tabs>
           <TabPanel value={tabValue} index={0}>
-            Item one
+            <Inventory />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-            Item two
+            <MyMenu />
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-            Item three
+            <Reports />
           </TabPanel>
         </Box>
       </div>
