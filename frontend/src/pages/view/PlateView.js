@@ -1,13 +1,34 @@
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
+
+function EntreeSelection({ entreeData, handleEntreeSelect }) {
+  const [myEntree, setMyEntree] = useState([...entreeData]);
+
+  const handleSelect = (id) => {
+    const updatedData = myEntree.map((item) => {
+      item.selected = item.id === id;
+      return item;
+    });
+    setMyEntree(updatedData);
+  };
+
+  return (
+    <div>
+      <h4>Entrees</h4>
+      <div>
+        <SelectButtons items={myEntree} handleSelect={handleSelect} />
+      </div>
+    </div>
+  );
+}
 
 // user will either be "cashier" or "client"
 export default function PlateView({ user, handleView }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
+
   useEffect(() => {
     // FIXME: AXIOS call to get entree and side data
     // to update sideData and entreeData, use the syntax:
@@ -91,12 +112,18 @@ export default function PlateView({ user, handleView }) {
           <SelectButtons items={sideData} handleSelect={handleSideSelect} />
         </div>
       </div>
-      <div>
-        <h4>Entrees</h4>
-        <div>
-          <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
-        </div>
-      </div>
+      <EntreeSelection
+        entreeData={entreeData}
+        handleEntreeSelect={handleEntreeSelect}
+      />
+      <EntreeSelection
+        entreeData={entreeData}
+        handleEntreeSelect={handleEntreeSelect}
+      />
+      <EntreeSelection
+        entreeData={entreeData}
+        handleEntreeSelect={handleEntreeSelect}
+      />
       <Button
         variant="outlined"
         color="secondary"

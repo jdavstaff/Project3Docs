@@ -44,15 +44,7 @@ export default function OrderView({ user }) {
           </div>
         </div>
         <div>
-          <h3>Drinks:</h3>
-          <div>
-            <Button variant="outlined">Small</Button>
-            <Button variant="outlined">Medium</Button>
-            <Button variant="outlined">Large</Button>
-          </div>
-        </div>
-        <div>
-          <h3>Type:</h3>
+          <h3>Extra:</h3>
           <div>
             <Button variant="outlined">Appetizer</Button>
           </div>
