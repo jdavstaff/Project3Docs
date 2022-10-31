@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 
 // user will either be "cashier" or "client"
-export default function PlateView({ user }) {
+export default function PlateView({ user, handleView }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
@@ -78,6 +78,7 @@ export default function PlateView({ user }) {
   };
 
   const handleAddBtn = () => {
+    handleView(0);
     console.log("Add...");
   };
 
@@ -96,16 +97,17 @@ export default function PlateView({ user }) {
           <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
         </div>
       </div>
-      <Link to={`/${user}`}>
-        <Button variant="outlined" color="secondary">
-          Cancel
-        </Button>
-      </Link>
-      <Link to={`/${user}`}>
-        <Button variant="outlined" color="secondary" onClick={handleAddBtn}>
-          Add
-        </Button>
-      </Link>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => handleView(0)}
+      >
+        Cancel
+      </Button>
+
+      <Button variant="outlined" color="secondary" onClick={handleAddBtn}>
+        Add
+      </Button>
     </div>
   );
 }
