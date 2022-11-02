@@ -31,11 +31,18 @@ export default function PlateView({ user, handleView, view }) {
 
   function extractGroups(rows, num) {
     let groups = {Entree: [], Side: []}
-    for(let i=0; i<rows.length; i++) {
-      let item = rows[i]
+    // for(let i=0; i<rows.length; i++) {
+    //   let item = rows[i]
+    //   item.key = item.id + num*1000
+    //   groups[item.category].push(item)
+    // }
+    rows.forEach((el) => {
+      let item = Object.assign({}, el)
       item.key = item.id + num*1000
       groups[item.category].push(item)
-    }
+    })
+    console.log(num)
+    console.log(groups)
     return groups;
   }
 
@@ -47,9 +54,8 @@ export default function PlateView({ user, handleView, view }) {
     }
     axios.request(options).then((res) => {
       let data = res.data.rows
-      let groups = extractGroups(data, 0)
-      setSideData(groups.Side)
-      setEntreeData(groups.Entree)
+      setSideData(extractGroups(data, 0).Side)
+      setEntreeData(extractGroups(data, 0).Entree)
       setEntreeData2(extractGroups(data, 1).Entree)
       setEntreeData3(extractGroups(data, 2).Entree)
     })
