@@ -45,3 +45,15 @@ app.get('/itemIngredients', (req, response) => {
         response.json({rows: res.rows})
     })
 })
+
+app.get('/salesReport', (req, response) => {
+    let queryThing = `SELECT ITEM.NAME, SUM(AMOUNT) AS AMOUNT_SOLD FROM TICKET JOIN ORDERS ON TICKET.ID = ORDERS.TICKET_ID JOIN BRIDGE ON ORDERS.ID = BRIDGE.ORDER_ID JOIN ITEM ON BRIDGE.ITEM_ID = ITEM.ID WHERE TICKET.ORDER_TIME BETWEEN TIMESTAMP '${req.query.start}' AND TIMESTAMP '${req.query.end}' GROUP BY ITEM.NAME ORDER BY SUM(AMOUNT) DESC`
+    
+    pool.query(queryThing, (err, res) => {
+        if(err) {
+            response.json({err: err})
+            return
+        }
+        response.json({rows: res.rows})
+    })
+})
