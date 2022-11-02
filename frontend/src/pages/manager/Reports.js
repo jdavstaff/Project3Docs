@@ -40,14 +40,16 @@ export default function Reports() {
   const [salesStartTime, setSalesStartTime] = useState(dayjs('2022-11-01T12:00:00'));
   const [salesEndTime, setSalesEndTime] = useState(dayjs('2022-11-01T12:00:00'));
   const [excessTime, setExcessTime] = useState(dayjs('2022-11-01T12:00:00'));
+  const [sellsTogetherStartTime, setSellsTogetherStartTime] = useState(dayjs('2022-11-01T12:00:00'));
+  const [sellsTogetherEndTime, setSellsTogetherEndTime] = useState(dayjs('2022-11-01T12:00:00'));
 
   const [salesData, setSalesData] = useState([]);
   const [excessData, setExcessData] = useState([]);
   const [restockData, setRestockData] = useState([]);
+  const [sellsTogetherData, setSellsTogetherData] = useState([]);
 
   // Update restock table on page load
   useEffect(() => {
-    // FIXME: get data from db
     const options = {
       method: 'GET',
       url: `${url}/restockReport`
@@ -101,14 +103,31 @@ export default function Reports() {
     })
   }
 
+  // Query for what sells together in a selected time period
+  function getSellsTogetherQuery(startTime, endTime) {
+    const options = {
+      method: 'GET',
+      url: `${url}/sellsTogetherReport`,
+      params: {
+        start: formatTimestamp(startTime), 
+        end: formatTimestamp(endTime)
+      }
+    }
+
+    axios.request(options).then((res) => {
+      let rows = res.data.rows;
+      setSellsTogetherData(rows);
+    })
+  }
+
   // Handle changes to sales report start time
-  const handleStartChange = (newValue) => {
+  const handleSalesStartChange = (newValue) => {
     setSalesStartTime(newValue);
     getSalesQuery(newValue, salesEndTime);
   };
 
   // Handle changes to sales report end time
-  const handleEndChange = (newValue) => {
+  const handleSalesEndChange = (newValue) => {
     setSalesEndTime(newValue);
     getSalesQuery(salesStartTime, newValue);
   };
@@ -117,6 +136,18 @@ export default function Reports() {
   const handleExcessChange = (newValue) => {
     setExcessTime(newValue);
     getExcessQuery(newValue);
+  };
+
+  // Handle changes to sells together report start time
+  const handleTogetherStartChange = (newValue) => {
+    setSellsTogetherStartTime(newValue);
+    getSellsTogetherQuery(newValue, sellsTogetherEndTime);
+  };
+
+  // Handle changes to sells together report end time
+  const handleTogetherEndChange = (newValue) => {
+    setSellsTogetherEndTime(newValue);
+    getSellsTogetherQuery(sellsTogetherStartTime, newValue);
   };
 
   return (
@@ -130,14 +161,14 @@ export default function Reports() {
           <Typography>Sales</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MaterialUIDateTimeSelect value={salesStartTime} handleChange={handleStartChange} labelName={"Start Time"}/>
-          <MaterialUIDateTimeSelect value={salesEndTime} handleChange={handleEndChange} labelName={"End Time"}/>
+          <MaterialUIDateTimeSelect value={salesStartTime} handleChange={handleSalesStartChange} labelName={"Start Time"}/>
+          <MaterialUIDateTimeSelect value={salesEndTime} handleChange={handleSalesEndChange} labelName={"End Time"}/>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>Item Name</TableCell>
-                  <TableCell align="center">Amount Sold</TableCell>
+                  <TableCell align="right">Amount Sold</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -241,10 +272,31 @@ export default function Reports() {
           <Typography>Sells Together</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <MaterialUIDateTimeSelect value={sellsTogetherStartTime} handleChange={handleTogetherStartChange} labelName={"Start Time"}/>
+          <MaterialUIDateTimeSelect value={sellsTogetherEndTime} handleChange={handleTogetherEndChange} labelName={"End Time"}/>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>First Item</TableCell>
+                  <TableCell align="right">Second Item</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sellsTogetherData.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">{row.this_name}</TableCell>
+                    <TableCell align="right">{row.other_name}</TableCell>
+                    <TableCell align="right">{row.count}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </AccordionDetails>
       </Accordion>
     </div>

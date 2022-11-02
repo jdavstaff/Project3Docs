@@ -81,3 +81,15 @@ app.get('/restockReport', (req, response) => {
         response.json({rows: res.rows})
     })
 })
+
+app.get('/sellsTogetherReport', (req, response) => {
+    let queryThing = `WITH PAIRS AS ( SELECT ITEM.ID AS THIS, I2.ID AS OTHER FROM ITEM JOIN ITEM I2 ON ITEM.ID < I2.ID ), MATCHES AS ( SELECT * FROM BRIDGE JOIN PAIRS ON BRIDGE.ITEM_ID = PAIRS.THIS JOIN ORDERS ON BRIDGE.ORDER_ID = ORDERS.ID JOIN TICKET ON ORDERS.TICKET_ID = TICKET.ID WHERE PAIRS.OTHER IN (SELECT ITEM_ID FROM BRIDGE B WHERE B.ORDER_ID = BRIDGE.ORDER_ID) AND TICKET.ORDER_TIME BETWEEN TIMESTAMP '${req.query.start}' AND TIMESTAMP '${req.query.end}' ) SELECT ITEM1.NAME AS THIS_NAME, ITEM2.NAME AS OTHER_NAME, COUNT(ORDER_ID) FROM MATCHES JOIN ITEM ITEM1 ON THIS = ITEM1.ID JOIN ITEM ITEM2 ON OTHER = ITEM2.ID GROUP BY ITEM1.NAME, ITEM2.NAME ORDER BY COUNT(ORDER_ID) DESC`
+    
+    pool.query(queryThing, (err, res) => {
+        if(err) {
+            response.json({err: err})
+            return
+        }
+        response.json({rows: res.rows})
+    })
+})
