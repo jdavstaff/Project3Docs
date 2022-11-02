@@ -12,37 +12,16 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { url } from '../../config/global'
+import axios from "axios";
 
 function createData(name, id, price, type, ingredients) {
   return { name, id, price, type, ingredients: [...ingredients] };
 }
 
-function createIngrData(name, id) {
-  return { name, id };
+function createIngrData(name, id, amount) {
+  return { name, id, amount };
 }
-
-const dummyData = [
-  createData("Orange Chicken", 2, 5.0, "Entree", [
-    createIngrData("chicken", 2),
-    createIngrData("Orange sauce", 3),
-  ]),
-  createData("Orange Chicken", 4, 5.0, "Entree", [
-    createIngrData("chicken", 2),
-    createIngrData("Orange sauce", 3),
-  ]),
-  createData("Orange Chicken", 3, 5.0, "Entree", [
-    createIngrData("chicken", 2),
-    createIngrData("Orange sauce", 3),
-  ]),
-  createData("Orange Chicken", 1, 5.0, "Entree", [
-    createIngrData("chicken", 2),
-    createIngrData("Orange sauce", 3),
-  ]),
-  createData("Orange Chicken", 9, 5.0, "Entree", [
-    createIngrData("chicken", 2),
-    createIngrData("Orange sauce", 3),
-  ]),
-];
 
 function Row({ row }) {
   const [open, setOpen] = useState(false);
@@ -75,7 +54,7 @@ function Row({ row }) {
               </Typography>
               <ul>
                 {row.ingredients.map((ingr) => (
-                  <li key={ingr.id}> {ingr.name} </li>
+                  <li key={ingr.id}> {ingr.name}: {ingr.amount} oz </li>
                 ))}
               </ul>
             </Box>
@@ -90,10 +69,25 @@ export default function MyMenu() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    //FIXME: set menu data here
-    // { string name, int id, double price, string type (entree/side/drink), ingredients : [ string name, int id]}
-
-    setData(dummyData);
+    let options = {
+      method: 'GET',
+      url: `${url}/itemIngredients`
+    }
+    axios.request(options).then((res) => {
+      let data = res.data.rows
+      let items = {}
+      for(let i=0; i<data.length; i++) {
+        let item = data[i]
+        if(!(item.item in items)) { // if the item does not exist in items dictionary
+          items[item.item] = createData(item.item, item.id, item.extra_price, item.category, [createIngrData(item.ingredient_name, item.ingredient_id, item.amount)]) // create item
+        }
+        else { // if it already is in item
+          items[item.item].ingredients.push(createIngrData(item.ingredient_name, item.ingredient_id, item.amount))
+        }
+      }
+      items = Object.keys(items).map((key) => {return items[key]})
+      setData(items);
+    })
   }, []);
 
   return (
