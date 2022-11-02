@@ -1,27 +1,28 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
+  const [summaryData, setSummaryData] = useState([]);
 
-  const summaryData = [
-    {
-      size: "Bowl",
-      id: 4,
-    },
-    {
-      size: "Bowl",
-      id: 3,
-    },
-    {
-      size: "Bigger Plate",
-      id: 2,
-    },
-  ];
+  const navigate = useNavigate();
 
+  const addItem = (size, item) => {
+    let summaryItem = {
+      size: size,
+      id: Math.floor(Math.random() * 10000),
+      items: [...item],
+    };
+    setSummaryData([...summaryData, summaryItem]);
+  };
+
+  const toCheckout = () => {
+    console.log("checking out");
+    navigate(`checkout`, { state: { summaryData: [...summaryData] } });
+  };
   const handleBtnClick = (v) => {
     setView(v);
   };
@@ -55,15 +56,20 @@ export default function OrderView({ user }) {
         <Link to="/">
           <Button variant="outlined">Back</Button>
         </Link>
-        <Link to="checkout">
-          <Button variant="outlined">CHECKOUT</Button>
-        </Link>
+        <Button variant="outlined" onClick={toCheckout}>
+          CHECKOUT
+        </Button>
       </div>
     );
   } else {
     return (
       <div>
-        <PlateView user={user} handleView={handleBtnClick} view={view} />
+        <PlateView
+          user={user}
+          handleView={handleBtnClick}
+          view={view}
+          addItem={addItem}
+        />
       </div>
     );
   }
