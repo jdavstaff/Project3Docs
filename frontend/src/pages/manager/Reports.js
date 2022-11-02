@@ -21,7 +21,8 @@ import Paper from "@mui/material/Paper";
 import { url } from '../../config/global'
 import axios from "axios";
 
-function MaterialUIPickers({value, handleChange, labelName}) {
+// Creates a date and time selector
+function MaterialUIDateTimeSelect({value, handleChange, labelName}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateTimePicker
@@ -39,8 +40,24 @@ export default function Reports() {
   const [salesStartTime, setSalesStartTime] = useState(dayjs('2022-11-01T12:00:00'));
   const [salesEndTime, setSalesEndTime] = useState(dayjs('2022-11-01T12:00:00'));
   const [excessTime, setExcessTime] = useState(dayjs('2022-11-01T12:00:00'));
+
   const [salesData, setSalesData] = useState([]);
   const [excessData, setExcessData] = useState([]);
+  const [restockData, setRestockData] = useState([]);
+
+  // Update restock table on page load
+  useEffect(() => {
+    // FIXME: get data from db
+    const options = {
+      method: 'GET',
+      url: `${url}/restockReport`
+    }
+    axios.request(options).then((res) => {
+      let rows = res.data.rows;
+      setRestockData(rows);
+
+    })
+  }, []);
 
   // Convert Javascript timestamp to PostgreSQL timestamp
   function formatTimestamp(time) {
@@ -99,7 +116,7 @@ export default function Reports() {
   // Handle changes to excess report time
   const handleExcessChange = (newValue) => {
     setExcessTime(newValue);
-    getExcessQuery(excessTime);
+    getExcessQuery(newValue);
   };
 
   return (
@@ -113,8 +130,8 @@ export default function Reports() {
           <Typography>Sales</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MaterialUIPickers value={salesStartTime} handleChange={handleStartChange} labelName={"Start Time"}/>
-          <MaterialUIPickers value={salesEndTime} handleChange={handleEndChange} labelName={"End Time"}/>
+          <MaterialUIDateTimeSelect value={salesStartTime} handleChange={handleStartChange} labelName={"Start Time"}/>
+          <MaterialUIDateTimeSelect value={salesEndTime} handleChange={handleEndChange} labelName={"End Time"}/>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -133,7 +150,6 @@ export default function Reports() {
                       {row.name}
                     </TableCell>
                     <TableCell align="right">{row.amount_sold}</TableCell>
-                    {/* FIXME: should add edit and delete buttons to cell */}
                   </TableRow>
                 ))}
               </TableBody>
@@ -150,7 +166,7 @@ export default function Reports() {
           <Typography>Excess</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MaterialUIPickers value={excessTime} handleChange={handleExcessChange} labelName={"Start Time"}/>
+          <MaterialUIDateTimeSelect value={excessTime} handleChange={handleExcessChange} labelName={"Start Time"}/>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -173,7 +189,6 @@ export default function Reports() {
                     <TableCell align="right">{formatPercent(row.percent_sold)}</TableCell>
                     <TableCell align="right">{row.amount_sold}</TableCell>
                     <TableCell align="right">{row.total_quantity}</TableCell>
-                    {/* FIXME: should add edit and delete buttons to cell */}
                   </TableRow>
                 ))}
               </TableBody>
@@ -190,10 +205,31 @@ export default function Reports() {
           <Typography>Restock</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Item Name</TableCell>
+                  <TableCell align="right">Current Amount</TableCell>
+                  <TableCell align="right">Sold in Last 7 Days</TableCell>
+                  <TableCell align="right">Recommended Resupply</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {restockData.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">{row.name}</TableCell>
+                    <TableCell align="right">{row.current_amount}</TableCell>
+                    <TableCell align="right">{formatPercent(row.last_7_days_sales)}</TableCell>
+                    <TableCell align="right">{row.recommended_resupply}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </AccordionDetails>
       </Accordion>
       <Accordion>
