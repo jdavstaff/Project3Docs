@@ -36,7 +36,7 @@ export default function OrderView({ user }) {
 
   const toCheckout = () => {
     console.log("checking out");
-    navigate("/cashier/checkout", { state: { id: 1, name: "hola" } });
+    navigate("/cashier/checkout", { state: { summaryData: [...summaryData] } });
   };
   const handleBtnClick = (v) => {
     setView(v);

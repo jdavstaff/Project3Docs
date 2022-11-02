@@ -25,9 +25,8 @@ export default function Checkout({ user }) {
   return (
     <div>
       <Header name={`${user} Checkout`} />
-      <div>{location.state.summaryData}</div>
       <div>
-        <Summary data={getSummaryData()} />
+        <Summary data={location.state.summaryData} />
       </div>
       <div>
         <Link to={`/${user}`}>
