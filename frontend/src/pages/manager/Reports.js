@@ -35,14 +35,23 @@ function MaterialUIPickers({value, handleChange, labelName}) {
 }
 
 export default function Reports() {
-  const [startTime, setStartTime] = useState(dayjs('2022-11-01T12:00:00'));
-  const [endTime, setEndTime] = useState(dayjs('2022-11-01T12:00:00'));
-  const [data, setData] = useState([]);
+  // Variables for timestamps
+  const [salesStartTime, setSalesStartTime] = useState(dayjs('2022-11-01T12:00:00'));
+  const [salesEndTime, setSalesEndTime] = useState(dayjs('2022-11-01T12:00:00'));
+  const [excessTime, setExcessTime] = useState(dayjs('2022-11-01T12:00:00'));
+  const [salesData, setSalesData] = useState([]);
+  const [excessData, setExcessData] = useState([]);
 
+  // Convert Javascript timestamp to PostgreSQL timestamp
   function formatTimestamp(time) {
     return time.toISOString().replace('T', ' ').slice(0, -5)
   }
 
+  function formatPercent(decimal) {
+    return Number(decimal).toLocaleString(undefined, {style: 'percent', minimumFractionDigits: 3});
+  }
+
+  // Query for sales information in a selected time period
   function getSalesQuery(startTime, endTime) {
     const options = {
       method: 'GET',
@@ -55,18 +64,42 @@ export default function Reports() {
 
     axios.request(options).then((res) => {
       let rows = res.data.rows;
-      setData(rows);
+      setSalesData(rows);
     })
   }
 
+  // Query for items that sold less than 10% of their inventory after a selected time
+  function getExcessQuery(startTime) {
+    const options = {
+      method: 'GET',
+      url: `${url}/excessReport`,
+      params: {
+        start: formatTimestamp(startTime)
+      }
+    }
+
+    axios.request(options).then((res) => {
+      let rows = res.data.rows;
+      setExcessData(rows);
+    })
+  }
+
+  // Handle changes to sales report start time
   const handleStartChange = (newValue) => {
-    setStartTime(newValue);
-    getSalesQuery(newValue, endTime);
+    setSalesStartTime(newValue);
+    getSalesQuery(newValue, salesEndTime);
   };
 
+  // Handle changes to sales report end time
   const handleEndChange = (newValue) => {
-    setEndTime(newValue);
-    getSalesQuery(startTime, newValue);
+    setSalesEndTime(newValue);
+    getSalesQuery(salesStartTime, newValue);
+  };
+
+  // Handle changes to excess report time
+  const handleExcessChange = (newValue) => {
+    setExcessTime(newValue);
+    getExcessQuery(excessTime);
   };
 
   return (
@@ -80,8 +113,8 @@ export default function Reports() {
           <Typography>Sales</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MaterialUIPickers value={startTime} handleChange={handleStartChange} labelName={"Start Time"}/>
-          <MaterialUIPickers value={endTime} handleChange={handleEndChange} labelName={"End Time"}/>
+          <MaterialUIPickers value={salesStartTime} handleChange={handleStartChange} labelName={"Start Time"}/>
+          <MaterialUIPickers value={salesEndTime} handleChange={handleEndChange} labelName={"End Time"}/>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -91,7 +124,7 @@ export default function Reports() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row) => (
+                {salesData.map((row) => (
                   <TableRow
                     key={row.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -117,10 +150,35 @@ export default function Reports() {
           <Typography>Excess</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <MaterialUIPickers value={excessTime} handleChange={handleExcessChange} labelName={"Start Time"}/>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Item Name</TableCell>
+                  <TableCell align="right">Ingredient Name</TableCell>
+                  <TableCell align="right">Percent Sold</TableCell>
+                  <TableCell align="right">Amount Sold</TableCell>
+                  <TableCell align="right">Total Quantity</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {excessData.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">{row.item_name}</TableCell>
+                    <TableCell align="right">{row.ingredient_name}</TableCell>
+                    <TableCell align="right">{formatPercent(row.percent_sold)}</TableCell>
+                    <TableCell align="right">{row.amount_sold}</TableCell>
+                    <TableCell align="right">{row.total_quantity}</TableCell>
+                    {/* FIXME: should add edit and delete buttons to cell */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </AccordionDetails>
       </Accordion>
       <Accordion>
