@@ -10,21 +10,6 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
-  // const summaryData = [
-  //   {
-  //     size: "Bowl",
-  //     id: 4,
-  //   },
-  //   {
-  //     size: "Bowl",
-  //     id: 3,
-  //   },
-  //   {
-  //     size: "Bigger Plate",
-  //     id: 2,
-  //   },
-  // ];
-
   const addItem = (size, item) => {
     let summaryItem = {
       size: size,
@@ -36,7 +21,7 @@ export default function OrderView({ user }) {
 
   const toCheckout = () => {
     console.log("checking out");
-    navigate("/cashier/checkout", { state: { summaryData: [...summaryData] } });
+    navigate(`checkout`, { state: { summaryData: [...summaryData] } });
   };
   const handleBtnClick = (v) => {
     setView(v);

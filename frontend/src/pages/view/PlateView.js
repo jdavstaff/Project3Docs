@@ -53,6 +53,7 @@ export default function PlateView({ handleView, view, addItem }) {
     if (view == 1) return "Bowl";
     else if (view == 2) return "Plate";
     else if (view == 3) return "Bigger Plate";
+    else return "Error";
   };
 
   useEffect(() => {
@@ -145,22 +146,7 @@ export default function PlateView({ handleView, view, addItem }) {
     view >= 2 && selectedItems.push(getSelectedItems(entreeData2));
     view >= 3 && selectedItems.push(getSelectedItems(entreeData3));
 
-    let size = "";
-    switch (view) {
-      case 1:
-        size = "Bowl";
-        break;
-      case 2:
-        size = "Plate";
-        break;
-      case 3:
-        size = "Bigger Plate";
-        break;
-      default:
-        size = "Error";
-    }
-
-    addItem(size, selectedItems);
+    addItem(getTitle(), selectedItems);
   };
 
   return (
