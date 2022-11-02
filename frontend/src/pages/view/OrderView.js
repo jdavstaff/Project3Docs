@@ -6,23 +6,33 @@ import PlateView from "./PlateView";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
+  const [summaryData, setSummaryData] = useState([]);
 
   const navigate = useNavigate();
 
-  const summaryData = [
-    {
-      size: "Bowl",
-      id: 4,
-    },
-    {
-      size: "Bowl",
-      id: 3,
-    },
-    {
-      size: "Bigger Plate",
-      id: 2,
-    },
-  ];
+  // const summaryData = [
+  //   {
+  //     size: "Bowl",
+  //     id: 4,
+  //   },
+  //   {
+  //     size: "Bowl",
+  //     id: 3,
+  //   },
+  //   {
+  //     size: "Bigger Plate",
+  //     id: 2,
+  //   },
+  // ];
+
+  const addItem = (size, item) => {
+    let summaryItem = {
+      size: size,
+      id: Math.floor(Math.random() * 10000),
+      item: [...item],
+    };
+    setSummaryData([...summaryData, summaryItem]);
+  };
 
   const toCheckout = () => {
     console.log("checking out");
@@ -69,7 +79,12 @@ export default function OrderView({ user }) {
   } else {
     return (
       <div>
-        <PlateView user={user} handleView={handleBtnClick} view={view} />
+        <PlateView
+          user={user}
+          handleView={handleBtnClick}
+          view={view}
+          addItem={addItem}
+        />
       </div>
     );
   }
