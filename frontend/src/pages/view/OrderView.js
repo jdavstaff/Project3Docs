@@ -14,7 +14,7 @@ export default function OrderView({ user }) {
     let summaryItem = {
       size: size,
       id: Math.floor(Math.random() * 10000),
-      item: [...item],
+      items: [...item],
     };
     setSummaryData([...summaryData, summaryItem]);
   };
