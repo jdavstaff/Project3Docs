@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -28,8 +28,18 @@ export default function Inventory() {
     });
   }, []);
 
+  const handleEdit = (dat) => {
+    console.log(dat);
+  };
+
+  const handleDelete = (dat) => {
+    // FIXME: should delete "dat" from db
+    // dat: int indgredient_id, string name, int quantity
+
+    setData(data.filter((d) => d.ingredient_id !== dat.ingredient_id));
+  };
   return (
-    <TableContainer component={Paper}>
+    <TableContainer sx={{ maxHeight: 340 }} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -51,12 +61,12 @@ export default function Inventory() {
               <TableCell align="right">{row.ingredient_id}</TableCell>
               <TableCell align="right">{row.quantity}</TableCell>
               <TableCell align="center">
-                <Button>
+                <IconButton onClick={() => handleEdit(row)}>
                   <EditIcon />
-                </Button>
-                <Button>
+                </IconButton>
+                <IconButton onClick={() => handleDelete(row)}>
                   <DeleteOutlineIcon />
-                </Button>
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
