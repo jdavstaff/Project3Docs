@@ -18,7 +18,6 @@ const connectionParams = {
         rejectUnauthorized: false
     }
 }
-console.log(connectionParams)
 const pool = new Pool(connectionParams);
 pool.connect()
 
@@ -31,10 +30,18 @@ app.get('/inventory', (req, response) => {
     pool.query(`SELECT * FROM INVENTORY ORDER BY INGREDIENT_ID`, (err, res) => {
         if(err) {
             response.json({err: err})
-            console.log(err)
             return
         }
-        console.log(res.rows)
+        response.json({rows: res.rows})
+    })
+})
+
+app.get('/itemIngredients', (req, response) => {
+    pool.query(`SELECT ITEM.NAME AS ITEM, ITEM.ID, ITEM.EXTRA_PRICE, ITEM.CATEGORY, INVENTORY.NAME AS INGREDIENT_NAME, INVENTORY.INGREDIENT_ID, ITEM_INGREDIENTS.AMOUNT FROM ITEM JOIN ITEM_INGREDIENTS ON ITEM.ID = ITEM_INGREDIENTS.ITEM_ID JOIN INVENTORY ON INVENTORY.INGREDIENT_ID = ITEM_INGREDIENTS.INVENTORY_ID`, (err, res) => {
+        if(err) {
+            response.json({err: err})
+            return
+        }
         response.json({rows: res.rows})
     })
 })
