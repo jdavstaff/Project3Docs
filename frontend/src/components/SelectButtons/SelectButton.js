@@ -4,7 +4,7 @@ export default function SelectButton({ item, handleSelect }) {
   const btnVariant = item.selected ? "contained" : "outlined";
 
   const handleClick = () => {
-    handleSelect(item.id);
+    handleSelect(item.key);
   };
 
   return (

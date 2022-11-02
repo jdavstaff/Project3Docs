@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, tabScrollButtonClasses } from "@mui/material";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
+import axios from "axios";
+import { url } from "../../config/global.js"
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   return (
@@ -12,34 +14,6 @@ function EntreeSelection({ entreeData, handleEntreeSelect }) {
     </div>
   );
 }
-
-const dummyData = [
-  {
-    name: "orange chicken",
-    selected: false,
-    id: 1,
-  },
-  {
-    name: "orange beef",
-    selected: false,
-    id: 2,
-  },
-  {
-    name: "green rice",
-    selected: true,
-    id: 3,
-  },
-  {
-    name: "walnut beef",
-    selected: false,
-    id: 651453,
-  },
-  {
-    name: "brocolli shrimp",
-    selected: false,
-    id: 89543,
-  },
-];
 
 // user will either be "cashier" or "client"
 export default function PlateView({ user, handleView, view }) {
@@ -55,47 +29,31 @@ export default function PlateView({ user, handleView, view }) {
     else if (view == 3) return "Bigger Plate";
   };
 
+  function extractGroups(rows, num) {
+    let groups = {Entree: [], Side: []}
+    for(let i=0; i<rows.length; i++) {
+      let item = rows[i]
+      item.key = item.id + num*1000
+      groups[item.category].push(item)
+    }
+    return groups;
+  }
+
   useEffect(() => {
     // FIXME: AXIOS call to get entree and side data
+    let options = {
+      method: 'GET',
+      url: `${url}/items`
+    }
+    axios.request(options).then((res) => {
+      let data = res.data.rows
+      let groups = extractGroups(data, 0)
+      setSideData(groups.Side)
+      setEntreeData(groups.Entree)
+      setEntreeData2(extractGroups(data, 1).Entree)
+      setEntreeData3(extractGroups(data, 2).Entree)
+    })
     // [ {string name, int id,}]
-    // to update sideData and entreeData, use the syntax:
-    // setSideData ( **NEW DATA** )
-    // setEntreeData ( **NEW DATA ** )
-
-    setSideData([
-      {
-        name: "fried rice",
-        selected: false,
-        id: 1,
-      },
-      {
-        name: "orange rice",
-        selected: false,
-        id: 2,
-      },
-      {
-        name: "purple rice",
-        selected: false,
-        id: 3,
-      },
-    ]);
-
-    let myData = dummyData;
-
-    setEntreeData([...dummyData]);
-    setEntreeData2([
-      { name: "sofia", id: 444, selected: false },
-      { name: "josh", id: 21, selected: true },
-      { name: "mitchell", id: 21321, selected: false },
-      { name: "sebastian", id: 12321, selected: false },
-    ]);
-    setEntreeData3([
-      { name: "frank", id: 123454, selected: false },
-      { name: "frank", id: 12354, selected: false },
-      { name: "frank", id: 12454, selected: false },
-      { name: "frank", id: 12344, selected: false },
-      { name: "frank", id: 12345, selected: false },
-    ]);
   }, []);
 
   const handleSideSelect = (id) => {
@@ -109,7 +67,7 @@ export default function PlateView({ user, handleView, view }) {
   const handleEntreeSelect = (id) => {
     console.log("111");
     const updatedData = entreeData.map((item) => {
-      item.selected = item.id === id;
+      item.selected = item.key === id;
       return item;
     });
     setEntreeData(updatedData);
@@ -117,7 +75,7 @@ export default function PlateView({ user, handleView, view }) {
   const handleEntreeSelect2 = (id) => {
     console.log("222");
     const updatedData = entreeData2.map((item) => {
-      item.selected = item.id === id;
+      item.selected = item.key === id;
       return item;
     });
     setEntreeData2(updatedData);
@@ -126,7 +84,7 @@ export default function PlateView({ user, handleView, view }) {
   const handleEntreeSelect3 = (id) => {
     console.log("333");
     const updatedData = entreeData3.map((item) => {
-      item.selected = item.id === id;
+      item.selected = item.key === id;
       return item;
     });
     setEntreeData3(updatedData);
