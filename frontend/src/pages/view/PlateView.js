@@ -16,7 +16,7 @@ function EntreeSelection({ entreeData, handleEntreeSelect }) {
 }
 
 // user will either be "cashier" or "client"
-export default function PlateView({ user, handleView, view }) {
+export default function PlateView({ handleView, view, addItem }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
@@ -27,6 +27,7 @@ export default function PlateView({ user, handleView, view }) {
     if (view == 1) return "Bowl";
     else if (view == 2) return "Plate";
     else if (view == 3) return "Bigger Plate";
+    else return "Error";
   };
 
   function extractGroups(rows, num) {
@@ -96,9 +97,22 @@ export default function PlateView({ user, handleView, view }) {
     setEntreeData3(updatedData);
   };
 
+  const getSelectedItems = (dat) => {
+    for (let i = 0; i < dat.length; i++) {
+      if (dat[i].selected) return dat[i];
+    }
+  };
+
   const handleAddBtn = () => {
     handleView(0);
-    console.log("Add...");
+
+    let selectedItems = [];
+    selectedItems.push(getSelectedItems(sideData));
+    selectedItems.push(getSelectedItems(entreeData));
+    view >= 2 && selectedItems.push(getSelectedItems(entreeData2));
+    view >= 3 && selectedItems.push(getSelectedItems(entreeData3));
+
+    addItem(getTitle(), selectedItems);
   };
 
   return (
