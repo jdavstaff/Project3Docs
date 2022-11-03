@@ -93,3 +93,13 @@ app.get('/sellsTogetherReport', (req, response) => {
         response.json({rows: res.rows})
     })
 })
+
+app.get('/items', (req, response) => {
+    pool.query(`SELECT * FROM ITEM WHERE CATEGORY = 'Entree' OR CATEGORY = 'Side'`, (err, res) => {
+        if(err) {
+            response.json({err: err})
+            return
+        }
+        response.json({rows: res.rows})
+    })
+})
