@@ -55,3 +55,49 @@ app.get('/items', (req, response) => {
         response.json({rows: res.rows})
     })
 })
+
+app.get('/placeOrder', (req, response) => {
+    let prices = {
+        'Bowl': 6.4,
+        'Plate': 7.9,
+        'Bigger Plate': 9.4,
+        'Appetizer': 1.9,
+        'Drink': 0
+    }
+
+    let input = req.query.data
+    let totalPrice = 0;
+    input.forEach((order) => {
+        totalPrice += parseFloat(prices[order.size])
+        order.items.forEach((item) => {
+            totalPrice += parseFloat(item.extra_price)
+        })
+    })
+
+    let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE) VALUES (NOW() AT TIME ZONE 'US/Central', $1)) SELECT MAX(ID) FROM TICKET`
+    pool.query(query, [totalPrice]).then((res) => {
+        let ticketId = res.data.rows[0].id
+        input.forEach((order) => {
+            query = `WITH INSERT_ORDER AS (INSERT INTO ORDERS(TICKET_ID, SIZE_ID) VALUES ($1, (SELECT ID FROM SIZE WHERE NAME = $2))) SELECT MAX(ID) FROM ORDERS`
+            pool.query(query, [ticketId, order.size]).then((res2) => {
+                let orderId = res.data.rows[0].id
+                order.items.forEach((item) => {
+                    query = `"INSERT INTO BRIDGE(ORDER_ID, ITEM_ID, AMOUNT) VALUES ($1, $2,
+                    (SELECT CASE WHEN CATEGORY = 'Side' THEN 2 ELSE 1 END FROM ITEM WHERE ID = $2))
+                    ON CONFLICT (ORDER_ID, ITEM_ID) DO UPDATE SET AMOUNT = BRIDGE.AMOUNT+1`
+                    pool.query(query, [orderId, item.id]).then((res3) => {
+
+                    }).catch((err3) => {
+                        
+                    })
+                })
+                
+            }).catch((err2) => {
+
+            })
+        })
+    }).catch((err) => {
+
+    })
+    response.json(true)
+})

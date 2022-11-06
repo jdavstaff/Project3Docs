@@ -16,7 +16,7 @@ function EntreeSelection({ entreeData, handleEntreeSelect }) {
 }
 
 // user will either be "cashier" or "client"
-export default function PlateView({ user, handleView, view }) {
+export default function PlateView({ handleView, view, addItem }) {
   // NOTE: Data MUST have keys: id : int, selected : bool, and name : string
   const [sideData, setSideData] = useState([]);
   const [entreeData, setEntreeData] = useState([]);
@@ -27,22 +27,16 @@ export default function PlateView({ user, handleView, view }) {
     if (view == 1) return "Bowl";
     else if (view == 2) return "Plate";
     else if (view == 3) return "Bigger Plate";
+    else return "Error";
   };
 
   function extractGroups(rows, num) {
     let groups = {Entree: [], Side: []}
-    // for(let i=0; i<rows.length; i++) {
-    //   let item = rows[i]
-    //   item.key = item.id + num*1000
-    //   groups[item.category].push(item)
-    // }
     rows.forEach((el) => {
       let item = Object.assign({}, el)
       item.key = item.id + num*1000
       groups[item.category].push(item)
     })
-    console.log(num)
-    console.log(groups)
     return groups;
   }
 
@@ -71,7 +65,6 @@ export default function PlateView({ user, handleView, view }) {
   };
 
   const handleEntreeSelect = (id) => {
-    console.log("111");
     const updatedData = entreeData.map((item) => {
       item.selected = item.key === id;
       return item;
@@ -79,7 +72,6 @@ export default function PlateView({ user, handleView, view }) {
     setEntreeData(updatedData);
   };
   const handleEntreeSelect2 = (id) => {
-    console.log("222");
     const updatedData = entreeData2.map((item) => {
       item.selected = item.key === id;
       return item;
@@ -88,7 +80,6 @@ export default function PlateView({ user, handleView, view }) {
   };
 
   const handleEntreeSelect3 = (id) => {
-    console.log("333");
     const updatedData = entreeData3.map((item) => {
       item.selected = item.key === id;
       return item;
@@ -96,9 +87,22 @@ export default function PlateView({ user, handleView, view }) {
     setEntreeData3(updatedData);
   };
 
+  const getSelectedItems = (dat) => {
+    for (let i = 0; i < dat.length; i++) {
+      if (dat[i].selected) return dat[i];
+    }
+  };
+
   const handleAddBtn = () => {
     handleView(0);
-    console.log("Add...");
+
+    let selectedItems = [];
+    selectedItems.push(getSelectedItems(sideData));
+    selectedItems.push(getSelectedItems(entreeData));
+    view >= 2 && selectedItems.push(getSelectedItems(entreeData2));
+    view >= 3 && selectedItems.push(getSelectedItems(entreeData3));
+
+    addItem(getTitle(), selectedItems);
   };
 
   return (
