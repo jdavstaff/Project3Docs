@@ -28,9 +28,10 @@ export default function Checkout({ user }) {
     }
 
     axios.request((options)).then((res) => {
-      
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
     })
-
     // let options = {
     //   method: 'GET',
     //   url: `${url}/postOrder`,
