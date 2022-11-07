@@ -24,6 +24,9 @@ import TextField from "@mui/material/TextField";
 export default function Inventory() {
   const [data, setData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
     // FIXME: get data from db
@@ -38,8 +41,9 @@ export default function Inventory() {
   }, []);
 
   const handleEdit = (dat) => {
+    setName(dat.name);
+    setQuantity(dat.quantity);
     setDialogOpen(true);
-    console.log(dat);
   };
 
   const handleDelete = (dat) => {
@@ -49,8 +53,27 @@ export default function Inventory() {
     setData(data.filter((d) => d.ingredient_id !== dat.ingredient_id));
   };
 
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleQuantityChange = (e) => {
+    setQuantity(e.target.value);
+  };
+
   const handleDialogClose = () => {
     setDialogOpen(false);
+  };
+
+  // FIXME: update db with new dat
+  const handleDialogUpdate = () => {
+    if (!isNaN(quantity)) {
+      setErrorText("Please enter a number for the quanity");
+    } else {
+      // update db with string name, string quantity
+      console.log(name, parseInt(quantity));
+      setDialogOpen(false);
+    }
   };
   return (
     <div>
@@ -90,20 +113,34 @@ export default function Inventory() {
       </TableContainer>
       <Dialog open={dialogOpen} onClose={handleDialogClose} keepMounted>
         <DialogTitle>Update Item</DialogTitle>
-        <DialogContent>
-          <div>Name</div>
-          <TextField id="outlined-basic" label="Name" variant="outlined" />
-          <div>Price per pund</div>
-          <TextField
-            id="outlined-basic"
-            label="0.00"
-            variant="outlined"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
+        <DialogContent dividers>
+          <div>
+            <div>
+              <TextField
+                id="outlined-basic"
+                label="Name"
+                variant="outlined"
+                value={name}
+                onChange={handleNameChange}
+              />
+            </div>
+            <div>
+              <TextField
+                id="outlined-basic"
+                label="Quantity"
+                variant="outlined"
+                value={quantity}
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                onChange={handleQuantityChange}
+                error={errorText}
+                helperText={errorText}
+              />
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleDialogClose}>Update</Button>
+          <Button onClick={handleDialogUpdate}>Update</Button>
         </DialogActions>
       </Dialog>
     </div>
