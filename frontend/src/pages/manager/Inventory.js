@@ -6,7 +6,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import InputAdornment from "@mui/material/InputAdornment";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -26,10 +25,10 @@ export default function Inventory() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [id, setId] = useState(0);
   const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
-    // FIXME: get data from db
     const options = {
       method: "GET",
       url: `${url}/inventory`,
@@ -43,6 +42,7 @@ export default function Inventory() {
   const handleEdit = (dat) => {
     setName(dat.name);
     setQuantity(dat.quantity);
+    setId(dat.ingredient_id);
     setDialogOpen(true);
   };
 
@@ -62,16 +62,30 @@ export default function Inventory() {
   };
 
   const handleDialogClose = () => {
+    setErrorText("");
     setDialogOpen(false);
   };
 
   // FIXME: update db with new dat
   const handleDialogUpdate = () => {
-    if (!isNaN(quantity)) {
+    if (isNaN(quantity)) {
+      // if quantity is not a number
       setErrorText("Please enter a number for the quanity");
     } else {
-      // update db with string name, string quantity
+      // FIXME: update db with string name, string quantity
       console.log(name, parseInt(quantity));
+
+      console.log("THE ID", id);
+      setData(
+        data.map((dat) => {
+          if (dat.ingredient_id === id) {
+            dat.name = name;
+            dat.quantity = quantity;
+          }
+          return dat;
+        })
+      );
+
       setDialogOpen(false);
     }
   };
@@ -132,7 +146,7 @@ export default function Inventory() {
                 value={quantity}
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 onChange={handleQuantityChange}
-                error={errorText}
+                error={Boolean(errorText.length)}
                 helperText={errorText}
               />
             </div>
