@@ -9,7 +9,9 @@ export default function Customer() {
     <div>
       <Header name={"customer"} />;
       <OrderView user={"customer"} />;
+      <div>
       <MapComponent/>;
+      </div>
     </div>
   );
 }
