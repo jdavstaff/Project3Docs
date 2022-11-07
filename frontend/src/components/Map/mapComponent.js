@@ -1,26 +1,24 @@
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import React, { Component } from "react";
 
-const render = (status) => {
-  return <h1>{status}</h1>;
+const mapStyles = {
+  width: 'fit',
+  height: '100%',
 };
 
-<Wrapper apiKey={key} render={render}>
-  <YourComponent/>
-</Wrapper>
+export class MapContainer extends Component{
+    render(){ 
+        return (
+            <Map
+                google={this.props.google}
+                zoom={8}
+                style={mapStyles}
+                initialCenter={{ lat: 47.444, lng: -122.176}}
+            />
+        );
+    }
+}
 
-const Map = ({
-  onClick,
-  onIdle,
-  children,
-  style,
-  ...options
-}) => {};
-
-const ref = React.useRef(null);
-const [map, setMap] = React.useState();
-
-React.useEffect(() => {
-  if (ref.current && !map) {
-    setMap(new window.google.maps.Map(ref.current, {}));
-  }
-}, [ref, map]);
+export default GoogleApiWrapper({
+  apiKey: key
+})(MapContainer);
