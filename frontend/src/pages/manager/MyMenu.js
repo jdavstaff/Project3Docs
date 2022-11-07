@@ -77,7 +77,11 @@ function Row({ row, handleDelete }) {
 export default function MyMenu() {
   const [data, setData] = useState([]);
 
+  // FIXME: delete int id from database
   function handleDelete(id) {
+    console.log(id);
+    // add here
+
     setData(data.filter((d) => d.id !== id));
   }
 
