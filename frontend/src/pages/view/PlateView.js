@@ -32,18 +32,11 @@ export default function PlateView({ handleView, view, addItem }) {
 
   function extractGroups(rows, num) {
     let groups = {Entree: [], Side: []}
-    // for(let i=0; i<rows.length; i++) {
-    //   let item = rows[i]
-    //   item.key = item.id + num*1000
-    //   groups[item.category].push(item)
-    // }
     rows.forEach((el) => {
       let item = Object.assign({}, el)
       item.key = item.id + num*1000
       groups[item.category].push(item)
     })
-    console.log(num)
-    console.log(groups)
     return groups;
   }
 
@@ -72,7 +65,6 @@ export default function PlateView({ handleView, view, addItem }) {
   };
 
   const handleEntreeSelect = (id) => {
-    console.log("111");
     const updatedData = entreeData.map((item) => {
       item.selected = item.key === id;
       return item;
@@ -80,7 +72,6 @@ export default function PlateView({ handleView, view, addItem }) {
     setEntreeData(updatedData);
   };
   const handleEntreeSelect2 = (id) => {
-    console.log("222");
     const updatedData = entreeData2.map((item) => {
       item.selected = item.key === id;
       return item;
@@ -89,7 +80,6 @@ export default function PlateView({ handleView, view, addItem }) {
   };
 
   const handleEntreeSelect3 = (id) => {
-    console.log("333");
     const updatedData = entreeData3.map((item) => {
       item.selected = item.key === id;
       return item;

@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Summary from "../components/Summary/Summary";
+import axios from "axios";
+import { url } from '../config/global'
 
 export default function Checkout({ user }) {
   const location = useLocation();
@@ -19,7 +21,27 @@ export default function Checkout({ user }) {
   //    ],
   //]
   const handleOrder = () => {
-    console.log(summaryData);
+    let options = {
+      method: 'GET',
+      url: `${url}/placeOrder`,
+      params: { data: summaryData }
+    }
+
+    axios.request((options)).then((res) => {
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+    })
+    // let options = {
+    //   method: 'GET',
+    //   url: `${url}/postOrder`,
+    //   params: {
+    //     data: summaryData
+    //   }
+    // }
+    // axios.request(options).then((res) => {
+
+    // })
   };
 
   return (
