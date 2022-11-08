@@ -57,6 +57,7 @@ export default function Inventory() {
     axios.request(options).then((res) => {
       
     });
+    setData(data.filter((d) => d.ingredient_id !== dat.ingredient_id));
   };
 
   const handleNameChange = (e) => {
