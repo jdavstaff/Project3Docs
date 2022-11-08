@@ -63,7 +63,8 @@ export default function Reports() {
 
   // Convert Javascript timestamp to PostgreSQL timestamp
   function formatTimestamp(time) {
-    return time.toISOString().replace('T', ' ').slice(0, -5)
+    let output = time.toISOString().replace('T', ' ').slice(0, -5);
+    return output;
   }
 
   function formatPercent(decimal) {
