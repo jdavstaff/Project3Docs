@@ -1,24 +1,21 @@
-import { Map, GoogleApiWrapper, Marker } from "@googlemaps/react-wrapper";
-import React, { Component } from "react";
+import React, { Component, useMemo } from "react";
+import { useLoadScript, GoogleMap } from "@react-google-maps/api";
 
-const mapStyles = {
-  width: 'auto',
-  height: 'auto',
-};
+export function Mapper(){
+	const {isLoaded} = useLoadScript({
+		googleMapsApiKey: process.env.NEXT_PUBLIC_KEY,
+	})
 
-export class MapContainer extends Component{
-    render(){ 
-        return (
-            <Map
-                google={this.props.google}
-                zoom={8}
-                style={mapStyles}
-                initialCenter={{ lat: 47.444, lng: -122.176}}
-            />
-        );
-    }
+	if (!isLoaded) return <div>Loading...</div>;
+	return <Map />;
 }
 
-export default GoogleApiWrapper({
-  apiKey: process.env.key
-})(MapContainer);
+function Map(){
+	return <GoogleMap 
+					zoom={10}
+					center = {{lat:10, lng: -40}}
+					mapContainerClassName="class_map" // use for sass...
+					>
+					
+					</GoogleMap>
+}
