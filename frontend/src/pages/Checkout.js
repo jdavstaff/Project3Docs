@@ -47,15 +47,15 @@ export default function Checkout({ user }) {
   return (
     <div>
       <Header name={`${user} Checkout`} />
-      <div>
+      <div class="center">
         <Summary data={location.state.summaryData} />
       </div>
-      <div>
+      <div class="center">
         <Link to={`/${user}`}>
-          <Button variant="outlined">Cancel</Button>
+          <Button class="button del">Cancel</Button>
         </Link>
         <Link to={`/${user}`}>
-          <Button variant="outlined" onClick={handleOrder}>
+          <Button class="button" onClick={handleOrder}>
             Order
           </Button>
         </Link>

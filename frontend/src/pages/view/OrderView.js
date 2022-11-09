@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
+import "../../styles/master.scss";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
@@ -33,14 +34,14 @@ export default function OrderView({ user }) {
       <div>
         <div>
           <h3>Size:</h3>
-          <div>
-            <Button variant="outlined" onClick={() => handleBtnClick(1)}>
+          <div class="center">
+            <Button class="button sel" onClick={() => handleBtnClick(1)}>
               Bowl
             </Button>
-            <Button variant="outlined" onClick={() => handleBtnClick(2)}>
+            <Button class="button sel" onClick={() => handleBtnClick(2)}>
               Plate
             </Button>
-            <Button variant="outlined" onClick={() => handleBtnClick(3)}>
+            <Button class="button sel" onClick={() => handleBtnClick(3)}>
               Bigger Plate
             </Button>
           </div>
@@ -56,12 +57,15 @@ export default function OrderView({ user }) {
         <div>
           <Summary data={summaryData} />
         </div>
+        <div class="center">
         <Link to="/">
-          <Button variant="outlined">Back</Button>
+          <Button class="button del">Back</Button>
         </Link>
-        <Button variant="outlined" onClick={toCheckout}>
+        <Button class="button" onClick={toCheckout}>
           CHECKOUT
         </Button>
+        </div>
+        
       </div>
     );
   } else {

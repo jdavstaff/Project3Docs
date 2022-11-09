@@ -36,7 +36,7 @@ export default function Driver() {
   return (
     <div>
       <Header name={"manager"} />
-      <div>
+      <div class="center">
         <Box sx={{ width: "100%" }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Inventory" />
@@ -55,7 +55,7 @@ export default function Driver() {
         </Box>
       </div>
       <Link to="/">
-        <Button variant="outlined">Back</Button>
+        <Button class="button del">Back</Button>
       </Link>
     </div>
   );
