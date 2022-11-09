@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { url } from "../../config/global.js";
 
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,16 +12,16 @@ import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import InventoryDialog from "./InventoryDialog.js";
+import { Button } from "@mui/material";
 
 export default function Inventory() {
   const [data, setData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setId] = useState(0);
-  const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
     const options = {
@@ -52,49 +47,47 @@ export default function Inventory() {
     const options = {
       method: "GET",
       url: `${url}/invDelete`,
-      params: {id:dat.ingredient_id}
+      params: { id: dat.ingredient_id },
     };
-    axios.request(options).then((res) => {
-      
-    });
+    axios.request(options).then((res) => {});
     setData(data.filter((d) => d.ingredient_id !== dat.ingredient_id));
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleQuantityChange = (e) => {
-    setQuantity(e.target.value);
-  };
-
   const handleDialogClose = () => {
-    setErrorText("");
     setDialogOpen(false);
   };
 
   // FIXME: update db with new dat
-  const handleDialogUpdate = () => {
-    if (isNaN(quantity)) {
-      // if quantity is not a number
-      setErrorText("Please enter a number for the quanity");
-    } else {
-      // FIXME: update db with string name, string quantity
-      console.log(name, parseInt(quantity));
+  const handleDialogUpdate = (name, quantity, id) => {
+    // FIXME: update db with string name, string quantity
+    console.log(name, parseInt(quantity));
 
-      console.log("THE ID", id);
-      setData(
-        data.map((dat) => {
-          if (dat.ingredient_id === id) {
-            dat.name = name;
-            dat.quantity = quantity;
-          }
-          return dat;
-        })
-      );
+    console.log("THE ID", id);
+    setData(
+      data.map((dat) => {
+        if (dat.ingredient_id === id) {
+          dat.name = name;
+          dat.quantity = quantity;
+        }
+        return dat;
+      })
+    );
 
-      setDialogOpen(false);
-    }
+    setDialogOpen(false);
+  };
+
+  const handleAddDialogOpen = () => {
+    setAddDialogOpen(true);
+  };
+
+  const handleAddDialogClose = () => {
+    setAddDialogOpen(false);
+  };
+
+  // FIXME: backend should add the following item
+  const handleAddDialogUpdate = (name, quantity) => {
+    console.log("Add item: ", name, quantity);
+    setAddDialogOpen(false);
   };
   return (
     <div>
@@ -132,38 +125,25 @@ export default function Inventory() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Dialog open={dialogOpen} onClose={handleDialogClose} keepMounted>
-        <DialogTitle>Update Item</DialogTitle>
-        <DialogContent dividers>
-          <div>
-            <div>
-              <TextField
-                id="outlined-basic"
-                label="Name"
-                variant="outlined"
-                value={name}
-                onChange={handleNameChange}
-              />
-            </div>
-            <div>
-              <TextField
-                id="outlined-basic"
-                label="Quantity"
-                variant="outlined"
-                value={quantity}
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                onChange={handleQuantityChange}
-                error={Boolean(errorText.length)}
-                helperText={errorText}
-              />
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleDialogUpdate}>Update</Button>
-        </DialogActions>
-      </Dialog>
+      <Button variant="outlined" onClick={handleAddDialogOpen}>
+        Add Item
+      </Button>
+      <InventoryDialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        onUpdate={handleDialogUpdate}
+        _name={name}
+        _quantity={quantity}
+        _id={id}
+      />
+      <InventoryDialog
+        open={addDialogOpen}
+        onClose={handleAddDialogClose}
+        onUpdate={handleAddDialogUpdate}
+        _name=""
+        _quantity={0}
+        _id={0}
+      />
     </div>
   );
 }
