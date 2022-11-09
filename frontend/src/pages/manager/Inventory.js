@@ -13,14 +13,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 import InventoryDialog from "./InventoryDialog.js";
+import { Button } from "@mui/material";
 
 export default function Inventory() {
   const [data, setData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setId] = useState(0);
-  const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
     const options = {
@@ -53,7 +54,6 @@ export default function Inventory() {
   };
 
   const handleDialogClose = () => {
-    setErrorText("");
     setDialogOpen(false);
   };
 
@@ -74,6 +74,20 @@ export default function Inventory() {
     );
 
     setDialogOpen(false);
+  };
+
+  const handleAddDialogOpen = () => {
+    setAddDialogOpen(true);
+  };
+
+  const handleAddDialogClose = () => {
+    setAddDialogOpen(false);
+  };
+
+  // FIXME: backend should add the following item
+  const handleAddDialogUpdate = (name, quantity) => {
+    console.log("Add item: ", name, quantity);
+    setAddDialogOpen(false);
   };
   return (
     <div>
@@ -111,6 +125,9 @@ export default function Inventory() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button variant="outlined" onClick={handleAddDialogOpen}>
+        Add Item
+      </Button>
       <InventoryDialog
         open={dialogOpen}
         onClose={handleDialogClose}
@@ -118,6 +135,14 @@ export default function Inventory() {
         _name={name}
         _quantity={quantity}
         _id={id}
+      />
+      <InventoryDialog
+        open={addDialogOpen}
+        onClose={handleAddDialogClose}
+        onUpdate={handleAddDialogUpdate}
+        _name=""
+        _quantity={0}
+        _id={0}
       />
     </div>
   );

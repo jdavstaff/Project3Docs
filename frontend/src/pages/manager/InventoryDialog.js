@@ -33,12 +33,18 @@ export default function InventoryDialog({
       // if quantity is not a number
       setErrorText("Please enter a number for the quanity");
     } else {
+      setErrorText("");
       onUpdate(name, quantity, _id);
     }
   };
 
+  const handleClose = () => {
+    setErrorText("");
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} keepMounted>
+    <Dialog open={open} onClose={handleClose} keepMounted>
       <DialogTitle>Update Item</DialogTitle>
       <DialogContent dividers>
         <div>
