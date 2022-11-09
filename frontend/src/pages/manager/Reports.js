@@ -255,7 +255,7 @@ export default function Reports() {
                   >
                     <TableCell component="th" scope="row">{row.name}</TableCell>
                     <TableCell align="right">{row.current_amount}</TableCell>
-                    <TableCell align="right">{formatPercent(row.last_7_days_sales)}</TableCell>
+                    <TableCell align="right">{row.last_7_days_sales}</TableCell>
                     <TableCell align="right">{row.recommended_resupply}</TableCell>
                   </TableRow>
                 ))}

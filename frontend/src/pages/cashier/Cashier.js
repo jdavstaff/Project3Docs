@@ -6,7 +6,7 @@ import OrderView from "../view/OrderView";
 export default function Cashier() {
   return (
     <div>
-      <Header name={"cashier"} />;
+      <Header name={"cashier"} />
       <OrderView user={"cashier"} />
     </div>
   );
