@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Inventory from "./Inventory";
 import MyMenu from "./MyMenu";
 import Reports from "./Reports";
+import "../../styles/master.scss";
 export default function Driver() {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (e, newTabVal) => {

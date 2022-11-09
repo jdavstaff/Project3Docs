@@ -7,13 +7,12 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 
 export default function Landing() {
   return (
-    <div>
+    <div className="mainBody">
       <Header name={"Landing"} />
-      <div>
-        <ButtonGroup
+      <div className="landingTri">
+        <ButtonGroup className="buttonGroup shadow-none"
           variant="contained"
-          aria-label="outlined primary button group"
-        >
+          aria-label="outlined primary button group">
           <Link to="/manager">
             <Button class="button">Manager</Button>
           </Link>
@@ -24,11 +23,11 @@ export default function Landing() {
             <Button class="button" >Driver</Button>
           </Link>
         </ButtonGroup>
-        <div>
-          <Link to="/customer">
-            <Button variant="contained">Customer</Button>
-          </Link>
-        </div>
+      </div>
+      <div className="landingTri">
+        <Link to="/customer">
+          <Button variant="contained" class="button">Customer</Button>
+        </Link>
       </div>
     </div>
   );
