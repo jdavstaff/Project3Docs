@@ -45,12 +45,14 @@ export default function OrderView({ user }) {
             </Button>
           </div>
         </div>
+        {/*
         <div>
           <h3>Extra:</h3>
           <div>
             <Button variant="outlined">Appetizer</Button>
           </div>
         </div>
+        */}
         <div>
           <Summary data={summaryData} />
         </div>
