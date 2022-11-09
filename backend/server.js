@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv')
 const path = require('path')
 const { Pool } = require('pg')
-const { Client } = require('pg-native')
+//const { Client } = require('pg-native')
 
 dotenv.config({path: './.env'})
 const PORT = process.env.PORT || 1111 // this needs to match proxy in front-end package.json
