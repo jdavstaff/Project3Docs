@@ -35,7 +35,7 @@ export default function Driver() {
 
   return (
     <div>
-      <Header name={"manager"} />;
+      <Header name={"manager"} />
       <div>
         <Box sx={{ width: "100%" }}>
           <Tabs value={tabValue} onChange={handleTabChange}>

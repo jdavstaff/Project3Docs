@@ -9,8 +9,8 @@ import "../../styles/master.scss";
 export default function Customer() {
   return (
     <div>
-      <Header name={"customer"} />;
-      <OrderView user={"customer"} />;
+      <Header name={"customer"} />
+      <OrderView user={"customer"} />
       <div>
         {Mapper()}
       </div>

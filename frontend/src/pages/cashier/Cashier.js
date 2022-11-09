@@ -7,7 +7,7 @@ import "../../styles/master.scss";
 export default function Cashier() {
   return (
     <div>
-      <Header name={"cashier"} />;
+      <Header name={"cashier"} />
       <OrderView user={"cashier"} />
     </div>
   );
