@@ -21,10 +21,47 @@ const connectionParams = {
 const pool = new Pool(connectionParams);
 pool.connect();
 
+// allow popups
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 // start listening
 app.listen(PORT, () => console.log("Server on PORT: " + PORT));
 
 app.get("/orders", (req, response) => {});
+
+app.get("/google", (req, response) => {
+  response.json({id: process.env.GOOGLE_CLIENT_ID})
+})
+
+app.get("/permissions", (req, response) => {
+  let email = req.query.email
+  let name = req.query.name
+  pool.query(`SELECT PERMISSION FROM USERS WHERE EMAIL = $1`, [email], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    if(res.rows.length === 0) { // if the user does not exist in table
+      // create new user
+      pool.query(`INSERT INTO USERS VALUES ($1, $2, $3, 0)`, [email, name.first, name.last], (err, res) => {
+        if(err) {
+          console.log(err)
+          response.json({err: err})
+          return
+        }
+        response.json({message: `Created new user: ${name.first} ${name.last}`, permission: 0})
+      })
+    }
+    else { // if the user does exist
+      response.json({message: `Welcome back ${name.first}!`, permission: res.rows[0].permission})
+    }
+  })
+})
 
 app.get("/inventory", (req, response) => {
   pool.query(`SELECT * FROM INVENTORY ORDER BY INGREDIENT_ID`, (err, res) => {
