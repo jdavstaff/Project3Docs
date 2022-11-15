@@ -21,12 +21,6 @@ const connectionParams = {
 const pool = new Pool(connectionParams);
 pool.connect();
 
-// allow popups
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
 
 // start listening
 app.listen(PORT, () => console.log("Server on PORT: " + PORT));
@@ -37,7 +31,7 @@ app.get("/google", (req, response) => {
   response.json({id: process.env.GOOGLE_CLIENT_ID})
 })
 
-app.get("/permissions", (req, response) => {
+app.get("/permission", (req, response) => {
   let email = req.query.email
   let name = req.query.name
   pool.query(`SELECT PERMISSION FROM USERS WHERE EMAIL = $1`, [email], (err, res) => {
