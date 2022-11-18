@@ -27,8 +27,8 @@ app.listen(PORT, () => console.log("Server on PORT: " + PORT));
 
 app.get("/orders", (req, response) => {});
 
-app.get("/google", (req, response) => {
-  response.json({id: process.env.GOOGLE_CLIENT_ID})
+app.get("/googleIdentity", (req, response) => {
+  response.json({id: process.env.GOOGLE_IDENTITY_CLIENT_ID})
 })
 
 app.get("/permission", (req, response) => {
@@ -142,10 +142,10 @@ app.get("/placeOrder", (req, response) => {
   let i = 0; // keeps track of how many items have been inserted
 
   // im sorry this has to be nested like this, you can only insert things asynchronously and this is the only way to make sure it is in the right order
-  let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE) VALUES (NOW() AT TIME ZONE 'US/Central', $1)) SELECT MAX(ID)+1 AS MAX FROM TICKET`;
+  let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE, EMAIL) VALUES (NOW() AT TIME ZONE 'US/Central', $1, $2)) SELECT MAX(ID)+1 AS MAX FROM TICKET`;
   // insert ticket
   pool
-    .query(query, [totalPrice])
+    .query(query, [totalPrice, req.query.data.email])
     .then((res) => {
       let ticketId = res.rows[0].max;
       input.forEach((order) => {
