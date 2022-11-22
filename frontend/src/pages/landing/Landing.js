@@ -70,7 +70,7 @@ export default function Landing() {
           />
         </GoogleOAuthProvider>
       </div>
-      <button onClick={() => console.log(userInfo)}>Click me</button>
+      {/* <button onClick={() => console.log(userInfo)}>Click me</button> */}
       <div className="landingTri">
         <ButtonGroup
           className="buttonGroup shadow-none"
