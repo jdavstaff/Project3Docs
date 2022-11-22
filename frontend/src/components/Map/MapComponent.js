@@ -8,7 +8,7 @@ const containerStyle = {
 
 export default function Mapper() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.local.KEY,
+    googleMapsApiKey: process.env.REACT_APP_KEY,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
