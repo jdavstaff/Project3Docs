@@ -21,10 +21,41 @@ const connectionParams = {
 const pool = new Pool(connectionParams);
 pool.connect();
 
+
 // start listening
 app.listen(PORT, () => console.log("Server on PORT: " + PORT));
 
 app.get("/orders", (req, response) => {});
+
+app.get("/googleIdentity", (req, response) => {
+  response.json({id: process.env.GOOGLE_IDENTITY_CLIENT_ID})
+})
+
+app.get("/permission", (req, response) => {
+  let email = req.query.email
+  let name = req.query.name
+  pool.query(`SELECT PERMISSION FROM USERS WHERE EMAIL = $1`, [email], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    if(res.rows.length === 0) { // if the user does not exist in table
+      // create new user
+      pool.query(`INSERT INTO USERS VALUES ($1, $2, $3, 0)`, [email, name.first, name.last], (err, res) => {
+        if(err) {
+          console.log(err)
+          response.json({err: err})
+          return
+        }
+        response.json({message: `Created new user: ${name.first} ${name.last}`, permission: 0})
+      })
+    }
+    else { // if the user does exist
+      response.json({message: `Welcome back ${name.first}!`, permission: res.rows[0].permission})
+    }
+  })
+})
 
 app.get("/inventory", (req, response) => {
   pool.query(`SELECT * FROM INVENTORY ORDER BY INGREDIENT_ID`, (err, res) => {
@@ -111,10 +142,10 @@ app.get("/placeOrder", (req, response) => {
   let i = 0; // keeps track of how many items have been inserted
 
   // im sorry this has to be nested like this, you can only insert things asynchronously and this is the only way to make sure it is in the right order
-  let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE) VALUES (NOW() AT TIME ZONE 'US/Central', $1)) SELECT MAX(ID)+1 AS MAX FROM TICKET`;
+  let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE, EMAIL) VALUES (NOW() AT TIME ZONE 'US/Central', $1, $2)) SELECT MAX(ID)+1 AS MAX FROM TICKET`;
   // insert ticket
   pool
-    .query(query, [totalPrice])
+    .query(query, [totalPrice, req.query.data.email])
     .then((res) => {
       let ticketId = res.rows[0].max;
       input.forEach((order) => {
