@@ -10,7 +10,7 @@ const containerStyle = {
 
 export default function Mapper() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_KEY,
+    googleMapsApiKey: process.env.KEY,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
@@ -26,7 +26,6 @@ function Map() {
       zoom={10}
       center={center}
       mapContainerStyle={containerStyle}
-      mapContainerClassName="class_map" // use for sass...
     ></GoogleMap>
   );
 }
