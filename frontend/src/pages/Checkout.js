@@ -11,6 +11,7 @@ export default function Checkout({ user }) {
   const [summaryData, setSummaryData] = useState([
     ...location.state.summaryData,
   ]);
+  
 
   // FIXME: should send summary to database to order;
   // [int, string, []] summaryData: [
@@ -32,16 +33,6 @@ export default function Checkout({ user }) {
     }).catch((err) => {
       console.log(err)
     })
-    // let options = {
-    //   method: 'GET',
-    //   url: `${url}/postOrder`,
-    //   params: {
-    //     data: summaryData
-    //   }
-    // }
-    // axios.request(options).then((res) => {
-
-    // })
   };
 
   return (
