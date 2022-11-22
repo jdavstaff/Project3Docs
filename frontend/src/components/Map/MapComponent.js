@@ -1,9 +1,10 @@
-import "../../styles/gmaps.scss";
 import { useLoadScript, GoogleMap } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: '400px',
-  height: '400px'
+  width: 'auto',
+  height: '500px',
+  margin: '10px',
+  padding: '10px'
 };
 
 export default function Mapper() {
