@@ -17,7 +17,7 @@ export default function OrderView({ user }) {
       id: Math.floor(Math.random() * 10000),
       items: [...item],
     };
-    console.log(summaryItem)
+    console.log(summaryItem);
     setSummaryData([...summaryData, summaryItem]);
   };
 
@@ -35,13 +35,13 @@ export default function OrderView({ user }) {
         <div>
           <h3>Size:</h3>
           <div class="center">
-            <Button class="button sel" onClick={() => handleBtnClick(1)}>
+            <Button variant="contained" onClick={() => handleBtnClick(1)}>
               Bowl
             </Button>
-            <Button class="button sel" onClick={() => handleBtnClick(2)}>
+            <Button variant="contained" onClick={() => handleBtnClick(2)}>
               Plate
             </Button>
-            <Button class="button sel" onClick={() => handleBtnClick(3)}>
+            <Button variant="contained" onClick={() => handleBtnClick(3)}>
               Bigger Plate
             </Button>
           </div>
@@ -58,14 +58,13 @@ export default function OrderView({ user }) {
           <Summary data={summaryData} />
         </div>
         <div class="center">
-        <Link to="/">
-          <Button class="button del">Back</Button>
-        </Link>
-        <Button class="button" onClick={toCheckout}>
-          CHECKOUT
-        </Button>
+          <Link to="/">
+            <Button variant="outlined">Back</Button>
+          </Link>
+          <Button variant="contained" onClick={toCheckout}>
+            CHECKOUT
+          </Button>
         </div>
-        
       </div>
     );
   } else {

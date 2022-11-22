@@ -79,21 +79,19 @@ export default function Landing() {
         >
           {permission >= 2 && (
             <Link to="/manager">
-              <Button class="button">Manager</Button>
+              <Button>Manager</Button>
             </Link>
           )}
           {permission >= 1 && (
             <Link to="/cashier">
-              <Button class="button">Cashier</Button>
+              <Button>Cashier</Button>
             </Link>
           )}
         </ButtonGroup>
         {permission >= 0 && (
           <div className="landingTri">
             <Link to="/customer">
-              <Button variant="contained" class="button">
-                Customer
-              </Button>
+              <Button variant="contained">Customer</Button>
             </Link>
           </div>
         )}

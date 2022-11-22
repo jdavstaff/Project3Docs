@@ -1,85 +1,84 @@
-@use 'cons';
-//master defines all, will be the head 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    width: 100vw;
-    height: 100vh;
-    background-color: cons.$bgCol;
-};
+// @use 'cons';
+// //master defines all, will be the head
+// body {
+//     margin: 0;
+//     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+//       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+//       sans-serif;
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+//     width: 100vw;
+//     height: 100vh;
+//     background-color: cons.$bgCol;
+// };
 
-div {
-  background-color: cons.$fgCol;
-  position: relative;
-  padding:.4em;
-  
-  &.center{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-    &.many{
-      justify-content:space-between;
-      
-    }
-  }
-  
-  &.mainBody{
-    padding: 0;
-  }
-  &.landingTri{
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-};
+// div {
+//   background-color: cons.$fgCol;
+//   position: relative;
+//   padding:.4em;
 
-.buttonGroup {
-  display: flexbox;
-  justify-items: auto;
-  justify-content: space-evenly;
-  align-self: auto;
-  box-shadow: none;
-};
+//   &.center{
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+//     &.many{
+//       justify-content:space-between;
 
-button{
-  background-color: cons.$butCol;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 30px;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
+//     }
+//   }
 
-  &.foodSel{
-    background-color: white;
-    color: black;
-    border-color: gray;
-    padding: 5px;
-    margin: 2px;
-  }
-  &:hover{
-    background-color: cons.$butHover;
-  }
-  &.del{
-    background-color: cons.$butWarn;
-    border-color: none;
-    color: black;
-    &:hover{
-      background-color: cons.$butWarnHover;
-    }
-  }
-};
+//   &.mainBody{
+//     padding: 0;
+//   }
+//   &.landingTri{
+//     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//   }
+// };
 
+// .buttonGroup {
+//   display: flexbox;
+//   justify-items: auto;
+//   justify-content: space-evenly;
+//   align-self: auto;
+//   box-shadow: none;
+// };
 
-.map-container{
-  width: 100%;
-  height: 50vh;
-  position: fixed;
-  align-items: center;
-}
+// button{
+//   background-color: cons.$butCol;
+//   border-radius: 4px;
+//   padding: 10px;
+//   margin: 30px;
+//   font-size: 12px;
+//   font-weight: bold;
+//   color: white;
+
+//   &.foodSel{
+//     background-color: white;
+//     color: black;
+//     border-color: gray;
+//     padding: 5px;
+//     margin: 2px;
+//   }
+//   &:hover{
+//     background-color: cons.$butHover;
+//   }
+//   &.del{
+//     background-color: cons.$butWarn;
+//     border-color: none;
+//     color: black;
+//     &:hover{
+//       background-color: cons.$butWarnHover;
+//     }
+//   }
+// };
+
+// .map-container{
+//   width: 100%;
+//   height: 50vh;
+//   position: fixed;
+//   align-items: center;
+// }

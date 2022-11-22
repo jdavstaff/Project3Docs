@@ -9,35 +9,47 @@ import Customer from "./pages/customer/Customer";
 import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { green } from "@mui/material/colors";
 
 function App() {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#003077",
+      },
+    },
+  });
+
   return (
     <UserInfoProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/cashier" element={<Cashier />} />
-          <Route path="/driver" element={<Driver />} />
-          <Route path="/manager" element={<Manager />} />
-          <Route path="/customer" element={<Customer />} />
-          <Route
-            path="/cashier/plate"
-            element={<PlateView user={"cashier"} />}
-          />
-          <Route
-            path="/customer/plate"
-            element={<PlateView user={"customer"} />}
-          />
-          <Route
-            path="/customer/checkout"
-            element={<Checkout user={"Customer"} />}
-          />
-          <Route
-            path="/cashier/checkout"
-            element={<Checkout user={"Cashier"} />}
-          />
-        </Routes>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/cashier" element={<Cashier />} />
+            <Route path="/driver" element={<Driver />} />
+            <Route path="/manager" element={<Manager />} />
+            <Route path="/customer" element={<Customer />} />
+            <Route
+              path="/cashier/plate"
+              element={<PlateView user={"cashier"} />}
+            />
+            <Route
+              path="/customer/plate"
+              element={<PlateView user={"customer"} />}
+            />
+            <Route
+              path="/customer/checkout"
+              element={<Checkout user={"Customer"} />}
+            />
+            <Route
+              path="/cashier/checkout"
+              element={<Checkout user={"Cashier"} />}
+            />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </UserInfoProvider>
   );
 }
