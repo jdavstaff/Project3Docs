@@ -16,10 +16,12 @@ function Map() {
   const center = useMemo(() => ({lat: 10, lng: -40}), []);
 
   return (
+    <div style={{ height: '100px', width: '100%' }}>
       <GoogleMap
       zoom={10}
       center={center}
       mapContainerClassName={"map-container"}
     ></GoogleMap>
+    </div>
   );
 }

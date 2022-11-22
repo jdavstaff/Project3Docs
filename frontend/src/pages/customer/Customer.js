@@ -10,7 +10,7 @@ export default function Customer() {
     <div>
       <Header name={"customer"} />
       <OrderView user={"customer"} />
-      {Mapper()}
+      <Mapper/>
     </div>
   );
 }
