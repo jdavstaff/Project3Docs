@@ -15,7 +15,6 @@ import axios from "axios";
 export default function Landing() {
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(-1);
-  // const [userInfo, setUserInfo] = useState({})
 
   useEffect(() => {
     let options = {
@@ -34,8 +33,9 @@ export default function Landing() {
       <div id="google">
         <GoogleOAuthProvider clientId={googleIdentityID}>
           <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              let p = googleSignIn(credentialResponse);
+            onSuccess={async (credentialResponse) => {
+              let p = await googleSignIn(credentialResponse);
+              console.log("p: ", p);
               setPermission(p);
             }}
             onError={() => {
@@ -44,11 +44,6 @@ export default function Landing() {
           />
         </GoogleOAuthProvider>
       </div>
-
-      <Button variant="contained" onClick={() => console.log(permission)}>
-        Click me
-      </Button>
-
       <div>
         <ButtonGroup
           variant="contained"
@@ -64,19 +59,19 @@ export default function Landing() {
               <Button>Cashier</Button>
             </Link>
           )}
-          {permission >= 0 && (
-            <div>
-              <Link to="/customer">
-                <Button variant="contained">Customer</Button>
-              </Link>
-            </div>
-          )}
         </ButtonGroup>
+        {permission >= 0 && (
+          <div>
+            <Link to="/customer">
+              <Button variant="contained">Customer</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
 
-  function googleSignIn(response) {
+  async function googleSignIn(response) {
     let decoded = jwt_decode(response.credential);
     let name = { first: decoded.given_name, last: decoded.family_name };
     let email = decoded.email;
@@ -85,16 +80,20 @@ export default function Landing() {
       url: `${url}/permission`,
       params: { email: email, name: name },
     };
-    axios.request(options).then((res) => {
+
+    let p;
+    await axios.request(options).then((res) => {
       let permission = res.data.permission; // permission (0 = customer, 1 = cashier / driver, 2 = manager)
       let err = res.data.err; // will send error if there was an error
       let message = res.data.message; // will send a message if user is returned
       if (err) console.log(err);
       console.log(message);
       console.log(permission);
-      return permission;
+      p = permission;
       // setUserInfo({name: name, email: email, permission: permission})
       // probably want to save permission somewhere and also probably want to move this stuff to its own page
     });
+
+    return p;
   }
 }
