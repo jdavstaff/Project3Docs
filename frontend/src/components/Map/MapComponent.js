@@ -1,4 +1,5 @@
 import { useLoadScript, GoogleMap } from "@react-google-maps/api";
+import { useMemo } from "react";
 
 const containerStyle = {
   width: 'auto',
@@ -17,10 +18,13 @@ export default function Mapper() {
 }
 
 function Map() {
+
+  const center = useMemo(() => ({lat: 10, lng: -40}), []);
+
   return (
     <GoogleMap
       zoom={10}
-      center={{ lat: 10, lng: -40 }}
+      center={center}
       mapContainerStyle={containerStyle}
       mapContainerClassName="class_map" // use for sass...
     ></GoogleMap>
