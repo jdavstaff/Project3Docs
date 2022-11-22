@@ -4,6 +4,7 @@ import { useMemo } from "react";
 const containerStyle = {
   width: '500px',
   height: '500px',
+  position: 'center'
 };
 
 export default function Mapper() {
