@@ -2,13 +2,13 @@ import { useLoadScript, GoogleMap } from "@react-google-maps/api";
 import { useMemo } from "react";
 
 const containerStyle = {
-  width: '400px',
-  height: '400px',
+  width: '500px',
+  height: '500px',
 };
 
 export default function Mapper() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.local.KEY
+    googleMapsApiKey: process.env.local.KEY,
   });
 
   if (!isLoaded) return <div>Loading...</div>;
