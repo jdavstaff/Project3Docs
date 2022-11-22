@@ -1,3 +1,4 @@
+import "../../styles/gmaps.scss";
 import { useLoadScript, GoogleMap } from "@react-google-maps/api";
 
 const containerStyle = {
