@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Button from "@mui/material/Button";
@@ -8,13 +9,13 @@ import {
   useGoogleLogin,
 } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
 import { url } from "../../config/global";
 import axios from "axios";
 
 export default function Landing() {
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(-1);
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     let options = {
@@ -26,6 +27,29 @@ export default function Landing() {
     });
   }, []);
 
+  function googleSignIn(response) {
+    let decoded = jwt_decode(response.credential);
+    let name = { first: decoded.given_name, last: decoded.family_name };
+    let email = decoded.email;
+    let options = {
+      method: "GET",
+      url: `${url}/permission`,
+      params: { email: email, name: name },
+    };
+
+    axios.request(options).then((res) => {
+      let p = res.data.permission; // permission (0 = customer, 1 = cashier / driver, 2 = manager)
+      let err = res.data.err; // will send error if there was an error
+      let message = res.data.message; // will send a message if user is returned
+      if (err) console.log(err);
+      console.log(message);
+      console.log(p);
+      setPermission(p);
+      setUserInfo({ name: name, email: email, permission: permission });
+      // probably want to save permission somewhere and also probably want to move this stuff to its own page
+    });
+  }
+
   return (
     <div>
       <Header name={"Landing"} />
@@ -34,9 +58,7 @@ export default function Landing() {
         <GoogleOAuthProvider clientId={googleIdentityID}>
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
-              let p = await googleSignIn(credentialResponse);
-              console.log("p: ", p);
-              setPermission(p);
+              googleSignIn(credentialResponse);
             }}
             onError={() => {
               console.log("Login Failed");
@@ -70,30 +92,4 @@ export default function Landing() {
       </div>
     </div>
   );
-
-  async function googleSignIn(response) {
-    let decoded = jwt_decode(response.credential);
-    let name = { first: decoded.given_name, last: decoded.family_name };
-    let email = decoded.email;
-    let options = {
-      method: "GET",
-      url: `${url}/permission`,
-      params: { email: email, name: name },
-    };
-
-    let p;
-    await axios.request(options).then((res) => {
-      let permission = res.data.permission; // permission (0 = customer, 1 = cashier / driver, 2 = manager)
-      let err = res.data.err; // will send error if there was an error
-      let message = res.data.message; // will send a message if user is returned
-      if (err) console.log(err);
-      console.log(message);
-      console.log(permission);
-      p = permission;
-      // setUserInfo({name: name, email: email, permission: permission})
-      // probably want to save permission somewhere and also probably want to move this stuff to its own page
-    });
-
-    return p;
-  }
 }
