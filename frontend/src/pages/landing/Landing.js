@@ -14,7 +14,6 @@ import jwt_decode from "jwt-decode";
 import { url } from "../../config/global";
 import axios from "axios";
 
-
 export default function Landing() {
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(-1);
@@ -73,9 +72,11 @@ export default function Landing() {
       </div>
       <button onClick={() => console.log(userInfo)}>Click me</button>
       <div className="landingTri">
-        <ButtonGroup className="buttonGroup shadow-none"
+        <ButtonGroup
+          className="buttonGroup shadow-none"
           variant="contained"
-          aria-label="outlined primary button group">
+          aria-label="outlined primary button group"
+        >
           {permission >= 2 && (
             <Link to="/manager">
               <Button class="button">Manager</Button>
@@ -83,14 +84,16 @@ export default function Landing() {
           )}
           {permission >= 1 && (
             <Link to="/cashier">
-              <Button class="button" >Cashier</Button>
+              <Button class="button">Cashier</Button>
             </Link>
           )}
         </ButtonGroup>
         {permission >= 0 && (
           <div className="landingTri">
             <Link to="/customer">
-              <Button variant="contained" class="button">Customer</Button>
+              <Button variant="contained" class="button">
+                Customer
+              </Button>
             </Link>
           </div>
         )}
