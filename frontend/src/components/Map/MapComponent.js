@@ -1,11 +1,6 @@
+import "../../styles/master.scss";
 import { useLoadScript, GoogleMap } from "@react-google-maps/api";
 import { useMemo } from "react";
-
-const containerStyle = {
-  width: '500px',
-  height: '500px',
-  position: 'center'
-};
 
 export default function Mapper() {
   const { isLoaded } = useLoadScript({
@@ -24,7 +19,7 @@ function Map() {
       <GoogleMap
       zoom={10}
       center={center}
-      mapContainerStyle={containerStyle}
+      mapContainerClassName={"map-container"}
     ></GoogleMap>
   );
 }
