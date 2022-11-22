@@ -3,6 +3,7 @@ import { Button, tabScrollButtonClasses } from "@mui/material";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
 import { url } from "../../config/global.js"
+import "../../styles/master.scss";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   return (
@@ -106,40 +107,48 @@ export default function PlateView({ handleView, view, addItem }) {
   };
 
   return (
-    <div>
+    <div class="mainBody">
       <h1>{getTitle()}</h1>
-      <div>
+      <div class="center many">
         <h4>Sides</h4>
-        <div>
-          <SelectButtons items={sideData} handleSelect={handleSideSelect} />
-        </div>
       </div>
+      <div class="center many">
+        <SelectButtons items={sideData} handleSelect={handleSideSelect} />
+      </div>
+      <div class="center many">
       <EntreeSelection
         entreeData={entreeData}
         handleEntreeSelect={handleEntreeSelect}
       />
+      </div>
+      <div class="center many">
       {view >= 2 && (
         <EntreeSelection
           entreeData={entreeData2}
           handleEntreeSelect={handleEntreeSelect2}
         />
       )}
+      </div>
+      <div class="center many">
       {view >= 3 && (
         <EntreeSelection
           entreeData={entreeData3}
           handleEntreeSelect={handleEntreeSelect3}
         />
       )}
+      </div>
+      <div class="center">
       <Button
-        variant="outlined"
-        color="secondary"
+        class="button del"
         onClick={() => handleView(0)}
       >
         Cancel
       </Button>
-      <Button variant="outlined" color="secondary" onClick={handleAddBtn}>
+      <Button class="button" onClick={handleAddBtn}>
         Add
       </Button>
+      </div>
+      
     </div>
   );
 }

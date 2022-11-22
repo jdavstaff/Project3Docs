@@ -1,4 +1,5 @@
 import SelectButton from "./SelectButton";
+import "../../styles/master.scss";
 
 export default function SelectButtons({ items, handleSelect }) {
   return (
