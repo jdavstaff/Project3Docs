@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { useUserInfo } from "../../contexts/UserContext";
 import Header from "../../components/Header";
 import OrderView from "../view/OrderView";
 import Mapper from "../../components/Map/MapComponent";
@@ -10,7 +11,7 @@ export default function Customer() {
     <div>
       <Header name={"customer"} />
       <OrderView user={"customer"} />
-      <Mapper/>
+      <Mapper />
     </div>
   );
 }
