@@ -15,11 +15,13 @@ import { url } from "../../config/global";
 import axios from "axios";
 
 export default function Landing() {
-  const [googleIdentityID, setGoogleIdentityID] = useState(null);
-  const [permission, setPermission] = useState(-1);
-
   const userInfo = useUserInfo(); // get user info from global state
   const updateUserInfo = useUserInfoUpdate();
+
+  const [googleIdentityID, setGoogleIdentityID] = useState(null);
+  const [permission, setPermission] = useState(
+    userInfo === null ? -1 : userInfo.permission
+  );
 
   useEffect(() => {
     let options = {
@@ -58,19 +60,21 @@ export default function Landing() {
     <div className="mainBody">
       <Header name={"Landing"} />
 
-      <div id="google">
-        <GoogleOAuthProvider clientId={googleIdentityID}>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              googleSignIn(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </GoogleOAuthProvider>
-      </div>
-      {/* <button onClick={() => console.log(userInfo)}>Click me</button> */}
+      {userInfo === null && (
+        <div id="google">
+          <GoogleOAuthProvider clientId={googleIdentityID}>
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                googleSignIn(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </GoogleOAuthProvider>
+        </div>
+      )}
+
       <div className="landingTri">
         <ButtonGroup
           className="buttonGroup shadow-none"
