@@ -87,6 +87,9 @@ export default function Inventory() {
   // FIXME: backend should add the following item
   const handleAddDialogUpdate = (name, quantity) => {
     console.log("Add item: ", name, quantity);
+    let d = [...data];
+    d.push({ name: name, quantity: quantity });
+    setData(d);
     setAddDialogOpen(false);
   };
   return (
