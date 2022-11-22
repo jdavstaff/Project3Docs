@@ -1,3 +1,4 @@
+import "../../styles/master.scss";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Button from "@mui/material/Button";
@@ -7,6 +8,7 @@ import jwt_decode from 'jwt-decode'
 import { useEffect, useState } from "react";
 import { url } from '../../config/global'
 import axios from 'axios'
+
 
 export default function Landing() {
 
@@ -24,42 +26,27 @@ export default function Landing() {
   }, [])
 
   return (
-    <div>
+    <div className="mainBody">
       <Header name={"Landing"} />
-
-      <div id="google">
-          <GoogleOAuthProvider clientId={googleIdentityID}>
-            <GoogleLogin
-              onSuccess={credentialResponse => {
-                googleSignIn(credentialResponse)
-              }}
-              onError={() => {
-                console.log('Login Failed');
-              }}
-            />
-          </GoogleOAuthProvider>
-        </div>
-
-      <div>
-        <ButtonGroup
+      <div className="landingTri">
+        <ButtonGroup className="buttonGroup shadow-none"
           variant="contained"
-          aria-label="outlined primary button group"
-        >
+          aria-label="outlined primary button group">
           <Link to="/manager">
-            <Button>Manager</Button>
+            <Button class="button">Manager</Button>
           </Link>
           <Link to="/cashier">
-            <Button>Cashier</Button>
+            <Button class="button" >Cashier</Button>
           </Link>
           <Link to="/driver">
-            <Button>Driver</Button>
+            <Button class="button" >Driver</Button>
           </Link>
         </ButtonGroup>
-        <div>
-          <Link to="/customer">
-            <Button variant="contained">Customer</Button>
-          </Link>
-        </div>
+      </div>
+      <div className="landingTri">
+        <Link to="/customer">
+          <Button variant="contained" class="button">Customer</Button>
+        </Link>
       </div>
     </div>
   );

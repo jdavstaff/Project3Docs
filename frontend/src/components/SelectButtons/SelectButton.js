@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-
+import Button from "@mui/material/Button";
+import "../../styles/master.scss";
 export default function SelectButton({ item, handleSelect }) {
   const btnVariant = item.selected ? "contained" : "outlined";
 
@@ -8,7 +8,7 @@ export default function SelectButton({ item, handleSelect }) {
   };
 
   return (
-    <Button onClick={handleClick} variant={btnVariant}>
+    <Button class="button foodSel" onClick={handleClick} variant={btnVariant}>
       {item.name}
     </Button>
   );
