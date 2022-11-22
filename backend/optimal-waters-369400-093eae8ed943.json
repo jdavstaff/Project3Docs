@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "optimal-waters-369400",
+  "private_key_id": "093eae8ed943b363909197030ba245505abc3ecb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC6ZL94Rg/0PXb0\nzca9X0b2ikUVJRQZkAgWxBU75R7gEoSmuswropSDy9CmB/mbifKysPD+M1X/b0oD\ngh+15hDPAN2xSFceSbsCDvSNghNvO5mmsulmardXmn78277AlUsBZOdhdlbJhwsP\nk5YvpyJc02k+Lg1eT781A0fMdDeH65NbcIpL4sjnEuBSnskTSTOruTA0N1ctC4gW\n9UtG180jZlCtYqiMBdRRPy6LKPkwrXI07jUa6eN6q4MEG4A4j3pwhO0l1QCe6a0/\nV9UMEnzsN3dFTvmhL+w8pyywx+dO305Iua3XsFw58/CMig+fD5c1+RQViAKPbTtp\nMonNfeahAgMBAAECggEAAvD+0VoysNZ3o3nsAFZJ8i9LqIojoMUkTt6p3UklSqDZ\nhCDibVsFErYzTQFxy7sahT3JVHZGgxp0SFf5TIysmHsBefAZLtlNQ2VYGt5nVIap\nYFybq2H0/M5gzA2i20Vn2qYR3YNUGof1kYRRLF/r87DNjP2F+Lu+WdWbIGj3l4mb\nXPLTU2/HBsHVoqLMcGx01bj0mzZg9pKY1HJtIYQKVFBBOHW76biy08qpomDkpP6g\nGRrm5xpkVSda+D5eaI165pyASkRWH25t+7J26D4nM7BVKoL6wyENVauFxXzBX8PW\nNFGyh9rS/HXb62Wc28f8UaheaR1ieeCsLdbZTaP+qQKBgQDuZ6vlRys5odXBtngG\nxyHbn3LhUfdrTseim3MgVUwoPBvN6DLdufVYP1QNB19D5vMy30kRAKUfMDHsHa56\nT5nze6y+CAcBLTNYraKGh58GDhyZG+Re/h8Kpm7D2TG2VIF5zK36uh10WBZXSFX4\n1ypJu4cvzP2y55xlhlcEBZtkeQKBgQDIJmS1nudyGCZsvqL7IjZmaYB4E7VSWSu2\nxT2aRnVPzyVp7tW+GrKlwtBSq7S+plnsj3mNgkXQZfytyFwXZAqMSWQF4I+IlUBH\nUMEXGfIUmv6XnMLqZeOPkVNfxhkbvJtJmdiZzYCLld7ImF3mZNa+4oRGVLMMik/z\nL1Ppakj5aQKBgGrSTwZTxj1zkyjSDqPS1AvpPPtS087kJLVqe8JQFeitTjQLx8br\nzM/2yD1yQTBWqj/wJngU1ufLm4LVpdkuE6gykSsww5q2Wxxv6LPozstSxWOhSMl7\nigMmodjlV83/vWgK2yXOAOahlZkUU1lFZ7BT83Xqnv5rovsmn5SwwnjZAoGAZfhR\nhMqBZfpx0SNKy6GBj6mefw6jaWHuyH4yxV+yMsf5ar/4e5MEgzj+g6/hNORxmfj6\n16KQSP08v5j9ehlI2nIlmGzxE4feqLa2uTtJvz+8B6ghEeR5DFLg5EF710q+3r+X\nv7wYCoV/bDlcVZ34XmXvOBm84t2wn9fz605wAUkCgYBkFtrPoBukqEk9eMD9FRxa\nqjtwEnCv1auIc35twAMEvdhnq3uMOMBxauSYfh4zwIclyOMQlDBCitE8tCYdG3mb\nvNqBqU1SOXA4MJ9ewNSuVcWd5CmqgtKhgRlol62fDgT4sODS//woEbj5WDCSxyRQ\np7jd2ebeBFTw+BOmTnnYlQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "translate-acount@optimal-waters-369400.iam.gserviceaccount.com",
+  "client_id": "105795052277638515379",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/translate-acount%40optimal-waters-369400.iam.gserviceaccount.com"
+}
