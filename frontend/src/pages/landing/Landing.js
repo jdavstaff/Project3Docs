@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useUserInfo, useUserInfoUpdate } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Button from "@mui/material/Button";
@@ -15,7 +16,9 @@ import axios from "axios";
 export default function Landing() {
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(-1);
-  const [userInfo, setUserInfo] = useState({});
+
+  const userInfo = useUserInfo(); // get user info from global state
+  const updateUserInfo = useUserInfoUpdate();
 
   useEffect(() => {
     let options = {
@@ -45,7 +48,7 @@ export default function Landing() {
       console.log(message);
       console.log(p);
       setPermission(p);
-      setUserInfo({ name: name, email: email, permission: permission });
+      updateUserInfo({ name: name, email: email, permission: p });
       // probably want to save permission somewhere and also probably want to move this stuff to its own page
     });
   }
@@ -66,6 +69,7 @@ export default function Landing() {
           />
         </GoogleOAuthProvider>
       </div>
+      <button onClick={() => console.log(userInfo)}>Click me</button>
       <div>
         <ButtonGroup
           variant="contained"

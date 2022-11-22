@@ -8,31 +8,37 @@ import Manager from "./pages/manager/Manager";
 import Customer from "./pages/customer/Customer";
 import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
+import { UserInfoProvider } from "./contexts/UserContext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/cashier" element={<Cashier />} />
-        <Route path="/driver" element={<Driver />} />
-        <Route path="/manager" element={<Manager />} />
-        <Route path="/customer" element={<Customer />} />
-        <Route path="/cashier/plate" element={<PlateView user={"cashier"} />} />
-        <Route
-          path="/customer/plate"
-          element={<PlateView user={"customer"} />}
-        />
-        <Route
-          path="/customer/checkout"
-          element={<Checkout user={"Customer"} />}
-        />
-        <Route
-          path="/cashier/checkout"
-          element={<Checkout user={"Cashier"} />}
-        />
-      </Routes>
-    </Router>
+    <UserInfoProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/cashier" element={<Cashier />} />
+          <Route path="/driver" element={<Driver />} />
+          <Route path="/manager" element={<Manager />} />
+          <Route path="/customer" element={<Customer />} />
+          <Route
+            path="/cashier/plate"
+            element={<PlateView user={"cashier"} />}
+          />
+          <Route
+            path="/customer/plate"
+            element={<PlateView user={"customer"} />}
+          />
+          <Route
+            path="/customer/checkout"
+            element={<Checkout user={"Customer"} />}
+          />
+          <Route
+            path="/cashier/checkout"
+            element={<Checkout user={"Cashier"} />}
+          />
+        </Routes>
+      </Router>
+    </UserInfoProvider>
   );
 }
 
