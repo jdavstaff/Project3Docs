@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const { Pool } = require("pg");
+const { response } = require("express");
 const { Translate } = require("@google-cloud/translate").v2;
 
 dotenv.config({ path: "./.env" });
@@ -83,6 +84,35 @@ app.get("/inventory", (req, response) => {
     response.json({ rows: res.rows });
   });
 });
+
+app.get("/addInventory", (req, response) => {
+  let name = req.query.name;
+  let quantity = req.query.quantity;
+  pool.query(`INSERT INTO INVENTORY(NAME, QUANTITY) VALUES ($1, $2)`, [name, quantity], 
+    (err, res) => {
+      if (err) {
+        console.log(err);
+        response.json({ err: err });
+        return;
+      }
+      response.json({ rows: res.rows });
+    }
+  );
+})
+
+app.get("/getInvID", (req, response) => {
+  let name = req.query.name;
+  pool.query(`SELECT INGREDIENT_ID FROM INVENTORY WHERE NAME=$1`, [name],
+    (err, res) => {
+      if (err) {
+        console.log(err);
+        response.json({ err: err });
+        return;
+      }
+      console.log(res);
+      response.json({ rows: res.rows });
+    })
+})
 
 app.get("/itemIngredients", (req, response) => {
   pool.query(

@@ -87,8 +87,32 @@ export default function Inventory() {
   // FIXME: backend should add the following item
   const handleAddDialogUpdate = (name, quantity) => {
     console.log("Add item: ", name, quantity);
-    setAddDialogOpen(false);
+
+    const options = {
+      method: "GET",
+      url: `${url}/addInventory`,
+      params: { name: name, quantity: quantity },
+    };
+
+    axios.request(options).then((res) => {
+      const options2 = {
+        method: "GET",
+        url: `${url}/getInvID`,
+        params: { name: name }, 
+      }
+
+      axios.request(options2).then((res2) => {
+        console.log(res2.data.rows[0]);
+        let d = [...data];
+        d.push({ name: name, quantity: quantity, ingredient_id: res2.data.rows[0].ingredient_id });
+        setData(d);
+        setAddDialogOpen(false);
+      });
+
+    });
+
   };
+
   return (
     <div class="center">
       <TableContainer sx={{ maxHeight: 340 }} component={Paper}>
