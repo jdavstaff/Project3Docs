@@ -5,6 +5,8 @@ import axios from "axios";
 import { url } from "../../config/global.js";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
+import { translateComponents } from "../../config/translate";
+
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -153,6 +155,9 @@ export default function PlateView({ handleView, view, addItem }) {
           Add
         </Button>
       </div>
+
+    <button onClick={translateComponents}>translate</button>
+
     </div>
   );
 }

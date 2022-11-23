@@ -15,11 +15,13 @@ import { url } from "../../config/global";
 import axios from "axios";
 
 export default function Landing() {
-  const [googleIdentityID, setGoogleIdentityID] = useState(null);
-  const [permission, setPermission] = useState(-1);
-
   const userInfo = useUserInfo(); // get user info from global state
   const updateUserInfo = useUserInfoUpdate();
+
+  const [googleIdentityID, setGoogleIdentityID] = useState(null);
+  const [permission, setPermission] = useState(
+    userInfo === null ? -1 : userInfo.permission
+  );
 
   useEffect(() => {
     let options = {
@@ -70,19 +72,41 @@ export default function Landing() {
       <Header name={"Landing"} />
       <div style={content} className="content">
         <div>
-          <div id="google" style={googleStyle}>
-            <GoogleOAuthProvider clientId={googleIdentityID}>
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  googleSignIn(credentialResponse);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-            </GoogleOAuthProvider>
-          </div>
-          {/* <button onClick={() => console.log(userInfo)}>Click me</button> */}
+          
+
+      {userInfo === null && (
+        <div id="google" style={googleStyle}>
+          <GoogleOAuthProvider clientId={googleIdentityID}>
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                googleSignIn(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </GoogleOAuthProvider>
+        </div>
+      )}
+
+      <div className="landingTri">
+        <ButtonGroup
+          className="buttonGroup shadow-none"
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          {permission >= 2 && (
+            <Link to="/manager">
+              <Button class="button">Manager</Button>
+            </Link>
+          )}
+          {permission >= 1 && (
+            <Link to="/cashier">
+              <Button class="button">Cashier</Button>
+            </Link>
+          )}
+        </ButtonGroup>
+        {permission >= 0 && (
           <div className="landingTri">
             <div style={content}>
               {permission >= 2 && (
