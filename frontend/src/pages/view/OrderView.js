@@ -104,7 +104,7 @@ export default function OrderView({ user }) {
           </Button>
         </div>
 
-    <button onClick={translateComponents}>translate</button>
+    <Button variant="outlined" onClick={translateComponents}>translate</Button>
 
       </div>
     );

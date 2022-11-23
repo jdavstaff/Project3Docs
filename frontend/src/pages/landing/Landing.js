@@ -71,63 +71,45 @@ export default function Landing() {
     <div className="mainBody">
       <Header name={"Landing"} />
       <div style={content} className="content">
-        <div>
-          
+        {userInfo === null && (
+          <div id="google" style={googleStyle}>
+            <GoogleOAuthProvider clientId={googleIdentityID}>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  googleSignIn(credentialResponse);
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </GoogleOAuthProvider>
+          </div>
+        )}
 
-      {userInfo === null && (
-        <div id="google" style={googleStyle}>
-          <GoogleOAuthProvider clientId={googleIdentityID}>
-            <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                googleSignIn(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-          </GoogleOAuthProvider>
-        </div>
-      )}
-
-      <div className="landingTri">
-        <ButtonGroup
-          className="buttonGroup shadow-none"
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          {permission >= 2 && (
-            <Link to="/manager">
-              <Button class="button">Manager</Button>
-            </Link>
-          )}
-          {permission >= 1 && (
-            <Link to="/cashier">
-              <Button class="button">Cashier</Button>
-            </Link>
-          )}
-        </ButtonGroup>
-        {permission >= 0 && (
-          <div className="landingTri">
-            <div style={content}>
-              {permission >= 2 && (
-                <Link to="/manager">
-                  <Button variant="contained">Manager</Button>
-                </Link>
-              )}
-              {permission >= 1 && (
-                <Link to="/cashier">
-                  <Button variant="contained">Cashier</Button>
-                </Link>
+        <div className="landingTri">
+          {permission >= 0 && (
+            <div className="landingTri">
+              <div style={content}>
+                {permission >= 2 && (
+                  <Link to="/manager">
+                    <Button variant="contained">Manager</Button>
+                  </Link>
+                )}
+                {permission >= 1 && (
+                  <Link to="/cashier">
+                    <Button variant="contained">Cashier</Button>
+                  </Link>
+                )}
+              </div>
+              {permission >= 0 && (
+                <div className="landingTri" style={content}>
+                  <Link to="/customer">
+                    <Button variant="contained">Customer</Button>
+                  </Link>
+                </div>
               )}
             </div>
-            {permission >= 0 && (
-              <div className="landingTri" style={content}>
-                <Link to="/customer">
-                  <Button variant="contained">Customer</Button>
-                </Link>
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>
