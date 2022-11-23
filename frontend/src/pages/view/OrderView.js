@@ -1,18 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
+
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem"
+
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 import { translateComponents } from "../../config/translate";
+import axios from 'axios'
+import { url } from "../../config/global.js";
 
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
   const [summaryData, setSummaryData] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [currLang, setCurrLang] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get all available languages on page load
+    let options = {
+      method: "GET",
+      url: `${url}/languages`
+    }
+
+    let langs;
+
+    axios.request(options).then((res) => {
+      langs = res.data;
+      // The last 3 languages are repeats for some reason
+      setLanguages(langs.slice(0, langs.length - 3));
+    })
+  }, []);
 
   const addItem = (size, item) => {
     let summaryItem = {
@@ -31,6 +57,10 @@ export default function OrderView({ user }) {
   const handleBtnClick = (v) => {
     setView(v);
   };
+
+  const handleLanguageChange = (event) => {
+    setCurrLang(event.target.value)
+  }
 
   // function translate(element) {
   //   let children = element.childNodes
@@ -104,7 +134,24 @@ export default function OrderView({ user }) {
           </Button>
         </div>
 
-    <Button variant="outlined" onClick={translateComponents}>translate</Button>
+    <Button variant="outlined" onClick={() => {translateComponents(currLang)}}>translate</Button>
+    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <InputLabel id="lang-select-label">
+        Languages
+      </InputLabel>
+      <Select 
+        value={currLang}
+        onChange={handleLanguageChange}
+        label="Languages"
+        labelId="lang-select-label"
+      >
+        {languages.map((langInfo) => (
+          <MenuItem key={langInfo.code} value={langInfo.code}>
+            {langInfo.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
       </div>
     );
