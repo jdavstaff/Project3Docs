@@ -37,9 +37,8 @@ app.listen(PORT, () => console.log("Server on PORT: " + PORT));
 
 // Request to translate a phrase
 app.get("/translate", async (req, res) => {
-  let target = "es" // Default to spanish for now
+  let target = req.query.target // Default to spanish for now
   let [translations] = await TRANSLATE.translate(req.query.text, target);
-  console.log(`Translation: ${translations}`); // Print for debugging
   res.send(translations);
 })
 

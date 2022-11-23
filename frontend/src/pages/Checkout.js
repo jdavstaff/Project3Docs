@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Summary from "../components/Summary/Summary";
 import axios from "axios";
 import { url } from '../config/global'
+import { translateComponents } from "../config/translate";
 
 export default function Checkout({ user }) {
   const location = useLocation();
@@ -51,6 +52,8 @@ export default function Checkout({ user }) {
           </Button>
         </Link>
       </div>
+    <button onClick={translateComponents}>translate</button>
+      
     </div>
   );
 }

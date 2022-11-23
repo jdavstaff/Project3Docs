@@ -14,4 +14,6 @@ export default function Customer() {
       <Mapper />
     </div>
   );
+
+  
 }
