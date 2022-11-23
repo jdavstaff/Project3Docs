@@ -54,47 +54,57 @@ export default function Landing() {
     });
   }
 
+  const content = {
+    display: "flex",
+    justifyContent: "center",
+    // backgroundColor: "red",
+    marginBottom: "15px",
+  };
+
+  const googleStyle = {
+    marginBottom: "30px",
+  };
+
   return (
     <div className="mainBody">
       <Header name={"Landing"} />
-
-      <div id="google">
-        <GoogleOAuthProvider clientId={googleIdentityID}>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              googleSignIn(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </GoogleOAuthProvider>
-      </div>
-      {/* <button onClick={() => console.log(userInfo)}>Click me</button> */}
-      <div className="landingTri">
-        <ButtonGroup
-          className="buttonGroup shadow-none"
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          {permission >= 2 && (
-            <Link to="/manager">
-              <Button>Manager</Button>
-            </Link>
-          )}
-          {permission >= 1 && (
-            <Link to="/cashier">
-              <Button>Cashier</Button>
-            </Link>
-          )}
-        </ButtonGroup>
-        {permission >= 0 && (
-          <div className="landingTri">
-            <Link to="/customer">
-              <Button variant="contained">Customer</Button>
-            </Link>
+      <div style={content} className="content">
+        <div>
+          <div id="google" style={googleStyle}>
+            <GoogleOAuthProvider clientId={googleIdentityID}>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  googleSignIn(credentialResponse);
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </GoogleOAuthProvider>
           </div>
-        )}
+          {/* <button onClick={() => console.log(userInfo)}>Click me</button> */}
+          <div className="landingTri">
+            <div style={content}>
+              {permission >= 2 && (
+                <Link to="/manager">
+                  <Button variant="contained">Manager</Button>
+                </Link>
+              )}
+              {permission >= 1 && (
+                <Link to="/cashier">
+                  <Button variant="contained">Cashier</Button>
+                </Link>
+              )}
+            </div>
+            {permission >= 0 && (
+              <div className="landingTri" style={content}>
+                <Link to="/customer">
+                  <Button variant="contained">Customer</Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

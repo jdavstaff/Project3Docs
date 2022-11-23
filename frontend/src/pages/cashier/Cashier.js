@@ -8,7 +8,9 @@ export default function Cashier() {
   return (
     <div>
       <Header name={"cashier"} />
-      <OrderView user={"cashier"} />
+      <div className="content">
+        <OrderView user={"cashier"} />
+      </div>
     </div>
   );
 }

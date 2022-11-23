@@ -7,8 +7,11 @@ import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
+  const secStyle = {
+    margin: "40px 0",
+  };
   return (
-    <div>
+    <div style={secStyle}>
       <h4>Entrees</h4>
       <div>
         <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
@@ -107,22 +110,28 @@ export default function PlateView({ handleView, view, addItem }) {
     addItem(getTitle(), selectedItems);
   };
 
+  const sectionStyle = {
+    margin: "30x 0",
+  };
+
   return (
-    <div class="mainBody">
+    <div className="centerContent">
       <h1>{getTitle()}</h1>
-      <div class="center many">
-        <h4>Sides</h4>
+      <div style={sectionStyle}>
+        <div>
+          <h4>Sides</h4>
+        </div>
+        <div>
+          <SelectButtons items={sideData} handleSelect={handleSideSelect} />
+        </div>
       </div>
-      <div class="center many">
-        <SelectButtons items={sideData} handleSelect={handleSideSelect} />
-      </div>
-      <div class="center many">
+      <div>
         <EntreeSelection
           entreeData={entreeData}
           handleEntreeSelect={handleEntreeSelect}
         />
       </div>
-      <div class="center many">
+      <div>
         {view >= 2 && (
           <EntreeSelection
             entreeData={entreeData2}
@@ -130,7 +139,7 @@ export default function PlateView({ handleView, view, addItem }) {
           />
         )}
       </div>
-      <div class="center many">
+      <div>
         {view >= 3 && (
           <EntreeSelection
             entreeData={entreeData3}
@@ -138,7 +147,7 @@ export default function PlateView({ handleView, view, addItem }) {
           />
         )}
       </div>
-      <div class="center">
+      <div className="bottomButtonBar">
         <OutlinedButton onClick={() => handleView(0)}>Cancel</OutlinedButton>
         <Button variant="contained" onClick={handleAddBtn}>
           Add

@@ -21,3 +21,13 @@ a:active {
 body {
   background-color: #e8e8e8;
 }
+
+.content {
+  margin: 0 40px;
+}
+
+.bottomButtonBar {
+  display: flex;
+  justify-content: space-between;
+  width: 80vw;
+}

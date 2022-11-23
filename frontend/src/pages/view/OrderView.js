@@ -58,7 +58,7 @@ export default function OrderView({ user }) {
         <div>
           <Summary data={summaryData} />
         </div>
-        <div class="center">
+        <div class="bottomButtonBar">
           <Link to="/">
             <OutlinedButton variant="outlined">Back</OutlinedButton>
           </Link>
