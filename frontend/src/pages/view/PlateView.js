@@ -156,7 +156,7 @@ export default function PlateView({ handleView, view, addItem }) {
         </Button>
       </div>
 
-    <button onClick={translateComponents}>translate</button>
+    <Button variant="outlined" onClick={translateComponents}>translate</Button>
 
     </div>
   );
