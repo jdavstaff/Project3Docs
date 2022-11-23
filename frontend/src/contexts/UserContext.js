@@ -12,7 +12,7 @@ export function useUserInfoUpdate() {
 }
 
 export function UserInfoProvider({ children }) {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(null);
 
   function updateUserInfo(info) {
     setUserInfo(info);
