@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
+import { OutlinedButton } from "../../styles/StyledButtons";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
@@ -59,7 +60,7 @@ export default function OrderView({ user }) {
         </div>
         <div class="center">
           <Link to="/">
-            <Button variant="outlined">Back</Button>
+            <OutlinedButton variant="outlined">Back</OutlinedButton>
           </Link>
           <Button variant="contained" onClick={toCheckout}>
             CHECKOUT

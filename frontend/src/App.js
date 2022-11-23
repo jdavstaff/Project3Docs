@@ -10,13 +10,15 @@ import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { green } from "@mui/material/colors";
 
 function App() {
   const theme = createTheme({
     palette: {
       primary: {
         main: "#003077",
+      },
+      secondary: {
+        main: "#373737",
       },
     },
   });

@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import "../../styles/master.scss";
+import { StyledSelectedButton } from "../../styles/StyledButtons";
 export default function SelectButton({ item, handleSelect }) {
   const btnVariant = item.selected ? "contained" : "outlined";
 
@@ -8,8 +8,8 @@ export default function SelectButton({ item, handleSelect }) {
   };
 
   return (
-    <Button class="button foodSel" onClick={handleClick} variant={btnVariant}>
+    <StyledSelectedButton selected={item.selected} onClick={handleClick}>
       {item.name}
-    </Button>
+    </StyledSelectedButton>
   );
 }
