@@ -10,8 +10,11 @@ export default function Customer() {
   return (
     <div>
       <Header name={"customer"} />
-      <OrderView user={"customer"} />
-      <Mapper />
+      <div className="content">
+        <OrderView user={"customer"} />
+        <Mapper />
+      </div>
+
     </div>
   );
 

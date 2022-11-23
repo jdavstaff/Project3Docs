@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import { Button, tabScrollButtonClasses } from "@mui/material";
+import { Button } from "@mui/material";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
-import { url } from "../../config/global.js"
+import { url } from "../../config/global.js";
 import "../../styles/master.scss";
+import { OutlinedButton } from "../../styles/StyledButtons";
 import { translateComponents } from "../../config/translate";
 
+
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
+  const secStyle = {
+    margin: "40px 0",
+  };
   return (
-    <div>
+    <div style={secStyle}>
       <h4>Entrees</h4>
       <div>
         <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
@@ -33,28 +38,28 @@ export default function PlateView({ handleView, view, addItem }) {
   };
 
   function extractGroups(rows, num) {
-    let groups = {Entree: [], Side: []}
+    let groups = { Entree: [], Side: [] };
     rows.forEach((el) => {
-      let item = Object.assign({}, el)
-      item.key = item.id + num*1000
-      groups[item.category].push(item)
-    })
+      let item = Object.assign({}, el);
+      item.key = item.id + num * 1000;
+      groups[item.category].push(item);
+    });
     return groups;
   }
 
   useEffect(() => {
     // FIXME: AXIOS call to get entree and side data
     let options = {
-      method: 'GET',
-      url: `${url}/items`
-    }
+      method: "GET",
+      url: `${url}/items`,
+    };
     axios.request(options).then((res) => {
-      let data = res.data.rows
-      setSideData(extractGroups(data, 0).Side)
-      setEntreeData(extractGroups(data, 0).Entree)
-      setEntreeData2(extractGroups(data, 1).Entree)
-      setEntreeData3(extractGroups(data, 2).Entree)
-    })
+      let data = res.data.rows;
+      setSideData(extractGroups(data, 0).Side);
+      setEntreeData(extractGroups(data, 0).Entree);
+      setEntreeData2(extractGroups(data, 1).Entree);
+      setEntreeData3(extractGroups(data, 2).Entree);
+    });
     // [ {string name, int id,}]
   }, []);
 
@@ -107,50 +112,52 @@ export default function PlateView({ handleView, view, addItem }) {
     addItem(getTitle(), selectedItems);
   };
 
+  const sectionStyle = {
+    margin: "30x 0",
+  };
+
   return (
-    <div class="mainBody">
+    <div className="centerContent">
       <h1>{getTitle()}</h1>
-      <div class="center many">
-        <h4>Sides</h4>
+      <div style={sectionStyle}>
+        <div>
+          <h4>Sides</h4>
+        </div>
+        <div>
+          <SelectButtons items={sideData} handleSelect={handleSideSelect} />
+        </div>
       </div>
-      <div class="center many">
-        <SelectButtons items={sideData} handleSelect={handleSideSelect} />
-      </div>
-      <div class="center many">
-      <EntreeSelection
-        entreeData={entreeData}
-        handleEntreeSelect={handleEntreeSelect}
-      />
-      </div>
-      <div class="center many">
-      {view >= 2 && (
+      <div>
         <EntreeSelection
-          entreeData={entreeData2}
-          handleEntreeSelect={handleEntreeSelect2}
+          entreeData={entreeData}
+          handleEntreeSelect={handleEntreeSelect}
         />
-      )}
       </div>
-      <div class="center many">
-      {view >= 3 && (
-        <EntreeSelection
-          entreeData={entreeData3}
-          handleEntreeSelect={handleEntreeSelect3}
-        />
-      )}
+      <div>
+        {view >= 2 && (
+          <EntreeSelection
+            entreeData={entreeData2}
+            handleEntreeSelect={handleEntreeSelect2}
+          />
+        )}
       </div>
-      <div class="center">
-      <Button
-        class="button del"
-        onClick={() => handleView(0)}
-      >
-        Cancel
-      </Button>
-      <Button class="button" onClick={handleAddBtn}>
-        Add
-      </Button>
+      <div>
+        {view >= 3 && (
+          <EntreeSelection
+            entreeData={entreeData3}
+            handleEntreeSelect={handleEntreeSelect3}
+          />
+        )}
       </div>
+      <div className="bottomButtonBar">
+        <OutlinedButton onClick={() => handleView(0)}>Cancel</OutlinedButton>
+        <Button variant="contained" onClick={handleAddBtn}>
+          Add
+        </Button>
+      </div>
+
     <button onClick={translateComponents}>translate</button>
-      
+
     </div>
   );
 }
