@@ -4,6 +4,7 @@ import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
 import { url } from "../../config/global.js"
 import "../../styles/master.scss";
+import { translateComponents } from "../../config/translate";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   return (
@@ -148,6 +149,7 @@ export default function PlateView({ handleView, view, addItem }) {
         Add
       </Button>
       </div>
+    <button onClick={translateComponents}>translate</button>
       
     </div>
   );

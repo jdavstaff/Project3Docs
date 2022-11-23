@@ -4,6 +4,8 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
+import { translateComponents } from "../../config/translate";
+
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
@@ -28,6 +30,41 @@ export default function OrderView({ user }) {
   const handleBtnClick = (v) => {
     setView(v);
   };
+
+  // function translate(element) {
+  //   let children = element.childNodes
+  //   if(children.length == 0)
+  //     return
+
+
+  //   for(let i=0; i<children.length; i++) {
+  //     // console.log(`node: ${children[i].nodeType}\ntext: ${children[i].data}`)
+
+  //     if(children[i].data && children[i].nodeType === 3) {
+  //       let options = {
+  //         method: 'GET',
+  //         url: `${url}/translate`,
+  //         params: {
+  //           text: children[i].data,
+  //           target: "es"
+  //         }
+  //       }
+  //       axios.request(options).then((res) => {
+  //         console.log(`before: ${children[i].data}\nafter: ${res.data}`)
+  //         children[i].data = res.data
+  //       })
+  //     }
+  //     translate(children[i])
+  //   }
+
+    
+  // }
+
+  // function translateComponents() {
+  //   let root = document.querySelector('div')
+  //   translate(root)
+    
+  // }
 
   if (view === 0) {
     return (
@@ -65,6 +102,8 @@ export default function OrderView({ user }) {
           CHECKOUT
         </Button>
         </div>
+
+    <button onClick={translateComponents}>translate</button>
         
       </div>
     );
@@ -77,6 +116,7 @@ export default function OrderView({ user }) {
           view={view}
           addItem={addItem}
         />
+
       </div>
     );
   }
