@@ -21,6 +21,9 @@ function App() {
       secondary: {
         main: "#373737",
       },
+      info: {
+        main: "#F3F3F3",
+      },
     },
   });
 
