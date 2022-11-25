@@ -24,11 +24,11 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
-  const convertLanguageNames = () => {
-    let langList = [...languages];
+  const convertLanguageNames = (langs) => {
+    let langList = [...langs];
     var langsProcessed = 0;
 
-    languages.forEach((element, index) => {
+    langs.forEach((element, index) => {
       // Make the languages written in their own language
       let options = {
         method: 'GET',
@@ -44,12 +44,10 @@ export default function OrderView({ user }) {
         langList[index].name = res.data;
 
         langsProcessed++;
-        console.log("Languages processed: ", langsProcessed);
 
         if (langsProcessed === langList.length) {
-          console.log(langList);
-          
-          setLanguages(langList);
+          // The last 3 languages are repeats for some reason
+          setLanguages(langList.slice(0, langList.length - 3));
         }
       })
 
@@ -64,16 +62,8 @@ export default function OrderView({ user }) {
       url: `${url}/languages`
     }
 
-    let langs;
-
     axios.request(options).then((res) => {
-      langs = res.data;
-
-      // The last 3 languages are repeats for some reason
-      setLanguages(langs.slice(0, langs.length - 3));
-
-      convertLanguageNames();
-
+      convertLanguageNames(res.data);
     })
   }, []);
 
