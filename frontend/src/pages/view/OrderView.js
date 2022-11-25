@@ -24,6 +24,39 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
+  const convertLanguageNames = () => {
+    let langList = [...languages];
+    var langsProcessed = 0;
+
+    languages.forEach((element, index) => {
+      // Make the languages written in their own language
+      let options = {
+        method: 'GET',
+        url: `${url}/translate`,
+        params: {
+          text: element.name,
+          target: element.code
+        }
+      }
+
+      axios.request(options).then((res) => {
+        // Set the name to the translated value
+        langList[index].name = res.data;
+
+        langsProcessed++;
+        console.log("Languages processed: ", langsProcessed);
+
+        if (langsProcessed === langList.length) {
+          console.log(langList);
+          
+          setLanguages(langList);
+        }
+      })
+
+    })
+
+  }
+
   useEffect(() => {
     // Get all available languages on page load
     let options = {
@@ -35,8 +68,12 @@ export default function OrderView({ user }) {
 
     axios.request(options).then((res) => {
       langs = res.data;
+
       // The last 3 languages are repeats for some reason
       setLanguages(langs.slice(0, langs.length - 3));
+
+      convertLanguageNames();
+
     })
   }, []);
 
@@ -60,6 +97,10 @@ export default function OrderView({ user }) {
 
   const handleLanguageChange = (event) => {
     setCurrLang(event.target.value)
+  }
+
+  const handleTranslate = () => {
+    translateComponents(currLang);
   }
 
   // function translate(element) {
@@ -134,7 +175,7 @@ export default function OrderView({ user }) {
           </Button>
         </div>
 
-    <Button variant="outlined" onClick={() => {translateComponents(currLang)}}>translate</Button>
+    <Button variant="outlined" onClick={handleTranslate}>translate</Button>
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
       <InputLabel id="lang-select-label">
         Languages
