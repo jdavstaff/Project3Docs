@@ -1,6 +1,7 @@
 import "./styles/App.scss";
 import "./App.css";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/landing/Landing";
 import Cashier from "./pages/cashier/Cashier";
@@ -11,10 +12,26 @@ import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { indigo, yellow } from "@mui/material/colors";
 
 function App() {
   const theme = createTheme({
     palette: {
+      // primary: {
+      //   light: "#534bae",
+      //   main: "#1a237e",
+      //   dark: "#000051",
+      //   contrastText: "#fff",
+      // },
+      // secondary: {
+      //   light: "#ffd95a",
+      //   main: "#f9a825",
+      //   dark: "#c17900",
+      //   contrastText: "#000",
+      // },
+      background: {
+        default: "#dbdbdb",
+      },
       primary: {
         main: "#003077",
       },
@@ -30,6 +47,7 @@ function App() {
   return (
     <UserInfoProvider>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
