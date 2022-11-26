@@ -98,24 +98,26 @@ export default function Inventory() {
       const options2 = {
         method: "GET",
         url: `${url}/getInvID`,
-        params: { name: name }, 
-      }
+        params: { name: name },
+      };
 
       axios.request(options2).then((res2) => {
         console.log(res2.data.rows[0]);
         let d = [...data];
-        d.push({ name: name, quantity: quantity, ingredient_id: res2.data.rows[0].ingredient_id });
+        d.push({
+          name: name,
+          quantity: quantity,
+          ingredient_id: res2.data.rows[0].ingredient_id,
+        });
         setData(d);
         setAddDialogOpen(false);
       });
-
     });
-
   };
 
   return (
     <div class="center">
-      <TableContainer sx={{ maxHeight: 340 }} component={Paper}>
+      <TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>

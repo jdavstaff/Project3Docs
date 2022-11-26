@@ -129,7 +129,7 @@ export default function MyMenu() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>

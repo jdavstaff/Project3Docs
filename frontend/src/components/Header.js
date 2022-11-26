@@ -1,13 +1,36 @@
 import GTranslateIcon from "@mui/icons-material/GTranslate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
+import { useUserInfo } from "../contexts/UserContext";
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [languages, setLanguages] = useState([]);
   const open = Boolean(anchorEl);
+
+  const userInfo = useUserInfo();
+
+  useEffect(() => {
+    let lang = [
+      "english",
+      "spanish",
+      "german",
+      "french",
+      "a",
+      "b",
+      "c",
+      "korean",
+    ];
+
+    // FIXME: should get list of languages from API
+
+    console.log(lang);
+    setLanguages(lang);
+  }, []);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -15,6 +38,10 @@ export default function Header({ name }) {
     setAnchorEl(null);
   };
 
+  const onSelectLanguage = (language) => {
+    console.log("Translate page to ", language);
+    handleClose();
+  };
   const headerStyle = {
     textAlign: "center",
     backgroundColor: "#F3F3F3",
@@ -58,15 +85,19 @@ export default function Header({ name }) {
               },
             }}
           >
-            <MenuItem onClick={handleClose}>English</MenuItem>
-            <MenuItem onClick={handleClose}>Spanish</MenuItem>
-            <MenuItem onClick={handleClose}>German</MenuItem>
+            {languages.map((lang) => (
+              <MenuItem onClick={() => onSelectLanguage(lang)}>{lang}</MenuItem>
+            ))}
           </Menu>
-          <Tooltip title="Profile">
-            <IconButton>
-              <Avatar sx={{ bgcolor: deepPurple[500] }}>S</Avatar>
-            </IconButton>
-          </Tooltip>
+          {userInfo && (
+            <Tooltip title="Profile">
+              <IconButton>
+                <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                  {userInfo.name.first.charAt(0)}
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+          )}
         </Stack>
       </Grid>
     </Grid>
