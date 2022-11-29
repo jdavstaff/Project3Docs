@@ -2,7 +2,7 @@
 import { url } from './global'
 import axios from 'axios'
 
-function translate(element) {
+function translate(element, langCode) {
     let children = element.childNodes
     if(children.length == 0)
       return
@@ -15,19 +15,19 @@ function translate(element) {
           url: `${url}/translate`,
           params: {
             text: children[i].data,
-            target: "es"
+            target: langCode
           }
         }
         axios.request(options).then((res) => {
           children[i].data = res.data
         })
       }
-      translate(children[i])
+      translate(children[i], langCode)
     }
   }
 
-  export function translateComponents() {
+  export function translateComponents(langCode) {
     let root = document.querySelector('div')
-    translate(root)
+    translate(root, langCode)
   }
 

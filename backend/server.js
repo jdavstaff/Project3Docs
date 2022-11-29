@@ -43,6 +43,12 @@ app.get("/translate", async (req, res) => {
   res.send(translations);
 })
 
+// Request for available languages
+app.get("/languages", async (req, res) => {
+  const [languages] = await TRANSLATE.getLanguages();
+  res.send(languages);
+})
+
 app.get("/orders", (req, response) => {});
 
 app.get("/googleIdentity", (req, response) => {
