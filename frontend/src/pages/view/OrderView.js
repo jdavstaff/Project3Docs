@@ -7,7 +7,6 @@ import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 import { translateComponents } from "../../config/translate";
 
-
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
   const [summaryData, setSummaryData] = useState([]);
@@ -37,7 +36,6 @@ export default function OrderView({ user }) {
   //   if(children.length == 0)
   //     return
 
-
   //   for(let i=0; i<children.length; i++) {
   //     // console.log(`node: ${children[i].nodeType}\ntext: ${children[i].data}`)
 
@@ -58,13 +56,12 @@ export default function OrderView({ user }) {
   //     translate(children[i])
   //   }
 
-    
   // }
 
   // function translateComponents() {
   //   let root = document.querySelector('div')
   //   translate(root)
-    
+
   // }
 
   if (view === 0) {
@@ -84,28 +81,23 @@ export default function OrderView({ user }) {
             </Button>
           </div>
         </div>
-        {/*
-        <div>
-          <h3>Extra:</h3>
-          <div>
-            <Button variant="outlined">Appetizer</Button>
-          </div>
-        </div>
-        */}
         <div>
           <Summary data={summaryData} />
         </div>
         <div class="bottomButtonBar">
           <Link to="/">
-            <OutlinedButton variant="outlined">Back</OutlinedButton>
+            <Button variant="outlined" color="secondary">
+              Back
+            </Button>
           </Link>
           <Button variant="contained" onClick={toCheckout}>
             CHECKOUT
           </Button>
         </div>
 
-    <Button variant="outlined" onClick={translateComponents}>translate</Button>
-
+        <Button variant="outlined" onClick={translateComponents}>
+          translate
+        </Button>
       </div>
     );
   } else {
@@ -117,7 +109,6 @@ export default function OrderView({ user }) {
           view={view}
           addItem={addItem}
         />
-
       </div>
     );
   }

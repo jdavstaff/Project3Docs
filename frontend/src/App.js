@@ -12,23 +12,10 @@ import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { indigo, yellow } from "@mui/material/colors";
 
 function App() {
   const theme = createTheme({
     palette: {
-      // primary: {
-      //   light: "#534bae",
-      //   main: "#1a237e",
-      //   dark: "#000051",
-      //   contrastText: "#fff",
-      // },
-      // secondary: {
-      //   light: "#ffd95a",
-      //   main: "#f9a825",
-      //   dark: "#c17900",
-      //   contrastText: "#000",
-      // },
       background: {
         default: "#dbdbdb",
       },
