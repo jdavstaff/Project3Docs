@@ -15,6 +15,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { url } from "../../config/global";
 import axios from "axios";
+import { Button } from "@mui/material";
+import MyMenuDialog from "./MyMenuDialog";
 
 function createData(name, id, price, type, ingredients) {
   return { name, id, price, type, ingredients: [...ingredients] };
@@ -76,6 +78,15 @@ function Row({ row, handleDelete }) {
 
 export default function MyMenu() {
   const [data, setData] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   // FIXME: delete int id from database
   function handleDelete(id) {
@@ -129,24 +140,30 @@ export default function MyMenu() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Id</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="center">Edit</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <Row key={row.id} row={row} handleDelete={handleDelete} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Id</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Type</TableCell>
+              <TableCell align="center">Edit</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((row) => (
+              <Row key={row.id} row={row} handleDelete={handleDelete} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="contained" onClick={handleOpen}>
+        Add Item
+      </Button>
+      <MyMenuDialog open={openDialog} onClose={handleClose} />
+    </div>
   );
 }
