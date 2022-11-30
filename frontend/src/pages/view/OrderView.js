@@ -1,63 +1,20 @@
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem"
-
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
-import { OutlinedButton } from "../../styles/StyledButtons";
-import { translateComponents } from "../../config/translate";
-import axios from 'axios'
-import { url, langEnglish } from "../../config/global.js";
+// import axios from 'axios'
+// import { url } from "../../config/global.js";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
   const [summaryData, setSummaryData] = useState([]);
-  const [languages, setLanguages] = useState([]);
-  const [currLang, setCurrLang] = useState("");
 
   const navigate = useNavigate();
 
-  const convertLanguageNames = (langs) => {
-    let langList = [...langs];
-    var langsProcessed = 0;
-
-    langs.forEach((element, index) => {
-      // Make the languages written in their own language
-      let options = {
-        method: 'GET',
-        url: `${url}/translate`,
-        params: {
-          text: element.name,
-          target: element.code
-        }
-      }
-
-      axios.request(options).then((res) => {
-        // Set the name to the translated value
-        langList[index].name = res.data;
-
-        langsProcessed++;
-
-        if (langsProcessed === langList.length) {
-          // The last 3 languages are repeats for some reason
-          setLanguages(langList);
-        }
-      })
-
-    })
-
-  }
 
   useEffect(() => {
-    
-    setLanguages(langEnglish);
-    convertLanguageNames(langEnglish);
 
   }, []);
 
@@ -79,46 +36,6 @@ export default function OrderView({ user }) {
     setView(v);
   };
 
-  const handleLanguageChange = (event) => {
-    setCurrLang(event.target.value)
-  }
-
-  const handleTranslate = () => {
-    translateComponents(currLang);
-  }
-
-  // function translate(element) {
-  //   let children = element.childNodes
-  //   if(children.length == 0)
-  //     return
-
-  //   for(let i=0; i<children.length; i++) {
-  //     // console.log(`node: ${children[i].nodeType}\ntext: ${children[i].data}`)
-
-  //     if(children[i].data && children[i].nodeType === 3) {
-  //       let options = {
-  //         method: 'GET',
-  //         url: `${url}/translate`,
-  //         params: {
-  //           text: children[i].data,
-  //           target: "es"
-  //         }
-  //       }
-  //       axios.request(options).then((res) => {
-  //         console.log(`before: ${children[i].data}\nafter: ${res.data}`)
-  //         children[i].data = res.data
-  //       })
-  //     }
-  //     translate(children[i])
-  //   }
-
-  // }
-
-  // function translateComponents() {
-  //   let root = document.querySelector('div')
-  //   translate(root)
-
-  // }
 
   if (view === 0) {
     return (
@@ -150,26 +67,6 @@ export default function OrderView({ user }) {
             CHECKOUT
           </Button>
         </div>
-
-
-    <Button variant="outlined" onClick={handleTranslate}>translate</Button>
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="lang-select-label">
-        Languages
-      </InputLabel>
-      <Select 
-        value={currLang}
-        onChange={handleLanguageChange}
-        label="Languages"
-        labelId="lang-select-label"
-      >
-        {languages.map((langInfo) => (
-          <MenuItem key={langInfo.code} value={langInfo.code}>
-            {langInfo.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
 
       </div>
     );

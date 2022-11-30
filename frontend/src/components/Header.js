@@ -5,6 +5,8 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo } from "../contexts/UserContext";
+import { langEnglish } from "../config/global.js"
+import { translateComponents } from "../config/translate";
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -14,21 +16,7 @@ export default function Header({ name }) {
   const userInfo = useUserInfo();
 
   useEffect(() => {
-    let lang = [
-      "english",
-      "spanish",
-      "german",
-      "french",
-      "a",
-      "b",
-      "c",
-      "korean",
-    ];
-
-    // FIXME: should get list of languages from API
-
-    console.log(lang);
-    setLanguages(lang);
+    setLanguages(langEnglish);
   }, []);
 
   const handleClick = (event) => {
@@ -40,6 +28,7 @@ export default function Header({ name }) {
 
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
+    translateComponents(language);
     handleClose();
   };
   const headerStyle = {
@@ -85,8 +74,10 @@ export default function Header({ name }) {
               },
             }}
           >
-            {languages.map((lang) => (
-              <MenuItem onClick={() => onSelectLanguage(lang)}>{lang}</MenuItem>
+            {languages.map((langInfo) => (
+              <MenuItem onClick={() => onSelectLanguage(langInfo.code)}>
+                {langInfo.name}
+              </MenuItem>
             ))}
           </Menu>
           {userInfo && (

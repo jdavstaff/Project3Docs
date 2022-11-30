@@ -1,18 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem"
-
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
 import { url } from "../../config/global.js";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
-import { translateComponents } from "../../config/translate";
-
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -36,13 +28,10 @@ export default function PlateView({ handleView, view, addItem }) {
   const [entreeData2, setEntreeData2] = useState([]);
   const [entreeData3, setEntreeData3] = useState([]);
 
-  const [languages, setLanguages] = useState([]);
-  const [currLang, setCurrLang] = useState("");
-
   const getTitle = () => {
-    if (view == 1) return "Bowl";
-    else if (view == 2) return "Plate";
-    else if (view == 3) return "Bigger Plate";
+    if (view === 1) return "Bowl";
+    else if (view === 2) return "Plate";
+    else if (view === 3) return "Bigger Plate";
     else return "Error";
   };
 
@@ -56,36 +45,6 @@ export default function PlateView({ handleView, view, addItem }) {
     return groups;
   }
 
-  const convertLanguageNames = (langs) => {
-    let langList = [...langs];
-    var langsProcessed = 0;
-
-    langs.forEach((element, index) => {
-      // Make the languages written in their own language
-      let options = {
-        method: 'GET',
-        url: `${url}/translate`,
-        params: {
-          text: element.name,
-          target: element.code
-        }
-      }
-
-      axios.request(options).then((res) => {
-        // Set the name to the translated value
-        langList[index].name = res.data;
-
-        langsProcessed++;
-
-        if (langsProcessed === langList.length) {
-          // The last 3 languages are repeats for some reason
-          setLanguages(langList.slice(0, langList.length - 3));
-        }
-      })
-
-    })
-
-  }
 
   useEffect(() => {
     // FIXME: AXIOS call to get entree and side data
@@ -101,15 +60,6 @@ export default function PlateView({ handleView, view, addItem }) {
       setEntreeData3(extractGroups(data, 2).Entree);
     });
 
-    // Get all available languages on page load
-    options = {
-      method: "GET",
-      url: `${url}/languages`
-    }
-
-    axios.request(options).then((res) => {
-      convertLanguageNames(res.data);
-    })
     // [ {string name, int id,}]
   }, []);
 
@@ -162,14 +112,6 @@ export default function PlateView({ handleView, view, addItem }) {
     addItem(getTitle(), selectedItems);
   };
 
-  const handleLanguageChange = (event) => {
-    setCurrLang(event.target.value)
-  }
-
-  const handleTranslate = () => {
-    translateComponents(currLang);
-  }
-
   const sectionStyle = {
     margin: "30x 0",
   };
@@ -213,25 +155,6 @@ export default function PlateView({ handleView, view, addItem }) {
           Add
         </Button>
       </div>
-
-      <Button variant="outlined" onClick={handleTranslate}>translate</Button>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="lang-select-label">
-          Languages
-        </InputLabel>
-        <Select 
-          value={currLang}
-          onChange={handleLanguageChange}
-          label="Languages"
-          labelId="lang-select-label"
-        >
-          {languages.map((langInfo) => (
-            <MenuItem key={langInfo.code} value={langInfo.code}>
-              {langInfo.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
     </div>
   );
