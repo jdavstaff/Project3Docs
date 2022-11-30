@@ -13,7 +13,7 @@ import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 import { translateComponents } from "../../config/translate";
 import axios from 'axios'
-import { url } from "../../config/global.js";
+import { url, langEnglish } from "../../config/global.js";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
@@ -46,7 +46,7 @@ export default function OrderView({ user }) {
 
         if (langsProcessed === langList.length) {
           // The last 3 languages are repeats for some reason
-          setLanguages(langList.slice(0, langList.length - 3));
+          setLanguages(langList);
         }
       })
 
@@ -55,15 +55,10 @@ export default function OrderView({ user }) {
   }
 
   useEffect(() => {
-    // Get all available languages on page load
-    let options = {
-      method: "GET",
-      url: `${url}/languages`
-    }
+    
+    setLanguages(langEnglish);
+    convertLanguageNames(langEnglish);
 
-    axios.request(options).then((res) => {
-      convertLanguageNames(res.data);
-    })
   }, []);
 
   const addItem = (size, item) => {
