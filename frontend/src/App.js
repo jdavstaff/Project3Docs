@@ -1,6 +1,7 @@
 import "./styles/App.scss";
 import "./App.css";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/landing/Landing";
 import Cashier from "./pages/cashier/Cashier";
@@ -15,11 +16,17 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 function App() {
   const theme = createTheme({
     palette: {
+      background: {
+        default: "#dbdbdb",
+      },
       primary: {
         main: "#003077",
       },
       secondary: {
         main: "#373737",
+      },
+      info: {
+        main: "#F3F3F3",
       },
     },
   });
@@ -27,6 +34,7 @@ function App() {
   return (
     <UserInfoProvider>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />

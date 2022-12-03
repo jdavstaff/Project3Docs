@@ -8,6 +8,8 @@ import MyMenu from "./MyMenu";
 import Reports from "./Reports";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
+import AppBar from "@mui/material/AppBar";
+
 export default function Driver() {
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (e, newTabVal) => {
@@ -34,16 +36,27 @@ export default function Driver() {
     );
   }
 
+  const tabStyle = {
+    boxShadow: "none",
+  };
+
   return (
     <div>
       <Header name={"manager"} />
       <div className="content">
-        <Box sx={{ width: "100%" }}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Inventory" />
-            <Tab label="Menu" />
-            <Tab label="Reports" />
-          </Tabs>
+        <Box sx={{ width: "100%", marginTop: "-25px" }}>
+          <AppBar position="static" color="info" style={tabStyle}>
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              textColor="primary"
+              variant="fullWidth"
+            >
+              <Tab label="Inventory" />
+              <Tab label="Menu" />
+              <Tab label="Reports" />
+            </Tabs>
+          </AppBar>
           <TabPanel value={tabValue} index={0}>
             <Inventory />
           </TabPanel>
