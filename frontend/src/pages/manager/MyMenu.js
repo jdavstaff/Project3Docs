@@ -149,8 +149,9 @@ export default function MyMenu() {
   }, []);
 
   return (
+
     <div>
-      <TableContainer component={Paper}>
+     <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
@@ -177,5 +178,6 @@ export default function MyMenu() {
         onAddMenuItem={addMenuItem}
       />
     </div>
+
   );
 }
