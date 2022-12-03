@@ -9,10 +9,13 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {
   Autocomplete,
+  Box,
   Chip,
   CircularProgress,
   IconButton,
   InputAdornment,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
@@ -31,14 +34,18 @@ const dummyData = [
   { name: "yohoo", id: 5 },
 ];
 
-export default function MyMenuDialog({ open, onClose }) {
+export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [name, setName] = useState("");
+  const [price, setPrice] = useState(0.0);
+  const [type, setType] = useState("");
   const [quantity, setQuantity] = useState(10);
   const [ingredients, setIngredients] = useState([]);
   const [openIngrList, setOpenIngrList] = useState(false);
   const [currIngr, setCurrIngr] = useState(null); // keep track of ingredient in auto complete box
   const [selectedIngrs, setSelectedIngrs] = useState([]);
   const [count, setCount] = useState(0);
+  const [alignment, setAlignment] = useState("Appetizer");
+  const [error, setError] = useState(false);
   const loading = openIngrList && ingredients.length === 0;
 
   useEffect(() => {
@@ -66,17 +73,44 @@ export default function MyMenuDialog({ open, onClose }) {
   const handleQuantityChange = (e) => {
     if (isNaN(e.target.value)) return;
     setQuantity(e.target.value);
-    // let newVal = e.target.value;
-    // if (isNaN(newVal)) return;
-    // setQuantity(newVal);
+  };
+
+  const handlePriceChange = (e) => {
+    if (isNaN(e.target.value)) return;
+    setPrice(e.target.value);
+  };
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
   };
 
   const handleClose = () => {
+    setName("");
+    setQuantity(10);
+    setCurrIngr(null);
+    setSelectedIngrs([]);
+    setCount(0);
+
     onClose();
   };
 
   const handleAdd = () => {
     console.log("adding...");
+    let existingIngrs = [];
+    let newIngrs = [];
+
+    selectedIngrs.forEach((ingr) => {
+      if (ingr.id < 0) newIngrs.push(ingr);
+      else existingIngrs.push(ingr);
+    });
+
+    console.log(name); // name of menu item
+    console.log(existingIngrs); // [] of ingredients already in db
+    console.log(newIngrs); // [] of ingredients that need to be added to db
+    console.log(type); // string: 'appetizer' / 'entree' / 'dessert'
+
+    onAddMenuItem(name, selectedIngrs, type);
+    handleClose();
   };
 
   const handleDeleteSelectedIngr = (ingrToDelete) => {
@@ -98,7 +132,7 @@ export default function MyMenuDialog({ open, onClose }) {
     }
 
     if (!selectedIngrs.includes(newIngr)) {
-      newIngr["quantity"] = quantity;
+      newIngr["amount"] = quantity;
       console.log(newIngr);
       setSelectedIngrs([...selectedIngrs, newIngr]);
     }
@@ -123,6 +157,37 @@ export default function MyMenuDialog({ open, onClose }) {
             value={name}
             onChange={handleNameChange}
           />
+
+          <Stack direction="row" spacing={3} alignItems="center">
+            <TextField
+              variant="outlined"
+              label="price"
+              value={price}
+              onChange={handlePriceChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
+              }}
+            />
+            <ToggleButtonGroup
+              value={alignment}
+              exclusive
+              onChange={handleAlignment}
+              aria-label="drink type"
+              color="primary"
+            >
+              <ToggleButton value="Appetizer">
+                <Box sx={{ fontWeight: "bold" }}>Appetizer</Box>
+              </ToggleButton>
+              <ToggleButton value="Entree">
+                <Box sx={{ fontWeight: "bold" }}>Entree</Box>
+              </ToggleButton>
+              <ToggleButton value="Dessert">
+                <Box sx={{ fontWeight: "bold" }}>Dessert</Box>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             <TextField
               variant="outlined"
@@ -178,7 +243,7 @@ export default function MyMenuDialog({ open, onClose }) {
             {selectedIngrs.map((ingr) => (
               <Chip
                 key={ingr.id}
-                label={`${ingr.quantity} oz ${ingr.name}`}
+                label={`${ingr.amount} oz ${ingr.name}`}
                 onDelete={() => handleDeleteSelectedIngr(ingr)}
               />
             ))}
@@ -187,8 +252,7 @@ export default function MyMenuDialog({ open, onClose }) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => console.log(currIngr)}>Cancel</Button>
-        <Button variant="contained" onClick={handleAdd}>
+        <Button variant="contained" onClick={handleAdd} disabled={error}>
           Add
         </Button>
       </DialogActions>

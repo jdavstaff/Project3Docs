@@ -44,7 +44,6 @@ function Row({ row, handleDelete }) {
         <TableCell component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell align="right">{row.id}</TableCell>
         <TableCell align="right">{row.price}</TableCell>
         <TableCell align="right">{row.type}</TableCell>
         <TableCell align="center">
@@ -96,6 +95,7 @@ export default function MyMenu() {
     setData(data.filter((d) => d.id !== id));
   }
 
+  const addMenuItem = (newName, newIngredients, newType) => {};
   useEffect(() => {
     let options = {
       method: "GET",
@@ -147,7 +147,6 @@ export default function MyMenu() {
             <TableRow>
               <TableCell />
               <TableCell>Name</TableCell>
-              <TableCell align="right">Id</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Type</TableCell>
               <TableCell align="center">Edit</TableCell>
