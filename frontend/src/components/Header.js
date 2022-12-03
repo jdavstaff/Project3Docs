@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
 import { langEnglish } from "../config/global.js";
 import { translateComponents } from "../config/translate";
+import { Link } from "react-router-dom";
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -115,7 +116,9 @@ export default function Header({ name }) {
                   "aria-labelledby": "profile-button",
                 }}
               >
-                <MenuItem onClick={onLogout}>Logout</MenuItem>
+                <Link to="/">
+                  <MenuItem onClick={onLogout}>Logout</MenuItem>
+                </Link>
               </Menu>
             </>
           )}
