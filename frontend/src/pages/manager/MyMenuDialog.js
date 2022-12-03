@@ -16,6 +16,8 @@ import {
   InputAdornment,
   ToggleButtonGroup,
   ToggleButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
@@ -44,7 +46,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [currIngr, setCurrIngr] = useState(null); // keep track of ingredient in auto complete box
   const [selectedIngrs, setSelectedIngrs] = useState([]);
   const [count, setCount] = useState(0);
-  const [alignment, setAlignment] = useState("Appetizer");
+  const [alignment, setAlignment] = useState("Entree");
   const [error, setError] = useState(false);
   const loading = openIngrList && ingredients.length === 0;
 
@@ -94,8 +96,15 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     onClose();
   };
 
+  const handleErrorClose = () => setError(false);
+
   const handleAdd = () => {
-    console.log("adding...");
+    console.log("SELECTED INGRS", selectedIngrs);
+    if (name === "" || selectedIngrs.length === 0) {
+      setError(true);
+      return;
+    }
+
     let existingIngrs = [];
     let newIngrs = [];
 
@@ -140,122 +149,131 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      keepMounted
-      fullWidth
-      maxWidth="sm"
-    >
-      <DialogTitle>Add Menu Item</DialogTitle>
-      <DialogContent dividers>
-        <Stack spacing={3}>
-          <TextField
-            id="outlined-basic"
-            label="Name"
-            variant="outlined"
-            value={name}
-            onChange={handleNameChange}
-          />
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        keepMounted
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Add Menu Item</DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={3}>
+            <TextField
+              id="outlined-basic"
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={handleNameChange}
+            />
 
-          <Stack direction="row" spacing={3} alignItems="center">
-            <TextField
-              variant="outlined"
-              label="price"
-              value={price}
-              onChange={handlePriceChange}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              }}
-            />
-            <ToggleButtonGroup
-              value={alignment}
-              exclusive
-              onChange={handleAlignment}
-              aria-label="drink type"
-              color="primary"
-            >
-              <ToggleButton value="Appetizer">
-                <Box sx={{ fontWeight: "bold" }}>Appetizer</Box>
-              </ToggleButton>
-              <ToggleButton value="Entree">
-                <Box sx={{ fontWeight: "bold" }}>Entree</Box>
-              </ToggleButton>
-              <ToggleButton value="Dessert">
-                <Box sx={{ fontWeight: "bold" }}>Dessert</Box>
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Stack>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <TextField
-              variant="outlined"
-              label="quantity"
-              value={quantity}
-              onChange={handleQuantityChange}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">oz</InputAdornment>
-                ),
-              }}
-            />
-            <Autocomplete
-              id="choose-ingredients"
-              fullWidth
-              open={openIngrList}
-              onOpen={() => {
-                setOpenIngrList(true);
-              }}
-              onClose={() => {
-                setOpenIngrList(false);
-              }}
-              isOptionEqualToValue={(option, value) =>
-                option.name === value.name
-              }
-              getOptionLabel={(option) => option.name}
-              options={ingredients}
-              loading={loading}
-              autoHighlight
-              value={currIngr}
-              onChange={handleAddIngr}
-              freeSolo
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Ingredients"
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <React.Fragment>
-                        {loading ? (
-                          <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                      </React.Fragment>
-                    ),
-                  }}
-                />
-              )}
-            />
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            {selectedIngrs.map((ingr) => (
-              <Chip
-                key={ingr.id}
-                label={`${ingr.amount} oz ${ingr.name}`}
-                onDelete={() => handleDeleteSelectedIngr(ingr)}
+            <Stack direction="row" spacing={3} alignItems="center">
+              <TextField
+                variant="outlined"
+                label="price"
+                value={price}
+                onChange={handlePriceChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
               />
-            ))}
+              <ToggleButtonGroup
+                value={alignment}
+                exclusive
+                onChange={handleAlignment}
+                aria-label="drink type"
+                color="primary"
+              >
+                <ToggleButton value="Appetizer">
+                  <Box sx={{ fontWeight: "bold" }}>Appetizer</Box>
+                </ToggleButton>
+                <ToggleButton value="Entree">
+                  <Box sx={{ fontWeight: "bold" }}>Entree</Box>
+                </ToggleButton>
+                <ToggleButton value="Dessert">
+                  <Box sx={{ fontWeight: "bold" }}>Dessert</Box>
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <TextField
+                variant="outlined"
+                label="quantity"
+                value={quantity}
+                onChange={handleQuantityChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">oz</InputAdornment>
+                  ),
+                }}
+              />
+              <Autocomplete
+                id="choose-ingredients"
+                fullWidth
+                open={openIngrList}
+                onOpen={() => {
+                  setOpenIngrList(true);
+                }}
+                onClose={() => {
+                  setOpenIngrList(false);
+                }}
+                isOptionEqualToValue={(option, value) =>
+                  option.name === value.name
+                }
+                getOptionLabel={(option) => option.name}
+                options={ingredients}
+                loading={loading}
+                autoHighlight
+                value={currIngr}
+                onChange={handleAddIngr}
+                freeSolo
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Ingredients"
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <React.Fragment>
+                          {loading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </React.Fragment>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              {selectedIngrs.map((ingr) => (
+                <Chip
+                  key={ingr.id}
+                  label={`${ingr.amount} oz ${ingr.name}`}
+                  onDelete={() => handleDeleteSelectedIngr(ingr)}
+                />
+              ))}
+            </Stack>
           </Stack>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleAdd} disabled={error}>
-          Add
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="contained" onClick={handleAdd} disabled={error}>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar open={error} autoHideDuration={6000} onClose={handleErrorClose}>
+        <Alert severity="error">
+          Please make sure to fill out all the fields, including name, and
+          ingredients
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
