@@ -95,7 +95,16 @@ export default function MyMenu() {
     setData(data.filter((d) => d.id !== id));
   }
 
-  const addMenuItem = (newName, newIngredients, newType) => {};
+  const addMenuItem = (newName, newIngredients, newPrice, newType) => {
+    console.log("ADDING...");
+    console.log(newName);
+    console.log(newIngredients);
+    console.log(newType);
+
+    let d = createData(newName, -1, newPrice, newType, newIngredients);
+    setData([...data, d]);
+  };
+
   useEffect(() => {
     let options = {
       method: "GET",
@@ -162,7 +171,11 @@ export default function MyMenu() {
       <Button variant="contained" onClick={handleOpen}>
         Add Item
       </Button>
-      <MyMenuDialog open={openDialog} onClose={handleClose} />
+      <MyMenuDialog
+        open={openDialog}
+        onClose={handleClose}
+        onAddMenuItem={addMenuItem}
+      />
     </div>
   );
 }

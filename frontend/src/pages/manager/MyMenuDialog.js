@@ -39,14 +39,13 @@ const dummyData = [
 export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0.0);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("Entree");
   const [quantity, setQuantity] = useState(10);
   const [ingredients, setIngredients] = useState([]);
   const [openIngrList, setOpenIngrList] = useState(false);
   const [currIngr, setCurrIngr] = useState(null); // keep track of ingredient in auto complete box
   const [selectedIngrs, setSelectedIngrs] = useState([]);
   const [count, setCount] = useState(0);
-  const [alignment, setAlignment] = useState("Entree");
   const [error, setError] = useState(false);
   const loading = openIngrList && ingredients.length === 0;
 
@@ -82,8 +81,9 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     setPrice(e.target.value);
   };
 
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleType = (event, newType) => {
+    console.log("new type", newType);
+    setType(newType);
   };
 
   const handleClose = () => {
@@ -99,7 +99,6 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const handleErrorClose = () => setError(false);
 
   const handleAdd = () => {
-    console.log("SELECTED INGRS", selectedIngrs);
     if (name === "" || selectedIngrs.length === 0) {
       setError(true);
       return;
@@ -116,9 +115,10 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     console.log(name); // name of menu item
     console.log(existingIngrs); // [] of ingredients already in db
     console.log(newIngrs); // [] of ingredients that need to be added to db
-    console.log(type); // string: 'appetizer' / 'entree' / 'dessert'
+    console.log(price); // price
+    console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
 
-    onAddMenuItem(name, selectedIngrs, type);
+    onAddMenuItem(name, selectedIngrs, price, type);
     handleClose();
   };
 
@@ -181,9 +181,9 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 }}
               />
               <ToggleButtonGroup
-                value={alignment}
+                value={type}
                 exclusive
-                onChange={handleAlignment}
+                onChange={handleType}
                 aria-label="drink type"
                 color="primary"
               >
