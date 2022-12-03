@@ -28,7 +28,6 @@ export default function MyMenuDialog({ open, onClose }) {
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [openIngrList, setOpenIngrList] = useState(false);
-  const [currIngr, setCurrIngr] = useState(null); // keep track of ingredient in auto complete box
   const [selectedIngrs, setSelectedIngrs] = useState([]);
   const loading = openIngrList && ingredients.length === 0;
 
@@ -58,16 +57,43 @@ export default function MyMenuDialog({ open, onClose }) {
     onClose();
   };
 
+  // FIXME: database should update menu item
   const handleAdd = () => {
+    let existingIngredients = [];
+    let newIngredients = [];
+
+    selectedIngrs.forEach((ingr) => {
+      if (ingr.id === -1) newIngredients.push(ingr);
+      else existingIngredients.push(ingr);
+    });
+
+    console.log("Name: ", name); // name of menu item
+    console.log("existing ingredients", existingIngredients); // add ingredients that already exist in database
+    console.log("new ingredients", newIngredients); // create ingredients in database, then add to menu item
+
     console.log("adding...");
   };
 
-  const handleDeleteSelectedIngr = (ingrToDelete) => {
-    console.log("deleting", ingrToDelete);
-    setSelectedIngrs((ingredients) =>
-      ingredients.filter((i) => ingrToDelete.id !== i.id)
-    );
+  const addIngr = (newArray) => {
+    let newVal = newArray[newArray.length - 1];
+
+    if (typeof newVal === "string") {
+      newVal = { name: newVal, id: -1 };
+    }
+
+    if (newVal !== null && !selectedIngrs.includes(newVal)) {
+      setSelectedIngrs([...selectedIngrs, newVal]);
+    }
   };
+
+  const handleIngrChange = (e, newArray) => {
+    if (newArray.length > selectedIngrs.length) {
+      addIngr(newArray);
+    } else {
+      setSelectedIngrs(newArray);
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -86,33 +112,27 @@ export default function MyMenuDialog({ open, onClose }) {
             value={name}
             onChange={handleNameChange}
           />
-          <Autocomplete
-            id="choose-ingredients"
-            open={openIngrList}
-            onOpen={() => {
-              setOpenIngrList(true);
-            }}
-            onClose={() => {
-              setOpenIngrList(false);
-            }}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            getOptionLabel={(option) => option.name}
-            options={ingredients}
-            loading={loading}
-            autoHighlight
-            value={currIngr}
-            onChange={(e, newVal) => {
-              console.log(newVal);
 
-              if (newVal !== null && !selectedIngrs.includes(newVal)) {
-                setSelectedIngrs([...selectedIngrs, newVal]);
-              }
-              setCurrIngr(newVal);
-            }}
+          <Autocomplete
+            multiple
+            variant="outlined"
+            id="tags-filled"
+            open={openIngrList}
+            onOpen={() => setOpenIngrList(true)}
+            onClose={() => setOpenIngrList(false)}
+            onChange={handleIngrChange}
+            value={selectedIngrs}
+            loading={loading}
+            options={ingredients}
+            getOptionLabel={(option) => option.name}
+            isOptionEqualToValue={(option, value) => option.name === value.name}
+            freeSolo
             renderInput={(params) => (
               <TextField
                 {...params}
+                variant="outlined"
                 label="Ingredients"
+                placeholder="Ingredients"
                 InputProps={{
                   ...params.InputProps,
                   endAdornment: (
@@ -127,20 +147,11 @@ export default function MyMenuDialog({ open, onClose }) {
               />
             )}
           />
-          <Stack direction="row" spacing={1}>
-            {selectedIngrs.map((ingr) => (
-              <Chip
-                key={ingr.id}
-                label={ingr.name}
-                onDelete={() => handleDeleteSelectedIngr(ingr)}
-              />
-            ))}
-          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        {/* <Button onClick={() => console.log(ingredients)}>click em</Button> */}
+        <Button onClick={() => console.log(selectedIngrs)}>click em</Button>
         <Button variant="contained" onClick={handleAdd}>
           Add
         </Button>
