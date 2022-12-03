@@ -74,7 +74,7 @@ export default function MyMenuDialog({ open, onClose }) {
       onClose={handleClose}
       keepMounted
       fullWidth
-      maxWidth="sm"
+      maxWidth="xs"
     >
       <DialogTitle>Add Menu Item</DialogTitle>
       <DialogContent dividers>
@@ -88,7 +88,6 @@ export default function MyMenuDialog({ open, onClose }) {
           />
           <Autocomplete
             id="choose-ingredients"
-            sx={{ width: 300 }}
             open={openIngrList}
             onOpen={() => {
               setOpenIngrList(true);
