@@ -4,16 +4,19 @@ import { Grid, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
-import { useUserInfo } from "../contexts/UserContext";
-import { langEnglish } from "../config/global.js"
+import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
+import { langEnglish } from "../config/global.js";
 import { translateComponents } from "../config/translate";
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const [languages, setLanguages] = useState([]);
   const open = Boolean(anchorEl);
+  const openProfileMenu = Boolean(profileAnchorEl);
 
   const userInfo = useUserInfo();
+  const updateUserInfo = useUserInfoUpdate();
 
   useEffect(() => {
     setLanguages(langEnglish);
@@ -26,10 +29,21 @@ export default function Header({ name }) {
     setAnchorEl(null);
   };
 
+  const handleProfileClick = (e) => {
+    setProfileAnchorEl(e.currentTarget);
+  };
+  const handleProfileClose = () => {
+    setProfileAnchorEl(null);
+  };
+
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
     translateComponents(language);
     handleClose();
+  };
+
+  const onLogout = () => {
+    updateUserInfo(null);
   };
   const headerStyle = {
     textAlign: "center",
@@ -74,20 +88,36 @@ export default function Header({ name }) {
               },
             }}
           >
-            {languages.map((langInfo) => (
-              <MenuItem onClick={() => onSelectLanguage(langInfo.code)}>
+            {languages.map((langInfo, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => onSelectLanguage(langInfo.code)}
+              >
                 {langInfo.name}
               </MenuItem>
             ))}
           </Menu>
           {userInfo && (
-            <Tooltip title="Profile">
-              <IconButton>
-                <Avatar sx={{ bgcolor: deepPurple[500] }}>
-                  {userInfo.name.first.charAt(0)}
-                </Avatar>
-              </IconButton>
-            </Tooltip>
+            <>
+              <Tooltip title="Profile">
+                <IconButton onClick={handleProfileClick}>
+                  <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                    {userInfo.name.first.charAt(0)}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="profile-menu"
+                anchorEl={profileAnchorEl}
+                open={openProfileMenu}
+                onClose={handleProfileClose}
+                MenuListProps={{
+                  "aria-labelledby": "profile-button",
+                }}
+              >
+                <MenuItem onClick={onLogout}>Logout</MenuItem>
+              </Menu>
+            </>
           )}
         </Stack>
       </Grid>
