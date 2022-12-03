@@ -190,6 +190,9 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 <ToggleButton value="Appetizer">
                   <Box sx={{ fontWeight: "bold" }}>Appetizer</Box>
                 </ToggleButton>
+                <ToggleButton value="Side">
+                  <Box sx={{ fontWeight: "bold", minWidth: "8ch" }}>Side</Box>
+                </ToggleButton>
                 <ToggleButton value="Entree">
                   <Box sx={{ fontWeight: "bold" }}>Entree</Box>
                 </ToggleButton>
