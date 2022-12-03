@@ -7,7 +7,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { Autocomplete, Chip, CircularProgress } from "@mui/material";
+import {
+  Autocomplete,
+  Chip,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
 
 // FIXME: should be removed after async stuff gets done
@@ -26,9 +33,12 @@ const dummyData = [
 
 export default function MyMenuDialog({ open, onClose }) {
   const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState(10);
   const [ingredients, setIngredients] = useState([]);
   const [openIngrList, setOpenIngrList] = useState(false);
+  const [currIngr, setCurrIngr] = useState(null); // keep track of ingredient in auto complete box
   const [selectedIngrs, setSelectedIngrs] = useState([]);
+  const [count, setCount] = useState(0);
   const loading = openIngrList && ingredients.length === 0;
 
   useEffect(() => {
@@ -53,45 +63,46 @@ export default function MyMenuDialog({ open, onClose }) {
     setName(e.target.value);
   };
 
+  const handleQuantityChange = (e) => {
+    if (isNaN(e.target.value)) return;
+    setQuantity(e.target.value);
+    // let newVal = e.target.value;
+    // if (isNaN(newVal)) return;
+    // setQuantity(newVal);
+  };
+
   const handleClose = () => {
     onClose();
   };
 
-  // FIXME: database should update menu item
   const handleAdd = () => {
-    let existingIngredients = [];
-    let newIngredients = [];
-
-    selectedIngrs.forEach((ingr) => {
-      if (ingr.id === -1) newIngredients.push(ingr);
-      else existingIngredients.push(ingr);
-    });
-
-    console.log("Name: ", name); // name of menu item
-    console.log("existing ingredients", existingIngredients); // add ingredients that already exist in database
-    console.log("new ingredients", newIngredients); // create ingredients in database, then add to menu item
-
     console.log("adding...");
   };
 
-  const addIngr = (newArray) => {
-    let newVal = newArray[newArray.length - 1];
-
-    if (typeof newVal === "string") {
-      newVal = { name: newVal, id: -1 };
-    }
-
-    if (newVal !== null && !selectedIngrs.includes(newVal)) {
-      setSelectedIngrs([...selectedIngrs, newVal]);
-    }
+  const handleDeleteSelectedIngr = (ingrToDelete) => {
+    console.log("deleting", ingrToDelete);
+    setSelectedIngrs((ingredients) =>
+      ingredients.filter((i) => ingrToDelete.id !== i.id)
+    );
   };
 
-  const handleIngrChange = (e, newArray) => {
-    if (newArray.length > selectedIngrs.length) {
-      addIngr(newArray);
-    } else {
-      setSelectedIngrs(newArray);
+  const handleAddIngr = (e, newVal) => {
+    if (newVal === null) return;
+
+    let newIngr = newVal;
+
+    if (typeof newIngr === "string") {
+      let newId = count - 1;
+      setCount(count - 1);
+      newIngr = { name: newIngr, id: newId };
     }
+
+    if (!selectedIngrs.includes(newIngr)) {
+      newIngr["quantity"] = quantity;
+      console.log(newIngr);
+      setSelectedIngrs([...selectedIngrs, newIngr]);
+    }
+    setCurrIngr({ name: "" });
   };
 
   return (
@@ -100,7 +111,7 @@ export default function MyMenuDialog({ open, onClose }) {
       onClose={handleClose}
       keepMounted
       fullWidth
-      maxWidth="xs"
+      maxWidth="sm"
     >
       <DialogTitle>Add Menu Item</DialogTitle>
       <DialogContent dividers>
@@ -112,46 +123,71 @@ export default function MyMenuDialog({ open, onClose }) {
             value={name}
             onChange={handleNameChange}
           />
-
-          <Autocomplete
-            multiple
-            variant="outlined"
-            id="tags-filled"
-            open={openIngrList}
-            onOpen={() => setOpenIngrList(true)}
-            onClose={() => setOpenIngrList(false)}
-            onChange={handleIngrChange}
-            value={selectedIngrs}
-            loading={loading}
-            options={ingredients}
-            getOptionLabel={(option) => option.name}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            freeSolo
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Ingredients"
-                placeholder="Ingredients"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {loading ? (
-                        <CircularProgress color="inherit" size={20} />
-                      ) : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <TextField
+              variant="outlined"
+              label="quantity"
+              value={quantity}
+              onChange={handleQuantityChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">oz</InputAdornment>
+                ),
+              }}
+            />
+            <Autocomplete
+              id="choose-ingredients"
+              fullWidth
+              open={openIngrList}
+              onOpen={() => {
+                setOpenIngrList(true);
+              }}
+              onClose={() => {
+                setOpenIngrList(false);
+              }}
+              isOptionEqualToValue={(option, value) =>
+                option.name === value.name
+              }
+              getOptionLabel={(option) => option.name}
+              options={ingredients}
+              loading={loading}
+              autoHighlight
+              value={currIngr}
+              onChange={handleAddIngr}
+              freeSolo
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Ingredients"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {loading ? (
+                          <CircularProgress color="inherit" size={20} />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            {selectedIngrs.map((ingr) => (
+              <Chip
+                key={ingr.id}
+                label={`${ingr.quantity} oz ${ingr.name}`}
+                onDelete={() => handleDeleteSelectedIngr(ingr)}
               />
-            )}
-          />
+            ))}
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={() => console.log(selectedIngrs)}>click em</Button>
+        <Button onClick={() => console.log(currIngr)}>Cancel</Button>
         <Button variant="contained" onClick={handleAdd}>
           Add
         </Button>
