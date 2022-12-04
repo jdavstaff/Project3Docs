@@ -426,7 +426,7 @@ app.get("/addMenuItem", (req, response) => {
     console.log("Menu ingredients: ", req.query.ingredients);
 
     ingreds.forEach((ingredient) => {
-      let ingredientMapping = `INSERT INTO ITEM_INGREDIENTS(ITEM_ID, INVENTORY_ID, AMOUNT) VALUES ((SELECT ID FROM ITEM WHERE NAME = '${req.query.name}'), ${ingredient.id}, ${ingredient.amount})`
+      let ingredientMapping = `INSERT INTO ITEM_INGREDIENTS(ITEM_ID, INVENTORY_ID, AMOUNT) VALUES ((SELECT ID FROM ITEM WHERE NAME = '${req.query.name}'), (SELECT INGREDIENT_ID FROM INVENTORY WHERE NAME = '${ingredient.name}'), ${ingredient.amount})`
 
       pool.query(ingredientMapping, (err2, res2) => {
         if (err2) {

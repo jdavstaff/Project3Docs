@@ -115,18 +115,6 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
 
   const handleErrorClose = () => setError(false);
 
-  function getIdForIngredient(ingredient_name) {
-    let options = {
-      method: "GET",
-      url: `${url}/getInvID`,
-      params: { name: ingredient_name }
-    };
-
-    return axios.request(options).then((res) => {
-      return res.data.rows;
-    })
-  }
-
   const handleAdd = () => {
     if (name === "" || selectedIngrs.length === 0) {
       setError(true);
@@ -160,12 +148,32 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
           axios.request(options).then((res) => {
             countIngredAdded++;
 
-            selectedIngrs[index].id = getIdForIngredient(ingr.name);
             console.log("Added ingredient: ", ingr.name, " with ID: ", selectedIngrs[index].id);
 
             // Can continue on
             if (countIngredAdded === newIngrs.length) {
+              console.log(name); // name of menu item
+              console.log(existingIngrs); // [] of ingredients already in db
+              console.log(newIngrs); // [] of ingredients that need to be added to db
+              console.log(price); // price
+              console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
 
+              // Add menu item to database
+              let options2 = {
+                method: "GET",
+                url: `${url}/addMenuItem`,
+                params: {
+                  name: name,
+                  category: type,
+                  price: price,
+                  ingredients: selectedIngrs
+                }
+              };
+
+              axios.request(options2).then((res) => {})
+
+              onAddMenuItem(name, selectedIngrs, price, type);
+              handleClose();
             }
           })
         }
