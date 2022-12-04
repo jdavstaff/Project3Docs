@@ -128,7 +128,7 @@ export default function Inventory() {
           <Stack spacing={2}>
             <TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
               <Table
-                sx={{ minWidth: 650, width: "80vw", maxWidth: "md" }}
+                sx={{ minWidth: "sm", width: "80vw", maxWidth: "md" }}
                 aria-label="inventory table"
               >
                 <TableHead>

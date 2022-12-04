@@ -17,6 +17,7 @@ import { url } from "../../config/global";
 import axios from "axios";
 import { Button, Stack } from "@mui/material";
 import MyMenuDialog from "./MyMenuDialog";
+import { Link } from "react-router-dom";
 
 function createData(name, id, price, type, ingredients) {
   return { name, id, price, type, ingredients: [...ingredients] };
@@ -150,32 +151,39 @@ export default function MyMenu() {
 
   return (
     <div>
-      <Stack spacing={2}>
-        <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-          <Table
-            sx={{ minWidth: 650, width: "80vw", maxWidth: "md" }}
-            aria-label="collapsible table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell>Name</TableCell>
-                <TableCell align="right">Price</TableCell>
-                <TableCell align="right">Type</TableCell>
-                <TableCell align="center">Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row) => (
-                <Row key={row.id} row={row} handleDelete={handleDelete} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Stack direction="row" justifyContent="space-between">
-          <Button variant="contained" onClick={handleOpen}>
-            Add Item
-          </Button>
+      <Stack alignItems="center">
+        <Stack spacing={2}>
+          <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+            <Table
+              sx={{ minWidth: "sm", width: "80vw", maxWidth: "md" }}
+              aria-label="collapsible table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell>Name</TableCell>
+                  <TableCell align="right">Price</TableCell>
+                  <TableCell align="right">Type</TableCell>
+                  <TableCell align="center">Edit</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((row) => (
+                  <Row key={row.id} row={row} handleDelete={handleDelete} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Stack direction="row" justifyContent="space-between">
+            <Link to="/">
+              <Button variant="outlined" color="secondary">
+                Back{" "}
+              </Button>
+            </Link>
+            <Button variant="contained" onClick={handleOpen}>
+              Add Item
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
       <MyMenuDialog
