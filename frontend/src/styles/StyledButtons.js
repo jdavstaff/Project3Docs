@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import MuiButton from "@mui/material/Button";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export const OutlinedButton = styled(MuiButton)(({ theme }) => ({
   color: theme.palette.secondary.main,

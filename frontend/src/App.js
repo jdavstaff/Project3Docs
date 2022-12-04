@@ -28,6 +28,10 @@ function App() {
       info: {
         main: "#F3F3F3",
       },
+      icon: {
+        main: "#D7E7FF",
+        secondary: "#FFD9D9",
+      },
     },
   });
 

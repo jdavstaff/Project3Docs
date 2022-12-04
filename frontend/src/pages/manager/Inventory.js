@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { url } from "../../config/global.js";
+import { Link } from "react-router-dom";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,7 +14,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 import InventoryDialog from "./InventoryDialog.js";
-import { Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -22,6 +24,11 @@ export default function Inventory() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setId] = useState(0);
+
+  const deleteIconStyling = {
+    backgroundColor: "#FFD9D9",
+    borderRadius: "5px",
+  };
 
   useEffect(() => {
     const options = {
@@ -116,44 +123,83 @@ export default function Inventory() {
   };
 
   return (
-    <div class="center">
-      <TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="right">id</TableCell>
-              <TableCell align="right">Quantity</TableCell>
-              <TableCell align="center">Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    <>
+      <Stack alignItems="center">
+        <Box>
+          <Stack spacing={2}>
+            <TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
+              <Table
+                sx={{ minWidth: 650, width: "80vw", maxWidth: "md" }}
+                aria-label="simple table"
               >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.ingredient_id}</TableCell>
-                <TableCell align="right">{row.quantity}</TableCell>
-                <TableCell align="center">
-                  <IconButton onClick={() => handleEdit(row)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(row)}>
-                    <DeleteOutlineIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button variant="outlined" onClick={handleAddDialogOpen}>
-        Add Item
-      </Button>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell align="right">id</TableCell>
+                    <TableCell align="right">Quantity</TableCell>
+                    <TableCell align="center">Edit</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.map((row) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{row.ingredient_id}</TableCell>
+                      <TableCell align="right">{row.quantity}</TableCell>
+                      <TableCell align="center">
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="center"
+                          spacing={1}
+                        >
+                          <IconButton
+                            sx={{
+                              backgroundColor: "#D7E7FF",
+                              borderRadius: "5px",
+                            }}
+                            onClick={() => handleEdit(row)}
+                          >
+                            <DriveFileRenameOutlineIcon
+                              sx={{ color: "black" }}
+                            />
+                          </IconButton>
+                          <IconButton
+                            sx={deleteIconStyling}
+                            onClick={() => handleDelete(row)}
+                          >
+                            <DeleteOutlineIcon
+                              sx={{
+                                color: "#D91111",
+                                backgroundColor: "#FFD9D9",
+                              }}
+                            />
+                          </IconButton>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Stack direction="row" justifyContent="space-between">
+              <Link to="/">
+                <Button variant="outlined" color="secondary">
+                  Back
+                </Button>
+              </Link>
+              <Button variant="contained" onClick={handleAddDialogOpen}>
+                Add Item
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
       <InventoryDialog
         open={dialogOpen}
         onClose={handleDialogClose}
@@ -170,6 +216,6 @@ export default function Inventory() {
         _quantity={0}
         _id={0}
       />
-    </div>
+    </>
   );
 }

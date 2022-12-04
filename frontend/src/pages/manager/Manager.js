@@ -73,9 +73,6 @@ export default function Driver() {
           </TabPanel>
         </Box>
       </div>
-      <Link to="/">
-        <OutlinedButton>Back</OutlinedButton>
-      </Link>
     </div>
   );
 }
