@@ -226,7 +226,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 isOptionEqualToValue={(option, value) =>
                   option.name === value.name
                 }
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => option.name || ""}
                 options={ingredients}
                 loading={loading}
                 autoHighlight
