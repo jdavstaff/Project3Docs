@@ -90,9 +90,20 @@ export default function MyMenu() {
   // FIXME: delete int id from database
   function handleDelete(id) {
     console.log(id);
-    // add here
+    
+    let options = {
+      method: "GET",
+      url: `${url}/deleteMenuItem`,
+      params: {
+        id: id
+      }
+    }
 
-    setData(data.filter((d) => d.id !== id));
+    axios.request(options).then((res) => {
+      setData(data.filter((d) => d.id !== id));
+    })
+
+    //setData(data.filter((d) => d.id !== id));
   }
 
   const addMenuItem = (newName, newIngredients, newPrice, newType) => {

@@ -393,7 +393,7 @@ app.get("/items", (req, response) => {
 // Get the item id for a given menu item
 app.get("/getMenuID", (req, response) => {
   let name = req.query.name;
-  console.log("Requesting ID for: ", name);
+  //console.log("Requesting ID for: ", name);
   pool.query(`SELECT ID FROM ITEM WHERE NAME=$1`, [name], 
     (err, res) => {
       if (err) {
@@ -409,7 +409,7 @@ app.get("/getMenuID", (req, response) => {
 // Add a menu item to the database
 app.get("/addMenuItem", (req, response) => {
   let queryThing = `INSERT INTO ITEM(NAME, CATEGORY, EXTRA_PRICE) VALUES ('${req.query.name}', '${req.query.category}', ${req.query.price})`;
-  console.log(queryThing);
+  //console.log(queryThing);
 
   pool.query(queryThing, (err, res) => {
     if (err) {
@@ -421,10 +421,10 @@ app.get("/addMenuItem", (req, response) => {
 
     let ingreds = req.query.ingredients;
 
-    console.log("Menu name: ", req.query.name);
-    console.log("Menu category: ", req.query.category);
-    console.log("Menu price: ", req.query.price);
-    console.log("Menu ingredients: ", req.query.ingredients);
+    // console.log("Menu name: ", req.query.name);
+    // console.log("Menu category: ", req.query.category);
+    // console.log("Menu price: ", req.query.price);
+    // console.log("Menu ingredients: ", req.query.ingredients);
 
     let ingredientCount = 0;
 
@@ -448,4 +448,30 @@ app.get("/addMenuItem", (req, response) => {
   }
 
   )
+})
+
+app.get("/deleteMenuItem", (req, response) => {
+  let removeConnections = `DELETE FROM ITEM_INGREDIENTS WHERE ITEM_ID = ${req.query.id}`;
+
+  pool.query(removeConnections, (err, res) => {
+    if (err) {
+      console.log(err);
+      response.json({ err: err });
+      return;
+    }
+    //console.log("Deleted all ingredient connections");
+
+    let deleteMenuItem = `DELETE FROM ITEM WHERE ID = ${req.query.id}`
+
+    pool.query(deleteMenuItem, (err2, res2) => {
+      if (err2) {
+        console.log(err2);
+        response.json({ err: err2 });
+        return;
+      }
+
+      //console.log("Deleted menu item");
+      response.json({ rows: res.rows });
+    })
+  })
 })
