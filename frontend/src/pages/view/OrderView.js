@@ -13,11 +13,6 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-
-  }, []);
-
   const addItem = (size, item) => {
     let summaryItem = {
       size: size,
@@ -35,7 +30,6 @@ export default function OrderView({ user }) {
   const handleBtnClick = (v) => {
     setView(v);
   };
-
 
   if (view === 0) {
     return (
@@ -67,7 +61,6 @@ export default function OrderView({ user }) {
             CHECKOUT
           </Button>
         </div>
-
       </div>
     );
   } else {

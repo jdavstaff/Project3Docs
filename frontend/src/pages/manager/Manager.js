@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Inventory from "./Inventory";
 import MyMenu from "./MyMenu";
 import Reports from "./Reports";
+import Access from "./Access";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 import AppBar from "@mui/material/AppBar";
@@ -55,6 +56,7 @@ export default function Driver() {
               <Tab label="Inventory" />
               <Tab label="Menu" />
               <Tab label="Reports" />
+              <Tab label="Access" />
             </Tabs>
           </AppBar>
           <TabPanel value={tabValue} index={0}>
@@ -65,6 +67,9 @@ export default function Driver() {
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
             <Reports />
+          </TabPanel>
+          <TabPanel value={tabValue} index={3}>
+            <Access />
           </TabPanel>
         </Box>
       </div>
