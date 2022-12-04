@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
 import { Box, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
@@ -18,7 +17,8 @@ function createData(name, email, id, permission) {
   return { name, email, id, permission };
 }
 
-const rows = [
+// FIXME: DELETE ME
+const dummyData = [
   createData("Frozen yoghurt", "a@gmail.com", 6.0, 1),
   createData("Ice cream sandwich", "cold@anatartica.com", 9.0, 1),
   createData("Eclair", "warm@tasty.com", 16.0, 1),
@@ -54,16 +54,19 @@ function SelectPermission({ permission, handleChangePerm, id }) {
   const handleCustomer = () => {
     setPermName("customer");
     handleChangePerm(0, id);
+    handleClose();
   };
 
   const handleCashier = () => {
     setPermName("cashier");
     handleChangePerm(1, id);
+    handleClose();
   };
 
   const handleManager = () => {
     setPermName("manager");
     handleChangePerm(2, id);
+    handleClose();
   };
 
   return (
@@ -101,14 +104,20 @@ function SelectPermission({ permission, handleChangePerm, id }) {
 
 export default function Access() {
   const theme = useTheme();
+  const [rows, setRows] = useState([]);
 
   // FIXME: update database to change permission
   const handleChangePerm = (permission, id) => {
     console.log(`update id: ${id} to permission ${permission}`);
   };
+
+  useEffect(() => {
+    setRows([...dummyData]);
+  }, []);
+
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
