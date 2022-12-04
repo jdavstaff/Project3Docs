@@ -25,12 +25,12 @@ import { Stack } from "@mui/system";
 import { url } from "../../config/global.js"
 import axios from "axios";
 
-const dummyData = [
-  { name: "kung pao", id: 1 },
-  { name: "chicken", id: 2 },
-  { name: "friend", id: 3 },
-  { name: "yohoo", id: 5 },
-];
+// const dummyData = [
+//   { name: "kung pao", id: 1 },
+//   { name: "chicken", id: 2 },
+//   { name: "friend", id: 3 },
+//   { name: "yohoo", id: 5 },
+// ];
 
 export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [name, setName] = useState("");
@@ -46,7 +46,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const loading = openIngrList && ingredients.length === 0;
 
   useEffect(() => {
-    let active = true;
+    //let active = true;
 
     if (!loading) return undefined;
 
@@ -74,14 +74,14 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
         setIngredients(ingreds);
       })
 
-      if (active) {
-        setIngredients([...dummyData]);
-      }
+      // if (active) {
+      //   setIngredients([...dummyData]);
+      // }
     })();
 
-    return () => {
-      active = false;
-    };
+    // return () => {
+    //   active = false;
+    // };
   }, [loading]);
 
   const handleNameChange = (e) => {
@@ -115,6 +115,18 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
 
   const handleErrorClose = () => setError(false);
 
+  function getIdForIngredient(ingredient_name) {
+    let options = {
+      method: "GET",
+      url: `${url}/getInvID`,
+      params: { name: ingredient_name }
+    };
+
+    return axios.request(options).then((res) => {
+      return res.data.rows;
+    })
+  }
+
   const handleAdd = () => {
     if (name === "" || selectedIngrs.length === 0) {
       setError(true);
@@ -124,23 +136,64 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     let existingIngrs = [];
     let newIngrs = [];
 
-    selectedIngrs.forEach((ingr) => {
-      if (ingr.id < 0) {
-        newIngrs.push(ingr);
-
-        // TODO: Add new ingredients to inventory
-
-      } else existingIngrs.push(ingr);
+    selectedIngrs.forEach((ingr, index) => {
+      if (ingr.id < 0) newIngrs.push(ingr);
+      else existingIngrs.push(ingr);
     });
 
-    console.log(name); // name of menu item
-    console.log(existingIngrs); // [] of ingredients already in db
-    console.log(newIngrs); // [] of ingredients that need to be added to db
-    console.log(price); // price
-    console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
+    if (newIngrs.length !== 0) {
 
-    onAddMenuItem(name, selectedIngrs, price, type);
-    handleClose();
+      // Add new ingredients to inventory
+      let options = {
+        method: "GET",
+        url: `${url}/addInventory`,
+        params: { name: "", quantity: 0}
+      };
+
+      let countIngredAdded = 0;
+
+      selectedIngrs.forEach((ingr, index) => {
+        if (ingr.id < 0) {
+          options.params.name = ingr.name;
+          console.log("Adding new ingredient: ", ingr);
+
+          axios.request(options).then((res) => {
+            countIngredAdded++;
+
+            selectedIngrs[index].id = getIdForIngredient(ingr.name);
+            console.log("Added ingredient: ", ingr.name, " with ID: ", selectedIngrs[index].id);
+
+            // Can continue on
+            if (countIngredAdded === newIngrs.length) {
+
+            }
+          })
+        }
+      });
+    } else { // All ingredients already exist in the database
+      console.log(name); // name of menu item
+      console.log(existingIngrs); // [] of ingredients already in db
+      console.log(newIngrs); // [] of ingredients that need to be added to db
+      console.log(price); // price
+      console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
+
+      // Add menu item to database
+      let options = {
+        method: "GET",
+        url: `${url}/addMenuItem`,
+        params: {
+          name: name,
+          category: type,
+          price: price,
+          ingredients: selectedIngrs
+        }
+      };
+
+      axios.request(options).then((res) => {})
+
+      onAddMenuItem(name, selectedIngrs, price, type);
+      handleClose();
+    }
   };
 
   const handleDeleteSelectedIngr = (ingrToDelete) => {
