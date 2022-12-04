@@ -100,9 +100,24 @@ export default function MyMenu() {
     console.log(newName);
     console.log(newIngredients);
     console.log(newType);
+    
+    // Get the menu id from the database
+    let options = {
+      method: "GET",
+      url: `${url}/getMenuID`,
+      params: {
+        name: newName
+      }
+    }
 
-    let d = createData(newName, -1, newPrice, newType, newIngredients);
-    setData([...data, d]);
+    axios.request(options).then((res) => {
+      console.log("New menu ID: ", res.data.rows[0].id);
+      let d = createData(newName, res.data.rows[0].id, newPrice, newType, newIngredients);
+      setData([...data, d]);
+    })
+
+    // let d = createData(newName, -1, newPrice, newType, newIngredients);
+    // setData([...data, d]);
   };
 
   useEffect(() => {
