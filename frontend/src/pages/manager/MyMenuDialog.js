@@ -22,12 +22,8 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
 
-// FIXME: should be removed after async stuff gets done
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
+import { url } from "../../config/global.js"
+import axios from "axios";
 
 const dummyData = [
   { name: "kung pao", id: 1 },
@@ -55,7 +51,15 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     if (!loading) return undefined;
 
     (async () => {
-      await sleep(1e3); // should be replaced by actual async stuff
+      const options = {
+        method: "GET",
+        url: `${url}/inventory`
+      };
+
+      axios.request(options).then((res) => {
+        console.log(res.data.rows);
+        setIngredients(res.data.rows);
+      })
 
       if (active) {
         setIngredients([...dummyData]);
@@ -108,8 +112,12 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     let newIngrs = [];
 
     selectedIngrs.forEach((ingr) => {
-      if (ingr.id < 0) newIngrs.push(ingr);
-      else existingIngrs.push(ingr);
+      if (ingr.id < 0) {
+        newIngrs.push(ingr);
+
+        // TODO: Add new ingredients to inventory
+
+      } else existingIngrs.push(ingr);
     });
 
     console.log(name); // name of menu item
