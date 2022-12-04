@@ -10,7 +10,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 import InventoryDialog from "./InventoryDialog.js";
@@ -130,7 +129,7 @@ export default function Inventory() {
             <TableContainer sx={{ maxHeight: "70vh" }} component={Paper}>
               <Table
                 sx={{ minWidth: 650, width: "80vw", maxWidth: "md" }}
-                aria-label="simple table"
+                aria-label="inventory table"
               >
                 <TableHead>
                   <TableRow>

@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { url } from "../../config/global";
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import MyMenuDialog from "./MyMenuDialog";
 
 function createData(name, id, price, type, ingredients) {
@@ -149,35 +149,40 @@ export default function MyMenu() {
   }, []);
 
   return (
-
     <div>
-     <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="center">Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <Row key={row.id} row={row} handleDelete={handleDelete} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button variant="contained" onClick={handleOpen}>
-        Add Item
-      </Button>
+      <Stack spacing={2}>
+        <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+          <Table
+            sx={{ minWidth: 650, width: "80vw", maxWidth: "md" }}
+            aria-label="collapsible table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Price</TableCell>
+                <TableCell align="right">Type</TableCell>
+                <TableCell align="center">Edit</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row) => (
+                <Row key={row.id} row={row} handleDelete={handleDelete} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Stack direction="row" justifyContent="space-between">
+          <Button variant="contained" onClick={handleOpen}>
+            Add Item
+          </Button>
+        </Stack>
+      </Stack>
       <MyMenuDialog
         open={openDialog}
         onClose={handleClose}
         onAddMenuItem={addMenuItem}
       />
     </div>
-
   );
 }
