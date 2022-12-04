@@ -58,7 +58,20 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
 
       axios.request(options).then((res) => {
         console.log(res.data.rows);
-        setIngredients(res.data.rows);
+        let ingreds = [];
+
+        res.data.rows.forEach((val) => {
+          let newVal = {
+            name: val.name,
+            id: val.ingredient_id
+          };
+
+          ingreds.push(newVal);
+        })
+
+        console.log(ingreds);
+
+        setIngredients(ingreds);
       })
 
       if (active) {
