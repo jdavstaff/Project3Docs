@@ -99,8 +99,10 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   };
 
   const handleType = (event, newType) => {
-    console.log("new type", newType);
-    setType(newType);
+    if (newType !== null) {
+      console.log("new type", newType);
+      setType(newType);
+    }
   };
 
   const handleClose = () => {
