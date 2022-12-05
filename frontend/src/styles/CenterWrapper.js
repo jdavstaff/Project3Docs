@@ -9,8 +9,6 @@ export function CenterWrapper(props) {
   return (
       <Stack alignItems="center">
         <Box sx={ boxStyling }>
-          <button onClick={() => console.log(boxStyling)}>clicm </button>
-
           {props.children}
 
         </Box>

@@ -13,14 +13,23 @@ export const OutlinedButton = styled(MuiButton)(({ theme }) => ({
 export const StyledSelectedButton = styled(MuiButton)(
   ({ theme, selected }) => ({
     color: selected ? theme.palette.secondary.main : "white",
-    backgroundColor: selected ? "white" : theme.palette.secondary.main,
+    backgroundColor: selected ? "#f4f4f4" : theme.palette.secondary.main,
     border: `3px solid ${theme.palette.secondary.main}`,
+    margin: "10px",
     borderRadius: "6px",
-    padding: "4px 40px",
     textDecoration: "none",
-    margin: "10px 10px",
+    textTransform: "capitalize",
     width: "30ch",
-    fontSize: "medium",
-    textTransform: "lowercase"
+    height: "10ch",
+    fontSize: "large",
+    textTransform: "lowercase",
+    '&:hover': {
+      backgroundColor: selected ? "#ffffff" : theme.palette.secondary.dark,
+      borderColor: selected ? "#ffffff" : theme.palette.secondary.dark,
+      boxShadow: "0px 10px 20px 5px rgba(0, 0, 0, 0.5)",
+      transform: "translateY(-5px)"
+
+
+    }
   })
 );
