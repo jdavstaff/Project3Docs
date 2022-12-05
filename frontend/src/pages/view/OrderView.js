@@ -14,10 +14,7 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
-
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const addItem = (size, item) => {
     let summaryItem = {
@@ -38,46 +35,58 @@ export default function OrderView({ user }) {
   };
 
   const btnStyle = {
-    width: '20ch'
-  }
-
+    width: "20ch",
+  };
 
   if (view === 0) {
     return (
       <CenterWrapper>
-      <div>
-        <Stack spacing={5}>
         <div>
-          <h3>Size:</h3>
-          <Stack direction="row" spacing={2}>
-            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(1)}>
-              Bowl
-            </Button>
-            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(2)} fullWidth>
-              Plate
-            </Button>
-            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(3)} fullWidth>
-              Bigger Plate
-            </Button>
+          <Stack spacing={5}>
+            <div>
+              <h3>Size:</h3>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(1)}
+                >
+                  Bowl
+                </Button>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(2)}
+                  fullWidth
+                >
+                  Plate
+                </Button>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(3)}
+                  fullWidth
+                >
+                  Bigger Plate
+                </Button>
+              </Stack>
+            </div>
+            <div>
+              <Summary data={summaryData} />
+            </div>
+            <Stack direction="row" spacing={2}>
+              <Link to="/">
+                <Button variant="outlined" color="primary">
+                  Back
+                </Button>
+              </Link>
+              <Button variant="contained" color="primary" onClick={toCheckout}>
+                CHECKOUT
+              </Button>
+            </Stack>
           </Stack>
         </div>
-        <div>
-          <Summary data={summaryData} />
-        </div>
-        <Stack direction="row" justifyContent="space-between" >
-          <Link to="/">
-            <Button variant="outlined" color="secondary">
-              Back
-            </Button>
-          </Link>
-          <Button variant="contained" onClick={toCheckout}>
-            CHECKOUT
-          </Button>
-        </Stack>
-        
-        </Stack>
-      </div>
-    </CenterWrapper>
+      </CenterWrapper>
     );
   } else {
     return (
