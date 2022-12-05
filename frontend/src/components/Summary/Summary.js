@@ -10,7 +10,7 @@ export default function Summary({ data }) {
     if (langInfo !== "en" && langInfo !== null) {
       translateComponents(langInfo);
     }
-  }, [])
+  }, []);
 
   if (data) {
     return (
