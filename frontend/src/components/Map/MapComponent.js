@@ -25,7 +25,7 @@ function Map() {
     <div className="Wrapper">
       <div className="MapContainer">
         <GoogleMap
-        zoom={10}
+        zoom={8}
         center={center}
         mapContainerStyle={containerStyle}>
         </GoogleMap>
