@@ -31,7 +31,6 @@ export default function Landing() {
     };
     axios.request(options).then((res) => {
       setGoogleIdentityID(res.data.id);
-      console.log("id " + res.data.id);
     });
   }, []);
 
@@ -42,6 +41,7 @@ export default function Landing() {
   }, [updateUserInfo]);
 
   function googleSignIn(response) {
+    console.log('signing in')
     let decoded = jwt_decode(response.credential);
     let name = { first: decoded.given_name, last: decoded.family_name };
     let email = decoded.email;
