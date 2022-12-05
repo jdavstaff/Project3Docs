@@ -393,8 +393,10 @@ app.get("/items", (req, response) => {
 // Get the item id for a given menu item
 app.get("/getMenuID", (req, response) => {
   let name = req.query.name;
+
   //console.log("Requesting ID for: ", name);
   pool.query(`SELECT ID FROM ITEM WHERE NAME=$1`, [name], 
+
     (err, res) => {
       if (err) {
         console.log(err);
@@ -409,7 +411,9 @@ app.get("/getMenuID", (req, response) => {
 // Add a menu item to the database
 app.get("/addMenuItem", (req, response) => {
   let queryThing = `INSERT INTO ITEM(NAME, CATEGORY, EXTRA_PRICE) VALUES ('${req.query.name}', '${req.query.category}', ${req.query.price})`;
+
   //console.log(queryThing);
+
 
   pool.query(queryThing, (err, res) => {
     if (err) {
@@ -428,6 +432,7 @@ app.get("/addMenuItem", (req, response) => {
 
     let ingredientCount = 0;
 
+
     ingreds.forEach((ingredient) => {
       let ingredientMapping = `INSERT INTO ITEM_INGREDIENTS(ITEM_ID, INVENTORY_ID, AMOUNT) VALUES ((SELECT ID FROM ITEM WHERE NAME = '${req.query.name}'), (SELECT INGREDIENT_ID FROM INVENTORY WHERE NAME = '${ingredient.name}'), ${ingredient.amount})`
 
@@ -437,17 +442,20 @@ app.get("/addMenuItem", (req, response) => {
           response.json({err: err2});
           return;
         }
+
         ingredientCount++;
 
         if (ingredientCount === ingreds.length) {
           response.json({ res: res2.rows });
         }
+
         //response.json({ res: res2.rows });
       })
     });
   }
 
   )
+
 })
 
 app.get("/deleteMenuItem", (req, response) => {

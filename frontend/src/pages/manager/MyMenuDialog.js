@@ -147,6 +147,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
           options.params.name = ingr.name;
           console.log("Adding new ingredient: ", ingr);
 
+
           axios.request(options).then((res) => {
             countIngredAdded++;
 
@@ -172,10 +173,12 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 }
               };
 
+
               axios.request(options2).then((res) => {
                 onAddMenuItem(name, selectedIngrs, price, type);
                 handleClose();
               })
+
             }
           })
         }
@@ -199,10 +202,12 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
         }
       };
 
+
       axios.request(options).then((res) => {
         onAddMenuItem(name, selectedIngrs, price, type);
         handleClose();
       })
+
     }
   };
 
