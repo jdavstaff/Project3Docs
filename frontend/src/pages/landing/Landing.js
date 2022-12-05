@@ -78,7 +78,7 @@ export default function Landing() {
     <div className="mainBody">
       <Header name={"Landing"} />
       <div style={content} className="content">
-        {userStateInfo === null && googleIdentityID && (
+        {userStateInfo === null && googleIdentityID !== null && (
           <div id="google" style={googleStyle}>
             <GoogleOAuthProvider clientId={googleIdentityID}>
               <GoogleLogin
