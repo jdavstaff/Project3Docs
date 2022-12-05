@@ -483,3 +483,32 @@ app.get("/deleteMenuItem", (req, response) => {
     })
   })
 })
+
+app.get('/people', (req, response) => {
+  let query = `SELECT FIRST_NAME || ' ' || LAST_NAME AS NAME,
+                  EMAIL,
+                  PERMISSION
+                FROM USERS`
+  pool.query(query, (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({rows: res.rows})
+  })
+})
+
+app.get('/change-perm', (req, response) => {
+  let perm = req.query.perm
+  let email = req.query.email
+  let query = `UPDATE USERS SET PERMISSION = $1 WHERE EMAIL = $2`
+  pool.query(query, [perm, email], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({err: false})
+  })
+})
