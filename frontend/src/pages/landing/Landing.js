@@ -56,8 +56,7 @@ export default function Landing() {
       let err = res.data.err; // will send error if there was an error
       let message = res.data.message; // will send a message if user is returned
       if (err) console.log(err);
-      console.log(message);
-      console.log(p);
+      console.log('permission: ' + p);
       setPermission(p);
       updateUserInfo({ name: name, email: email, permission: p });
       // probably want to save permission somewhere and also probably want to move this stuff to its own page
