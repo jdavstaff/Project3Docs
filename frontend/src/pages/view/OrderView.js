@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
+import { CenterWrapper } from "../../styles/CenterWrapper";
 // import axios from 'axios'
 // import { url } from "../../config/global.js";
 
@@ -36,28 +37,34 @@ export default function OrderView({ user }) {
     setView(v);
   };
 
+  const btnStyle = {
+    width: '20ch'
+  }
+
 
   if (view === 0) {
     return (
+      <CenterWrapper>
       <div>
+        <Stack spacing={5}>
         <div>
           <h3>Size:</h3>
-          <div class="center">
-            <Button variant="contained" onClick={() => handleBtnClick(1)}>
+          <Stack direction="row" spacing={2}>
+            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(1)}>
               Bowl
             </Button>
-            <Button variant="contained" onClick={() => handleBtnClick(2)}>
+            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(2)} fullWidth>
               Plate
             </Button>
-            <Button variant="contained" onClick={() => handleBtnClick(3)}>
+            <Button sx={btnStyle} variant="contained" onClick={() => handleBtnClick(3)} fullWidth>
               Bigger Plate
             </Button>
-          </div>
+          </Stack>
         </div>
         <div>
           <Summary data={summaryData} />
         </div>
-        <div class="bottomButtonBar">
+        <Stack direction="row" justifyContent="space-between" >
           <Link to="/">
             <Button variant="outlined" color="secondary">
               Back
@@ -66,20 +73,22 @@ export default function OrderView({ user }) {
           <Button variant="contained" onClick={toCheckout}>
             CHECKOUT
           </Button>
-        </div>
-
+        </Stack>
+        
+        </Stack>
       </div>
+    </CenterWrapper>
     );
   } else {
     return (
-      <div>
+      <CenterWrapper theWidth="90vw">
         <PlateView
           user={user}
           handleView={handleBtnClick}
           view={view}
           addItem={addItem}
         />
-      </div>
+      </CenterWrapper>
     );
   }
 }

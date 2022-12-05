@@ -19,6 +19,8 @@ export const StyledSelectedButton = styled(MuiButton)(
     padding: "4px 40px",
     textDecoration: "none",
     margin: "10px 10px",
-    width: "400px",
+    width: "30ch",
+    fontSize: "medium",
+    textTransform: "lowercase"
   })
 );

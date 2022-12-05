@@ -5,6 +5,7 @@ import axios from "axios";
 import { url } from "../../config/global.js";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
+import { CenterWrapper } from "../../styles/CenterWrapper";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -112,14 +113,11 @@ export default function PlateView({ handleView, view, addItem }) {
     addItem(getTitle(), selectedItems);
   };
 
-  const sectionStyle = {
-    margin: "30x 0",
-  };
 
   return (
-    <div className="centerContent">
+    <div>
       <h1>{getTitle()}</h1>
-      <div style={sectionStyle}>
+      <div>
         <div>
           <h4>Sides</h4>
         </div>
@@ -149,7 +147,7 @@ export default function PlateView({ handleView, view, addItem }) {
           />
         )}
       </div>
-      <div className="bottomButtonBar">
+      <div>
         <OutlinedButton onClick={() => handleView(0)}>Cancel</OutlinedButton>
         <Button variant="contained" onClick={handleAddBtn}>
           Add
