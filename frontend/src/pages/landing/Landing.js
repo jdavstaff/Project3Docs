@@ -31,6 +31,7 @@ export default function Landing() {
     };
     axios.request(options).then((res) => {
       setGoogleIdentityID(res.data.id);
+      console.log("id " + res.data.id);
     });
   }, []);
 
