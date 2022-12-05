@@ -34,6 +34,7 @@ pool.connect();
 
 // start listening
 app.listen(PORT, () => console.log("Server on PORT: " + PORT));
+console.log("google key: " + process.env.GOOGLE_IDENTITY_CLIENT_ID)
 
 // Request to translate a phrase
 app.get("/translate", async (req, res) => {
