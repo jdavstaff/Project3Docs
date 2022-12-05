@@ -48,8 +48,19 @@ function Row({ row, handleDelete }) {
         <TableCell align="right">{row.price}</TableCell>
         <TableCell align="right">{row.type}</TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => handleDelete(row.id)}>
-            <DeleteOutlineIcon />
+          <IconButton
+            sx={{
+              backgroundColor: "#FFD9D9",
+              borderRadius: "5px",
+            }}
+            onClick={() => handleDelete(row.id)}
+          >
+            <DeleteOutlineIcon
+              sx={{
+                color: "#D91111",
+                backgroundColor: "#FFD9D9",
+              }}
+            />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -63,7 +74,6 @@ function Row({ row, handleDelete }) {
               <ul>
                 {row.ingredients.map((ingr) => (
                   <li key={ingr.id}>
-                    {" "}
                     {ingr.name}: {ingr.amount} oz{" "}
                   </li>
                 ))}
@@ -177,7 +187,7 @@ export default function MyMenu() {
           <Stack direction="row" justifyContent="space-between">
             <Link to="/">
               <Button variant="outlined" color="secondary">
-                Back{" "}
+                Back
               </Button>
             </Link>
             <Button variant="contained" onClick={handleOpen}>
