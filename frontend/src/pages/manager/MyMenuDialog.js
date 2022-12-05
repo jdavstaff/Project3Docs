@@ -22,7 +22,7 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
 
-import { url } from "../../config/global.js"
+import { url } from "../../config/global.js";
 import axios from "axios";
 
 // const dummyData = [
@@ -53,7 +53,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     (async () => {
       const options = {
         method: "GET",
-        url: `${url}/inventory`
+        url: `${url}/inventory`,
       };
 
       axios.request(options).then((res) => {
@@ -63,16 +63,16 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
         res.data.rows.forEach((val) => {
           let newVal = {
             name: val.name,
-            id: val.ingredient_id
+            id: val.ingredient_id,
           };
 
           ingreds.push(newVal);
-        })
+        });
 
         console.log(ingreds);
 
         setIngredients(ingreds);
-      })
+      });
 
       // if (active) {
       //   setIngredients([...dummyData]);
@@ -132,12 +132,11 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     });
 
     if (newIngrs.length !== 0) {
-
       // Add new ingredients to inventory
       let options = {
         method: "GET",
         url: `${url}/addInventory`,
-        params: { name: "", quantity: 0}
+        params: { name: "", quantity: 0 },
       };
 
       let countIngredAdded = 0;
@@ -147,11 +146,15 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
           options.params.name = ingr.name;
           console.log("Adding new ingredient: ", ingr);
 
-
           axios.request(options).then((res) => {
             countIngredAdded++;
 
-            console.log("Added ingredient: ", ingr.name, " with ID: ", selectedIngrs[index].id);
+            console.log(
+              "Added ingredient: ",
+              ingr.name,
+              " with ID: ",
+              selectedIngrs[index].id
+            );
 
             // Can continue on
             if (countIngredAdded === newIngrs.length) {
@@ -169,21 +172,20 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                   name: name,
                   category: type,
                   price: price,
-                  ingredients: selectedIngrs
-                }
+                  ingredients: selectedIngrs,
+                },
               };
-
 
               axios.request(options2).then((res) => {
                 onAddMenuItem(name, selectedIngrs, price, type);
                 handleClose();
-              })
-
+              });
             }
-          })
+          });
         }
       });
-    } else { // All ingredients already exist in the database
+    } else {
+      // All ingredients already exist in the database
       console.log(name); // name of menu item
       console.log(existingIngrs); // [] of ingredients already in db
       console.log(newIngrs); // [] of ingredients that need to be added to db
@@ -198,16 +200,14 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
           name: name,
           category: type,
           price: price,
-          ingredients: selectedIngrs
-        }
+          ingredients: selectedIngrs,
+        },
       };
-
 
       axios.request(options).then((res) => {
         onAddMenuItem(name, selectedIngrs, price, type);
         handleClose();
-      })
-
+      });
     }
   };
 
@@ -284,9 +284,6 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 </ToggleButton>
                 <ToggleButton value="Entree">
                   <Box sx={{ fontWeight: "bold" }}>Entree</Box>
-                </ToggleButton>
-                <ToggleButton value="Dessert">
-                  <Box sx={{ fontWeight: "bold" }}>Dessert</Box>
                 </ToggleButton>
               </ToggleButtonGroup>
             </Stack>
