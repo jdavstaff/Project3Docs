@@ -90,9 +90,20 @@ export default function MyMenu() {
   // FIXME: delete int id from database
   function handleDelete(id) {
     console.log(id);
-    // add here
+    
+    let options = {
+      method: "GET",
+      url: `${url}/deleteMenuItem`,
+      params: {
+        id: id
+      }
+    }
 
-    setData(data.filter((d) => d.id !== id));
+    axios.request(options).then((res) => {
+      setData(data.filter((d) => d.id !== id));
+    })
+
+    //setData(data.filter((d) => d.id !== id));
   }
 
   const addMenuItem = (newName, newIngredients, newPrice, newType) => {
@@ -100,9 +111,24 @@ export default function MyMenu() {
     console.log(newName);
     console.log(newIngredients);
     console.log(newType);
+    
+    // Get the menu id from the database
+    let options = {
+      method: "GET",
+      url: `${url}/getMenuID`,
+      params: {
+        name: newName
+      }
+    }
 
-    let d = createData(newName, -1, newPrice, newType, newIngredients);
-    setData([...data, d]);
+    axios.request(options).then((res) => {
+      console.log("New menu ID: ", res.data.rows[0].id);
+      let d = createData(newName, res.data.rows[0].id, newPrice, newType, newIngredients);
+      setData([...data, d]);
+    })
+
+    // let d = createData(newName, -1, newPrice, newType, newIngredients);
+    // setData([...data, d]);
   };
 
   useEffect(() => {
