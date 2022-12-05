@@ -1,8 +1,8 @@
 module.exports = {
     // url: 'http://localhost:3000' // used for testing with separate front and backend
-    // url: 'http://localhost:1111', // used for testing when build and running off backend
+    url: 'http://localhost:1111', // used for testing when build and running off backend
     // url: "https://panda-exp.onrender.com",
-    url: 'http://localhost:10000',
+    // url: 'http://localhost:10000',
     langEnglish: [
         {code: 'af', name: 'Afrikaans'},
         {code: 'ak', name: 'Akan'},
