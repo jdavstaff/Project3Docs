@@ -3,15 +3,14 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const { Pool } = require("pg");
-const { response } = require("express");
 const { Translate } = require("@google-cloud/translate").v2;
 
-dotenv.config({ path: "./.env" });
+// dotenv.config({ path: "./.env" });
 const PORT = process.env.PORT || 1111; // this needs to match proxy in front-end package.json
 
 const app = express();
 app.use(cors());
-app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static(path.join(__dirname + "/build")));
 
 // Credentials for Google Translate
 const CREDS = JSON.parse(process.env.GOOGLE_TRANSLATE_KEY);
