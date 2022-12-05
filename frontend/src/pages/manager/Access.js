@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Fade from "@mui/material/Fade";
@@ -117,48 +117,55 @@ export default function Access() {
 
   return (
     <>
-      <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Email</TableCell>
-              <TableCell align="left">Id</TableCell>
-              <TableCell align="center">Permission</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="left">
-                  <Box
-                    sx={{
-                      color: theme.palette.primary.main,
-                      fontWeight: "bold",
-                    }}
+      <Stack alignItems="center">
+        <Stack spacing={2}>
+          <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+            <Table
+              sx={{ minWidth: "sm", width: "80vw", maxWidth: "md" }}
+              aria-label="simple table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="left">Email</TableCell>
+                  <TableCell align="left">Id</TableCell>
+                  <TableCell align="center">Permission</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    {row.email}
-                  </Box>
-                </TableCell>
-                <TableCell align="left">{row.id}</TableCell>
-                <TableCell align="center">
-                  <SelectPermission
-                    permission={row.permission}
-                    handleChangePerm={handleChangePerm}
-                    id={row.id}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box
+                        sx={{
+                          color: theme.palette.primary.main,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {row.email}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">{row.id}</TableCell>
+                    <TableCell align="center">
+                      <SelectPermission
+                        permission={row.permission}
+                        handleChangePerm={handleChangePerm}
+                        id={row.id}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Stack>
+      </Stack>
     </>
   );
 }
