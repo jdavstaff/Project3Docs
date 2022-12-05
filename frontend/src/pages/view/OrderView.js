@@ -4,14 +4,23 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
-// import axios from 'axios'
-// import { url } from "../../config/global.js";
+
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
   const [summaryData, setSummaryData] = useState([]);
 
   const navigate = useNavigate();
+
+  const langInfo = useLang();
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, []);
 
   const addItem = (size, item) => {
     let summaryItem = {

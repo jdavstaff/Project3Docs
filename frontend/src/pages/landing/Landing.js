@@ -22,8 +22,6 @@ export default function Landing() {
   const updateUserInfo = useUserInfoUpdate();
 
   const langInfo = useLang();
-  const [langStateInfo, setLangStateInfo] = useState(langInfo);
-  const updateLangInfo = useLangUpdate();
 
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(
@@ -39,9 +37,9 @@ export default function Landing() {
       setGoogleIdentityID(res.data.id);
     });
 
-    // if (langInfo !== "en" && langInfo !== null) {
-    //   translateComponents(langInfo);
-    // }
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
     // console.log("Language: ", langInfo);
   }, []);
 

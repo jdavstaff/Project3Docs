@@ -66,10 +66,10 @@ export default function Header({ name }) {
     // console.log("Language: ", langInfo);
   }, []);
 
-  useEffect(() => {
-    console.log("UPDATE:", langInfo);
-    setLangStateInfo(langInfo);
-  }, [updateLangInfo]);
+  // useEffect(() => {
+  //   console.log("UPDATE:", langInfo);
+  //   setLangStateInfo(langInfo);
+  // }, [updateLangInfo]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

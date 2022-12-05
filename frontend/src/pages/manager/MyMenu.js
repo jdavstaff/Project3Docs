@@ -17,6 +17,8 @@ import { url } from "../../config/global";
 import axios from "axios";
 import { Button } from "@mui/material";
 import MyMenuDialog from "./MyMenuDialog";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 function createData(name, id, price, type, ingredients) {
   return { name, id, price, type, ingredients: [...ingredients] };
@@ -78,6 +80,10 @@ function Row({ row, handleDelete }) {
 export default function MyMenu() {
   const [data, setData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const langInfo = useLang();
+
+  let translated = false;
 
   const handleOpen = () => {
     setOpenDialog(true);
@@ -171,8 +177,19 @@ export default function MyMenu() {
         return items[key];
       });
       setData(items);
+
+      if (langInfo !== "en" && langInfo !== null) {
+        translateComponents(langInfo);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [data]);
 
   return (
 

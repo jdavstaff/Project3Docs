@@ -14,6 +14,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 import InventoryDialog from "./InventoryDialog.js";
 import { Button } from "@mui/material";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 export default function Inventory() {
   const [data, setData] = useState([]);
@@ -22,6 +24,10 @@ export default function Inventory() {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [id, setId] = useState(0);
+
+  let translated = false;
+
+  const langInfo = useLang();
 
   useEffect(() => {
     const options = {
@@ -33,6 +39,13 @@ export default function Inventory() {
       setData(rows);
     });
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [data]);
 
   const handleEdit = (dat) => {
     setName(dat.name);

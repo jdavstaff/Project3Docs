@@ -5,6 +5,8 @@ import axios from "axios";
 import { url } from "../../config/global.js";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -27,6 +29,9 @@ export default function PlateView({ handleView, view, addItem }) {
   const [entreeData, setEntreeData] = useState([]);
   const [entreeData2, setEntreeData2] = useState([]);
   const [entreeData3, setEntreeData3] = useState([]);
+
+  const langInfo = useLang();
+  let translated = false;
 
   const getTitle = () => {
     if (view === 1) return "Bowl";
@@ -62,6 +67,13 @@ export default function PlateView({ handleView, view, addItem }) {
 
     // [ {string name, int id,}]
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [entreeData3]);
 
   const handleSideSelect = (id) => {
     const updatedData = sideData.map((item) => {

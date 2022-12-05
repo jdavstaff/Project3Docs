@@ -27,6 +27,7 @@ function translate(element, langCode) {
   }
 
   export function translateComponents(langCode) {
+    console.log("Translating...");
     let root = document.querySelector('div')
     translate(root, langCode)
   }
