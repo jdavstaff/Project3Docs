@@ -9,14 +9,11 @@ import "../../styles/master.scss";
 export default function Customer() {
   return (
     <div>
-      <Header name={"customer"} />
+      <Header name={"Customer"} />
       <div className="content">
         <OrderView user={"customer"} />
         <Mapper />
       </div>
-
     </div>
   );
-
-  
 }

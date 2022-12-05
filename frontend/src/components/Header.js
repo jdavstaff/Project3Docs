@@ -5,7 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo } from "../contexts/UserContext";
-import { langEnglish } from "../config/global.js"
+import { langEnglish } from "../config/global.js";
 import { translateComponents } from "../config/translate";
 
 export default function Header({ name }) {
