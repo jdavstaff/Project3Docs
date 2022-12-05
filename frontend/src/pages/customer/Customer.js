@@ -1,4 +1,4 @@
-import Button from "@mui/material/Button";
+import { Stack, Box} from "@mui/material";
 import { Link } from "react-router-dom";
 import { useUserInfo } from "../../contexts/UserContext";
 import Header from "../../components/Header";
@@ -10,10 +10,13 @@ export default function Customer() {
   return (
     <div>
       <Header name={"Customer"} />
-      <div className="content">
+
+      <Stack alignItems="center">
+      <Box sx={{ maxWidth: "sm", width: "70vw"}}>
         <OrderView user={"customer"} />
         <Mapper />
-      </div>
+      </Box>
+      </Stack>
     </div>
   );
 }
