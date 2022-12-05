@@ -1,10 +1,12 @@
+import { textAlign } from "@mui/system";
 import SummaryCard from "./SummaryCard";
 
 export default function Summary({ data }) {
+
   if (data) {
     return (
       <div>
-        <h3> Summary </h3>
+        <h3> Summary: </h3>
         {data.map((item) => (
           <SummaryCard item={item} key={item.id} />
         ))}

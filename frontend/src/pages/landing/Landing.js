@@ -12,6 +12,7 @@ import { Box, Stack } from "@mui/material";
 
 export default function Landing() {
   const userInfo = useUserInfo(); // get user info from global state
+  const [userStateInfo, setUserStateInfo] = useState(userInfo);
   const updateUserInfo = useUserInfoUpdate();
 
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
@@ -28,6 +29,12 @@ export default function Landing() {
       setGoogleIdentityID(res.data.id);
     });
   }, []);
+
+  useEffect(() => {
+    console.log("UPDATE", userInfo);
+    setUserStateInfo(userInfo);
+    setPermission(userInfo === null ? -1 : userInfo.permission);
+  }, [updateUserInfo]);
 
   function googleSignIn(response) {
     let decoded = jwt_decode(response.credential);
@@ -55,7 +62,6 @@ export default function Landing() {
   const content = {
     display: "flex",
     justifyContent: "center",
-    // backgroundColor: "red",
     marginBottom: "15px",
   };
 
@@ -82,6 +88,7 @@ export default function Landing() {
               </GoogleOAuthProvider>
             </div>
           )}
+
 
           <div>
             {permission >= 0 && (

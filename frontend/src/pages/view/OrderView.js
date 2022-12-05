@@ -14,8 +14,6 @@ export default function OrderView({ user }) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-
   const addItem = (size, item) => {
     let summaryItem = {
       size: size,
@@ -87,6 +85,7 @@ export default function OrderView({ user }) {
           </Stack>
         </div>
       </CenterWrapper>
+
     );
   } else {
     return (
