@@ -13,8 +13,7 @@ export default function Mapper() {
 
 const containerStyle = {
   width: '100%',
-  height: '50vh',
-  border: '10px'
+  height: '50vh'
 }
 
 function Map() {
