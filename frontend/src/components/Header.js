@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
+import { useLang, useLangUpdate } from "../contexts/LanguageContext";
 import { url, langEnglish } from "../config/global.js"
 import { translateComponents } from "../config/translate";
 import axios from "axios";
@@ -19,6 +20,10 @@ export default function Header({ name }) {
 
   const userInfo = useUserInfo();
   const updateUserInfo = useUserInfoUpdate();
+
+  const langInfo = useLang();
+  const [langStateInfo, setLangStateInfo] = useState(langInfo);
+  const updateLangInfo = useLangUpdate();
 
   const convertLanguageNames = (langs) => {
     let langList = [...langs];
@@ -54,7 +59,17 @@ export default function Header({ name }) {
   useEffect(() => {
     setLanguages(langEnglish);
     convertLanguageNames(langEnglish);
+
+    // if (langInfo !== "en" && langInfo !== null) {
+    //   translateComponents(langInfo);
+    // }
+    // console.log("Language: ", langInfo);
   }, []);
+
+  useEffect(() => {
+    console.log("UPDATE:", langInfo);
+    setLangStateInfo(langInfo);
+  }, [updateLangInfo]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -72,6 +87,7 @@ export default function Header({ name }) {
 
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
+    updateLangInfo(language);
     translateComponents(language);
     handleClose();
   };

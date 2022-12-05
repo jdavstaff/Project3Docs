@@ -1,28 +1,28 @@
 import { createContext, useContext, useState } from "react";
 
-const LangInfoContext = createContext();
-const LangInfoUpdateContext = createContext();
+const LangContext = createContext();
+const LangUpdateContext = createContext();
 
-export function useLangInfo() {
-  return useContext(LangInfoContext);
+export function useLang() {
+  return useContext(LangContext);
 }
 
-export function useLangInfoUpdate() {
-  return useContext(LangInfoUpdateContext);
+export function useLangUpdate() {
+  return useContext(LangUpdateContext);
 }
 
-export function LangInfoProvider({ children }) {
-  const [langInfo, setLangInfo] = useState(null);
+export function LangProvider({ children }) {
+  const [lang, setLang] = useState(null);
 
-  function updateLangInfo(info) {
-    setLangInfo(info);
+  function updateLang(info) {
+    setLang(info);
   }
 
   return (
-    <LangInfoContext.Provider value={langInfo}>
-      <LangInfoUpdateContext.Provider value={updateLangInfo}>
+    <LangContext.Provider value={lang}>
+      <LangUpdateContext.Provider value={updateLang}>
         {children}
-      </LangInfoUpdateContext.Provider>
-    </LangInfoContext.Provider>
+      </LangUpdateContext.Provider>
+    </LangContext.Provider>
   );
 }
