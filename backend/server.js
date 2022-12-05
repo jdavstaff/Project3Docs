@@ -72,10 +72,12 @@ app.get("/permission", (req, response) => {
           response.json({err: err})
           return
         }
+        console.log('created new user')
         response.json({message: `Created new user: ${name.first} ${name.last}`, permission: 0})
       })
     }
     else { // if the user does exist
+      console.log('rows ' + res.rows)
       response.json({message: `Welcome back ${name.first}!`, permission: res.rows[0].permission})
     }
   })
