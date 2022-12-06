@@ -14,7 +14,6 @@ export default function Customer() {
       <Stack alignItems="center">
       <Box sx={{ maxWidth: "sm", width: "70vw"}}>
         <OrderView user={"customer"} />
-        <Mapper />
       </Box>
       </Stack>
     </div>
