@@ -22,19 +22,15 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Stack } from "@mui/system";
 
-// FIXME: should be removed after async stuff gets done
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
+import { url } from "../../config/global.js";
+import axios from "axios";
 
-const dummyData = [
-  { name: "kung pao", id: 1 },
-  { name: "chicken", id: 2 },
-  { name: "friend", id: 3 },
-  { name: "yohoo", id: 5 },
-];
+// const dummyData = [
+//   { name: "kung pao", id: 1 },
+//   { name: "chicken", id: 2 },
+//   { name: "friend", id: 3 },
+//   { name: "yohoo", id: 5 },
+// ];
 
 export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [name, setName] = useState("");
@@ -50,21 +46,42 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const loading = openIngrList && ingredients.length === 0;
 
   useEffect(() => {
-    let active = true;
+    //let active = true;
 
     if (!loading) return undefined;
 
     (async () => {
-      await sleep(1e3); // should be replaced by actual async stuff
+      const options = {
+        method: "GET",
+        url: `${url}/inventory`,
+      };
 
-      if (active) {
-        setIngredients([...dummyData]);
-      }
+      axios.request(options).then((res) => {
+        console.log(res.data.rows);
+        let ingreds = [];
+
+        res.data.rows.forEach((val) => {
+          let newVal = {
+            name: val.name,
+            id: val.ingredient_id,
+          };
+
+          ingreds.push(newVal);
+        });
+
+        console.log(ingreds);
+
+        setIngredients(ingreds);
+      });
+
+      // if (active) {
+      //   setIngredients([...dummyData]);
+      // }
     })();
 
-    return () => {
-      active = false;
-    };
+    // return () => {
+    //   active = false;
+    // };
   }, [loading]);
 
   const handleNameChange = (e) => {
@@ -82,8 +99,10 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   };
 
   const handleType = (event, newType) => {
-    console.log("new type", newType);
-    setType(newType);
+    if (newType !== null) {
+      console.log("new type", newType);
+      setType(newType);
+    }
   };
 
   const handleClose = () => {
@@ -107,19 +126,89 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     let existingIngrs = [];
     let newIngrs = [];
 
-    selectedIngrs.forEach((ingr) => {
+    selectedIngrs.forEach((ingr, index) => {
       if (ingr.id < 0) newIngrs.push(ingr);
       else existingIngrs.push(ingr);
     });
 
-    console.log(name); // name of menu item
-    console.log(existingIngrs); // [] of ingredients already in db
-    console.log(newIngrs); // [] of ingredients that need to be added to db
-    console.log(price); // price
-    console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
+    if (newIngrs.length !== 0) {
+      // Add new ingredients to inventory
+      let options = {
+        method: "GET",
+        url: `${url}/addInventory`,
+        params: { name: "", quantity: 0 },
+      };
 
-    onAddMenuItem(name, selectedIngrs, price, type);
-    handleClose();
+      let countIngredAdded = 0;
+
+      selectedIngrs.forEach((ingr, index) => {
+        if (ingr.id < 0) {
+          options.params.name = ingr.name;
+          console.log("Adding new ingredient: ", ingr);
+
+          axios.request(options).then((res) => {
+            countIngredAdded++;
+
+            console.log(
+              "Added ingredient: ",
+              ingr.name,
+              " with ID: ",
+              selectedIngrs[index].id
+            );
+
+            // Can continue on
+            if (countIngredAdded === newIngrs.length) {
+              console.log(name); // name of menu item
+              console.log(existingIngrs); // [] of ingredients already in db
+              console.log(newIngrs); // [] of ingredients that need to be added to db
+              console.log(price); // price
+              console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
+
+              // Add menu item to database
+              let options2 = {
+                method: "GET",
+                url: `${url}/addMenuItem`,
+                params: {
+                  name: name,
+                  category: type,
+                  price: price,
+                  ingredients: selectedIngrs,
+                },
+              };
+
+              axios.request(options2).then((res) => {
+                onAddMenuItem(name, selectedIngrs, price, type);
+                handleClose();
+              });
+            }
+          });
+        }
+      });
+    } else {
+      // All ingredients already exist in the database
+      console.log(name); // name of menu item
+      console.log(existingIngrs); // [] of ingredients already in db
+      console.log(newIngrs); // [] of ingredients that need to be added to db
+      console.log(price); // price
+      console.log("Type", type); // string: 'appetizer' / 'entree' / 'dessert'
+
+      // Add menu item to database
+      let options = {
+        method: "GET",
+        url: `${url}/addMenuItem`,
+        params: {
+          name: name,
+          category: type,
+          price: price,
+          ingredients: selectedIngrs,
+        },
+      };
+
+      axios.request(options).then((res) => {
+        onAddMenuItem(name, selectedIngrs, price, type);
+        handleClose();
+      });
+    }
   };
 
   const handleDeleteSelectedIngr = (ingrToDelete) => {
@@ -196,9 +285,6 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 <ToggleButton value="Entree">
                   <Box sx={{ fontWeight: "bold" }}>Entree</Box>
                 </ToggleButton>
-                <ToggleButton value="Dessert">
-                  <Box sx={{ fontWeight: "bold" }}>Dessert</Box>
-                </ToggleButton>
               </ToggleButtonGroup>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -226,7 +312,7 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
                 isOptionEqualToValue={(option, value) =>
                   option.name === value.name
                 }
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => option.name || ""}
                 options={ingredients}
                 loading={loading}
                 autoHighlight

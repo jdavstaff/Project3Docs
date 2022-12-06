@@ -5,8 +5,9 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
-import { langEnglish } from "../config/global.js";
+import { url, langEnglish } from "../config/global.js";
 import { translateComponents } from "../config/translate";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 export default function Header({ name }) {
@@ -19,8 +20,38 @@ export default function Header({ name }) {
   const userInfo = useUserInfo();
   const updateUserInfo = useUserInfoUpdate();
 
+  const convertLanguageNames = (langs) => {
+    let langList = [...langs];
+    var langsProcessed = 0;
+
+    langs.forEach((element, index) => {
+      // Make the languages written in their own language
+      let options = {
+        method: "GET",
+        url: `${url}/translate`,
+        params: {
+          text: element.name,
+          target: element.code,
+        },
+      };
+
+      axios.request(options).then((res) => {
+        // Set the name to the translated value
+        langList[index].name = res.data;
+
+        langsProcessed++;
+
+        if (langsProcessed === langList.length) {
+          // The last 3 languages are repeats for some reason
+          setLanguages(langList);
+        }
+      });
+    });
+  };
+
   useEffect(() => {
     setLanguages(langEnglish);
+    convertLanguageNames(langEnglish);
   }, []);
 
   const handleClick = (event) => {
@@ -45,6 +76,7 @@ export default function Header({ name }) {
 
   const onLogout = () => {
     updateUserInfo(null);
+    setProfileAnchorEl(null);
   };
   const headerStyle = {
     textAlign: "center",
