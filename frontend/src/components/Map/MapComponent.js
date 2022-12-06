@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 const lib = ['places'];
 const containerStyle = {
   width: '100%',
-  height: '50vh'
+  height: '30vh'
 }
 export default function Mapper() {
   const { isLoaded } = useLoadScript({
@@ -38,7 +38,7 @@ function Map() {
     <div className="Wrapper">
       <div className="MapContainer">
         <GoogleMap
-        zoom={8}
+        zoom={16}
         center={selected}
         mapContainerStyle={containerStyle}>
             <StandaloneSearchBox
@@ -46,11 +46,11 @@ function Map() {
             onLoad={onLoad}>
             <input
               type="text"
-              placeholder="Customized your placeholder"
+              placeholder="Enter Customer Location"
               style={{
                 boxSizing: 'border-box',
                 border: `1px solid transparent`,
-                width: `270px`,
+                width: `15hw`,
                 height: `40px`,
                 padding: `0 12px`,
                 borderRadius: `3px`,
