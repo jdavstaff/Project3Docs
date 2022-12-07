@@ -3,7 +3,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const { Pool } = require("pg");
-const { response } = require("express");
 const { Translate } = require("@google-cloud/translate").v2;
 
 dotenv.config({ path: "./.env" });
@@ -11,7 +10,7 @@ const PORT = process.env.PORT || 1111; // this needs to match proxy in front-end
 
 const app = express();
 app.use(cors());
-app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static(path.join(__dirname + "/build")));
 
 // Credentials for Google Translate
 const CREDS = JSON.parse(process.env.GOOGLE_TRANSLATE_KEY);
@@ -58,6 +57,8 @@ app.get("/googleIdentity", (req, response) => {
 app.get("/permission", (req, response) => {
   let email = req.query.email
   let name = req.query.name
+  console.log('permissions endpoint')
+  console.log(pool)
   pool.query(`SELECT PERMISSION FROM USERS WHERE EMAIL = $1`, [email], (err, res) => {
     if(err) {
       console.log(err)
@@ -72,10 +73,12 @@ app.get("/permission", (req, response) => {
           response.json({err: err})
           return
         }
+        console.log('created new user')
         response.json({message: `Created new user: ${name.first} ${name.last}`, permission: 0})
       })
     }
     else { // if the user does exist
+      console.log('rows ' + res.rows)
       response.json({message: `Welcome back ${name.first}!`, permission: res.rows[0].permission})
     }
   })
@@ -104,6 +107,22 @@ app.get("/addInventory", (req, response) => {
       response.json({ rows: res.rows });
     }
   );
+})
+
+app.get('/updateInventory', (req, response) => {
+  let id = req.query.id
+  let name = req.query.name
+  let quantity = req.query.quantity
+  console.log(id + ' ' + name + ' ' + quantity)
+  let query = `UPDATE INVENTORY SET NAME = $1, QUANTITY = $2 WHERE INGREDIENT_ID = $3`
+  pool.query(query, [name, quantity, id], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({err: false})
+  })
 })
 
 app.get("/getInvID", (req, response) => {

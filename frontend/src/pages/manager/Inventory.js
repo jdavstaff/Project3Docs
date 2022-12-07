@@ -81,7 +81,19 @@ export default function Inventory() {
     // FIXME: update db with string name, string quantity
     console.log(name, parseInt(quantity));
 
-    console.log("THE ID", id);
+    let options = {
+      method: 'GET',
+      url: `${url}/updateInventory`,
+      params: {
+        id: id,
+        name: name,
+        quantity: quantity
+      }
+    }
+    axios.request(options).then((res) => {
+      console.log('done')
+    })
+
     setData(
       data.map((dat) => {
         if (dat.ingredient_id === id) {
