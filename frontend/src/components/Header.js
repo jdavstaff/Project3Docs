@@ -8,8 +8,10 @@ import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
 import { useLang, useLangUpdate } from "../contexts/LanguageContext";
 import { url, langEnglish } from "../config/global.js"
 import { translateComponents } from "../config/translate";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import Panda from "../static/panda.png";
+import axios from "axios";
+
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -110,7 +112,17 @@ export default function Header({ name }) {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Grid item xs={4}></Grid>
+      <Grid item xs={4}>
+        <Link to="/">
+          <img
+            src={Panda}
+            alt="panda logo"
+            width="50px"
+            height="50px"
+            style={{ float: "left", marginLeft: "10px" }}
+          />
+        </Link>
+      </Grid>
       <Grid item xs={4}>
         <h1 style={{ textAlign: "center" }}>{name}</h1>
       </Grid>
