@@ -25,9 +25,15 @@ function App() {
       },
       secondary: {
         main: "#373737",
+        dark: "#262525",
+        ligth: "#181717"
       },
       info: {
         main: "#F3F3F3",
+      },
+      icon: {
+        main: "#D7E7FF",
+        secondary: "#FFD9D9",
       },
     },
   });

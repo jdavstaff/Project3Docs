@@ -8,25 +8,27 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Fade from "@mui/material/Fade";
 import { useLang } from "../../contexts/LanguageContext";
 import { translateComponents } from "../../config/translate";
+import { url } from '../../config/global'
+import axios from 'axios'
 
-function createData(name, email, id, permission) {
-  return { name, email, id, permission };
-}
+// function createData(name, email, id, permission) {
+//   return { name, email, id, permission };
+// }
 
-// FIXME: DELETE ME
-const dummyData = [
-  createData("Frozen yoghurt", "a@gmail.com", 6.0, 1),
-  createData("Ice cream sandwich", "cold@anatartica.com", 9.0, 1),
-  createData("Eclair", "warm@tasty.com", 16.0, 1),
-  createData("Cupcake", "delicious@bakery.com", 3.7, 1),
-  createData("Gingerbread", "comeandgetme@fox.com", 16.0, 1),
-];
+// // FIXME: DELETE ME
+// const dummyData = [
+//   createData("Frozen yoghurt", "a@gmail.com", 6.0, 1),
+//   createData("Ice cream sandwich", "cold@anatartica.com", 9.0, 1),
+//   createData("Eclair", "warm@tasty.com", 16.0, 1),
+//   createData("Cupcake", "delicious@bakery.com", 3.7, 1),
+//   createData("Gingerbread", "comeandgetme@fox.com", 16.0, 1),
+// ];
 
 function getPermissionName(permission) {
   switch (permission) {
@@ -114,11 +116,27 @@ export default function Access() {
 
   // FIXME: update database to change permission
   const handleChangePerm = (permission, id) => {
-    console.log(`update id: ${id} to permission ${permission}`);
+    console.log(`update email: ${id} to permission ${permission}`);
+    let options = {
+      method: 'GET',
+      url: `${url}/change-perm`,
+      params: { perm: permission, email: id }
+    }
+    axios.request(options).then((res) => {
+    }).catch((err) => { console.log(err) })
+
   };
 
   useEffect(() => {
-    setRows([...dummyData]);
+    let options = {
+      method: 'GET',
+      url: `${url}/people`
+    }
+    axios.request(options).then((res) => {
+      setRows(res.data.rows)
+    })
+    .catch((err) => { console.log(err) })
+    // setRows([...dummyData]);
   }, []);
 
   useEffect(() => {
@@ -130,48 +148,52 @@ export default function Access() {
 
   return (
     <>
-      <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Email</TableCell>
-              <TableCell align="left">Id</TableCell>
-              <TableCell align="center">Permission</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="left">
-                  <Box
-                    sx={{
-                      color: theme.palette.primary.main,
-                      fontWeight: "bold",
-                    }}
+      <Stack alignItems="center">
+        <Stack spacing={2}>
+          <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+            <Table sx={{ minWidth: "sm", width: "80vw", maxWidth: "md" }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="left">Email</TableCell>
+                  {/* <TableCell align="left">Id</TableCell> */}
+                  <TableCell align="center">Permission</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.email}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    {row.email}
-                  </Box>
-                </TableCell>
-                <TableCell align="left">{row.id}</TableCell>
-                <TableCell align="center">
-                  <SelectPermission
-                    permission={row.permission}
-                    handleChangePerm={handleChangePerm}
-                    id={row.id}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box
+                        sx={{
+                          color: theme.palette.primary.main,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {row.email}
+                      </Box>
+                    </TableCell>
+                    {/* <TableCell align="left">{row.id}</TableCell> */}
+                    <TableCell align="center">
+                      <SelectPermission
+                        permission={row.permission}
+                        handleChangePerm={handleChangePerm}
+                        id={row.email}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Stack>
+      </Stack>
     </>
   );
 }

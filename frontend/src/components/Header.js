@@ -32,13 +32,13 @@ export default function Header({ name }) {
     langs.forEach((element, index) => {
       // Make the languages written in their own language
       let options = {
-        method: 'GET',
+        method: "GET",
         url: `${url}/translate`,
         params: {
           text: element.name,
-          target: element.code
-        }
-      }
+          target: element.code,
+        },
+      };
 
       axios.request(options).then((res) => {
         // Set the name to the translated value
@@ -50,11 +50,9 @@ export default function Header({ name }) {
           // The last 3 languages are repeats for some reason
           setLanguages(langList);
         }
-      })
-
-    })
-
-  }
+      });
+    });
+  };
 
   useEffect(() => {
     setLanguages(langEnglish);
@@ -94,6 +92,7 @@ export default function Header({ name }) {
 
   const onLogout = () => {
     updateUserInfo(null);
+    setProfileAnchorEl(null);
   };
   const headerStyle = {
     textAlign: "center",

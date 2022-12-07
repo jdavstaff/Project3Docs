@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, Divider, Stack } from "@mui/material";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
 import { url } from "../../config/global.js";
@@ -7,6 +7,7 @@ import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
 import { useLang } from "../../contexts/LanguageContext";
 import { translateComponents } from "../../config/translate";
+import { CenterWrapper } from "../../styles/CenterWrapper";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -14,7 +15,7 @@ function EntreeSelection({ entreeData, handleEntreeSelect }) {
   };
   return (
     <div style={secStyle}>
-      <h4>Entrees</h4>
+      <h2>Entrees</h2>
       <div>
         <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
       </div>
@@ -124,50 +125,49 @@ export default function PlateView({ handleView, view, addItem }) {
     addItem(getTitle(), selectedItems);
   };
 
-  const sectionStyle = {
-    margin: "30x 0",
-  };
 
   return (
-    <div className="centerContent">
-      <h1>{getTitle()}</h1>
-      <div style={sectionStyle}>
+    <div>
+      <h1 style={{textAlign: "center"}}>{getTitle()}</h1>
+      <Divider />
+      <Stack spacing={5}>
         <div>
-          <h4>Sides</h4>
+          <div>
+            <h2>Sides</h2>
+          </div>
+          <div>
+            <SelectButtons items={sideData} handleSelect={handleSideSelect} />
+          </div>
         </div>
         <div>
-          <SelectButtons items={sideData} handleSelect={handleSideSelect} />
+          <EntreeSelection
+            entreeData={entreeData}
+            handleEntreeSelect={handleEntreeSelect}
+          />
         </div>
-      </div>
-      <div>
-        <EntreeSelection
-          entreeData={entreeData}
-          handleEntreeSelect={handleEntreeSelect}
-        />
-      </div>
-      <div>
-        {view >= 2 && (
-          <EntreeSelection
-            entreeData={entreeData2}
-            handleEntreeSelect={handleEntreeSelect2}
-          />
-        )}
-      </div>
-      <div>
-        {view >= 3 && (
-          <EntreeSelection
-            entreeData={entreeData3}
-            handleEntreeSelect={handleEntreeSelect3}
-          />
-        )}
-      </div>
-      <div className="bottomButtonBar">
-        <OutlinedButton onClick={() => handleView(0)}>Cancel</OutlinedButton>
-        <Button variant="contained" onClick={handleAddBtn}>
-          Add
-        </Button>
-      </div>
-
+        <div>
+          {view >= 2 && (
+            <EntreeSelection
+              entreeData={entreeData2}
+              handleEntreeSelect={handleEntreeSelect2}
+            />
+          )}
+        </div>
+        <div>
+          {view >= 3 && (
+            <EntreeSelection
+              entreeData={entreeData3}
+              handleEntreeSelect={handleEntreeSelect3}
+            />
+          )}
+        </div>
+        <Stack direction="row" spacing={2} sx={{paddingBottom: "50px"}}>
+          <Button onClick={() => handleView(0)} variant="outlined" size="large">Cancel</Button>
+          <Button variant="contained" onClick={handleAddBtn} size="large">
+            Add
+          </Button>
+        </Stack>
+      </Stack>
     </div>
   );
 }

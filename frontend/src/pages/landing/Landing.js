@@ -5,16 +5,12 @@ import "../../styles/master.scss";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  useGoogleLogin,
-} from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { url } from "../../config/global";
 import { translateComponents } from "../../config/translate";
 import axios from "axios";
+import { Box, Stack } from "@mui/material";
 
 export default function Landing() {
   const userInfo = useUserInfo(); // get user info from global state
@@ -83,50 +79,61 @@ export default function Landing() {
   };
 
   return (
-    <div className="mainBody">
+    <Box sx={{ height: "100vh" }}>
       <Header name={"Landing"} />
-      <div style={content} className="content">
-        {userStateInfo === null && (
-          <div id="google" style={googleStyle}>
-            <GoogleOAuthProvider clientId={googleIdentityID}>
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  googleSignIn(credentialResponse);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-            </GoogleOAuthProvider>
-          </div>
-        )}
+      <Stack justifyContent="center" alignItems="center" height="80%">
+        <div style={content} className="content">
+          {userInfo === null && (
+            <div id="google" style={googleStyle}>
+              <GoogleOAuthProvider clientId={googleIdentityID}>
+                <GoogleLogin
+                  onSuccess={async (credentialResponse) => {
+                    googleSignIn(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
+              </GoogleOAuthProvider>
+            </div>
+          )}
 
-        <div className="landingTri">
-          {permission >= 0 && (
-            <div className="landingTri">
-              <div style={content}>
+
+          <div>
+            {permission >= 0 && (
+              <Stack
+                spacing={2}
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+              >
                 {permission >= 2 && (
                   <Link to="/manager">
-                    <Button variant="contained">Manager</Button>
+                    <Button variant="contained" size="large" fullWidth>
+                      Manager
+                    </Button>
                   </Link>
                 )}
                 {permission >= 1 && (
                   <Link to="/cashier">
-                    <Button variant="contained">Cashier</Button>
+                    <Button variant="contained" size="large" fullWidth>
+                      Cashier
+                    </Button>
                   </Link>
                 )}
-              </div>
-              {permission >= 0 && (
-                <div className="landingTri" style={content}>
-                  <Link to="/customer">
-                    <Button variant="contained">Customer</Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
+                {permission >= 0 && (
+                  <div style={content}>
+                    <Link to="/customer">
+                      <Button variant="contained" size="large" fullWidth>
+                        Customer
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </Stack>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 }
