@@ -35,8 +35,8 @@ function Map() {
     // eslint-disable-next-line no-undef
     const directionService = new google.maps.DirectionsService();
     const results = await directionService.route({
-      origin: originRef.current.value,
-      destination: center,
+      origin: center,
+      destination: originRef.current.value,
       // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING
     });
