@@ -10,6 +10,11 @@ import { url } from "../../config/global";
 import axios from "axios";
 import { Box, Stack } from "@mui/material";
 
+
+/**
+ * Creates the initial landing page, setting up dependancies and api to user such as oauth, g-translate, ...
+ * @returns returns the landing page components
+ */
 export default function Landing() {
   const userInfo = useUserInfo(); // get user info from global state
   const [userStateInfo, setUserStateInfo] = useState(userInfo);
@@ -19,7 +24,9 @@ export default function Landing() {
   const [permission, setPermission] = useState(
     userInfo === null ? -1 : userInfo.permission
   );
-
+  /**
+   * gets the user identity from oauth
+   */
   useEffect(() => {
     let options = {
       method: "GET",
@@ -29,13 +36,19 @@ export default function Landing() {
       setGoogleIdentityID(res.data.id);
     });
   }, []);
-
+  /**
+   * displays userInfo and sets permission and state
+   */
   useEffect(() => {
     console.log("UPDATE", userInfo);
     setUserStateInfo(userInfo);
     setPermission(userInfo === null ? -1 : userInfo.permission);
   }, [updateUserInfo]);
 
+  /**
+   * takes in sign in responce for the google sign in
+   * @param {*} response 
+   */
   function googleSignIn(response) {
     let decoded = jwt_decode(response.credential);
     let name = { first: decoded.given_name, last: decoded.family_name };
@@ -58,17 +71,24 @@ export default function Landing() {
       // probably want to save permission somewhere and also probably want to move this stuff to its own page
     });
   }
-
+  /**
+   * content box
+   */
   const content = {
     display: "flex",
     justifyContent: "center",
     marginBottom: "15px",
   };
-
+  /**
+   * google style box
+   */
   const googleStyle = {
     marginBottom: "30px",
   };
 
+  /**
+   * returns the style and set of the landing page depending on the user.
+   */
   return (
     <Box sx={{ height: "100vh" }}>
       <Header name={"Landing"} />
@@ -93,7 +113,6 @@ export default function Landing() {
           <div>
             {permission >= 0 && (
               <Stack
-                spacing={2}
                 direction={{ xs: "column", sm: "row" }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
               >

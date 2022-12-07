@@ -8,6 +8,12 @@ import { CenterWrapper } from "../../styles/CenterWrapper";
 // import axios from 'axios'
 // import { url } from "../../config/global.js";
 
+/**
+ * creates the orderview menu for the user
+ * 
+ * @param {*} user the user type  
+ * @returns 
+ */
 export default function OrderView({ user }) {
   const [view, setView] = useState(0);
   const [summaryData, setSummaryData] = useState([]);
@@ -23,19 +29,24 @@ export default function OrderView({ user }) {
     console.log(summaryItem);
     setSummaryData([...summaryData, summaryItem]);
   };
-
+  /**
+   * logs a checkout and then gives navigation 
+   */
   const toCheckout = () => {
     console.log("checking out");
     navigate(`checkout`, { state: { summaryData: [...summaryData] } });
   };
+  //handles button click
   const handleBtnClick = (v) => {
     setView(v);
   };
-
+  //button style
   const btnStyle = {
     width: "20ch",
   };
-
+  /**
+   * depending on the view type, the user receives a specific screen
+   */
   if (view === 0) {
     return (
       <CenterWrapper>
