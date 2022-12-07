@@ -30,6 +30,7 @@ export default function PlateView({ handleView, view, addItem }) {
   const [entreeData, setEntreeData] = useState([]);
   const [entreeData2, setEntreeData2] = useState([]);
   const [entreeData3, setEntreeData3] = useState([]);
+  const [appetizerData, setAppetizerData] = useState([]);
 
   const langInfo = useLang();
   let translated = false;
@@ -38,6 +39,7 @@ export default function PlateView({ handleView, view, addItem }) {
     if (view === 1) return "Bowl";
     else if (view === 2) return "Plate";
     else if (view === 3) return "Bigger Plate";
+    else if (view === -1) return "Appetizer";
     else return "Error";
   };
 
@@ -51,9 +53,7 @@ export default function PlateView({ handleView, view, addItem }) {
     return groups;
   }
 
-
   useEffect(() => {
-    // FIXME: AXIOS call to get entree and side data
     let options = {
       method: "GET",
       url: `${url}/items`,
@@ -64,6 +64,8 @@ export default function PlateView({ handleView, view, addItem }) {
       setEntreeData(extractGroups(data, 0).Entree);
       setEntreeData2(extractGroups(data, 1).Entree);
       setEntreeData3(extractGroups(data, 2).Entree);
+
+      // FIXME: setAppetizerData()
     });
 
     // [ {string name, int id,}]
@@ -82,6 +84,14 @@ export default function PlateView({ handleView, view, addItem }) {
       return item;
     });
     setSideData(updatedData);
+  };
+
+  const handleAppetizerSelect = (id) => {
+    const updatedData = appetizerData.map((item) => {
+      item.selected = item.id === id;
+      return item;
+    });
+    setAppetizerData(updatedData);
   };
 
   const handleEntreeSelect = (id) => {
@@ -117,34 +127,55 @@ export default function PlateView({ handleView, view, addItem }) {
     handleView(0);
 
     let selectedItems = [];
-    selectedItems.push(getSelectedItems(sideData));
-    selectedItems.push(getSelectedItems(entreeData));
+    view === -1 && selectedItems.push(getSelectedItems(appetizerData));
+    view >= 1 && selectedItems.push(getSelectedItems(sideData));
+    view >= 1 && selectedItems.push(getSelectedItems(entreeData));
     view >= 2 && selectedItems.push(getSelectedItems(entreeData2));
     view >= 3 && selectedItems.push(getSelectedItems(entreeData3));
 
     addItem(getTitle(), selectedItems);
   };
 
-
   return (
     <div>
-      <h1 style={{textAlign: "center"}}>{getTitle()}</h1>
+      <h1 style={{ textAlign: "center" }}>{getTitle()}</h1>
       <Divider />
       <Stack spacing={5}>
-        <div>
+        {view === -1 && (
           <div>
-            <h2>Sides</h2>
+            <div>
+              <h2>Appetizer</h2>
+              <div>
+                <SelectButtons
+                  items={sideData}
+                  handleSelect={handleAppetizerSelect}
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <SelectButtons items={sideData} handleSelect={handleSideSelect} />
-          </div>
-        </div>
-        <div>
-          <EntreeSelection
-            entreeData={entreeData}
-            handleEntreeSelect={handleEntreeSelect}
-          />
-        </div>
+        )}
+        {view >= 1 && (
+          <>
+            <div>
+              <div>
+                <h2>Sides</h2>
+              </div>
+              <div>
+                <SelectButtons
+                  items={sideData}
+                  handleSelect={handleSideSelect}
+                />
+              </div>
+            </div>
+
+            <div>
+              <EntreeSelection
+                entreeData={entreeData}
+                handleEntreeSelect={handleEntreeSelect}
+              />
+            </div>
+          </>
+        )}
         <div>
           {view >= 2 && (
             <EntreeSelection
@@ -161,8 +192,10 @@ export default function PlateView({ handleView, view, addItem }) {
             />
           )}
         </div>
-        <Stack direction="row" spacing={2} sx={{paddingBottom: "50px"}}>
-          <Button onClick={() => handleView(0)} variant="outlined" size="large">Cancel</Button>
+        <Stack direction="row" spacing={2} sx={{ paddingBottom: "50px" }}>
+          <Button onClick={() => handleView(0)} variant="outlined" size="large">
+            Cancel
+          </Button>
           <Button variant="contained" onClick={handleAddBtn} size="large">
             Add
           </Button>

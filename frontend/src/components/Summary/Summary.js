@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { textAlign } from "@mui/system";
 import SummaryCard from "./SummaryCard";
 import { useLang } from "../../contexts/LanguageContext";
 import { translateComponents } from "../../config/translate";
@@ -13,7 +12,7 @@ export default function Summary({ data }) {
     }
   }, []);
 
-  if (data) {
+  if (data.length !== 0) {
     return (
       <div>
         <h3> Summary: </h3>
