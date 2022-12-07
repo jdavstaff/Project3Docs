@@ -114,7 +114,7 @@ app.get('/updateInventory', (req, response) => {
   let name = req.query.name
   let quantity = req.query.quantity
   console.log(id + ' ' + name + ' ' + quantity)
-  let query = `UPDATE INVENTORY SET NAME = $1, QUANTITY = $2 WHERE ID = $3`
+  let query = `UPDATE INVENTORY SET NAME = $1, QUANTITY = $2 WHERE INGREDIENT_ID = $3`
   pool.query(query, [name, quantity, id], (err, res) => {
     if(err) {
       console.log(err)
