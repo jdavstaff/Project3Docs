@@ -13,6 +13,9 @@ import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
+/**
+ * Runs the web application, connecting all of the pages
+ */
 function App() {
   const theme = createTheme({
     palette: {
