@@ -44,7 +44,7 @@ export default function PlateView({ handleView, view, addItem }) {
   };
 
   function extractGroups(rows, num) {
-    let groups = { Entree: [], Side: [] };
+    let groups = { Entree: [], Side: [], Appetizer: [] };
     rows.forEach((el) => {
       let item = Object.assign({}, el);
       item.key = item.id + num * 1000;
@@ -66,6 +66,8 @@ export default function PlateView({ handleView, view, addItem }) {
       setEntreeData3(extractGroups(data, 2).Entree);
 
       // FIXME: setAppetizerData()
+      console.log(extractGroups(data, 3).Appetizer)
+      setAppetizerData(extractGroups(data, 3).Appetizer)
     });
 
     // [ {string name, int id,}]
@@ -147,7 +149,7 @@ export default function PlateView({ handleView, view, addItem }) {
               <h2>Appetizer</h2>
               <div>
                 <SelectButtons
-                  items={sideData}
+                  items={appetizerData}
                   handleSelect={handleAppetizerSelect}
                 />
               </div>

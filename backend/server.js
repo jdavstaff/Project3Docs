@@ -149,7 +149,7 @@ app.get("/invDelete", (req, response) => {
 
 app.get("/items", (req, response) => {
   pool.query(
-    `SELECT * FROM ITEM WHERE CATEGORY = 'Entree' OR CATEGORY = 'Side'`,
+    `SELECT * FROM ITEM WHERE CATEGORY = 'Entree' OR CATEGORY = 'Side' OR CATEGORY = 'Appetizer'`,
     (err, res) => {
       if (err) {
         response.json({ err: err });
