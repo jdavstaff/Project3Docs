@@ -66,7 +66,6 @@ export default function PlateView({ handleView, view, addItem }) {
       setEntreeData3(extractGroups(data, 2).Entree);
 
       // FIXME: setAppetizerData()
-      console.log(extractGroups(data, 3).Appetizer)
       setAppetizerData(extractGroups(data, 3).Appetizer)
     });
 
@@ -90,7 +89,7 @@ export default function PlateView({ handleView, view, addItem }) {
 
   const handleAppetizerSelect = (id) => {
     const updatedData = appetizerData.map((item) => {
-      item.selected = item.id === id;
+      item.selected = item.key === id;
       return item;
     });
     setAppetizerData(updatedData);
