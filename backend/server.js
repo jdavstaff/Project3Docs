@@ -5,8 +5,8 @@ const path = require("path");
 const { Pool } = require("pg");
 const { Translate } = require("@google-cloud/translate").v2;
 
-// dotenv.config({ path: "./.env" });
-const PORT = process.env.PORT || 10000; // this needs to match proxy in front-end package.json
+dotenv.config({ path: "./.env" });
+const PORT = process.env.PORT || 1111; // this needs to match proxy in front-end package.json
 
 const app = express();
 app.use(cors());
