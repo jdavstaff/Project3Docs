@@ -91,9 +91,9 @@ export default function Inventory() {
       }
     }
     axios.request(options).then((res) => {
+      console.log('done')
     })
 
-    console.log("THE ID", id);
     setData(
       data.map((dat) => {
         if (dat.ingredient_id === id) {
