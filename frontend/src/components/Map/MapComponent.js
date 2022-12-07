@@ -1,6 +1,6 @@
 import "./Map.css"
-import { useLoadScript, GoogleMap, StandaloneSearchBox, Marker } from "@react-google-maps/api";
-import { useMemo, useState } from "react";
+import { useLoadScript, GoogleMap, StandaloneSearchBox, Marker, DirectionsRenderer } from "@react-google-maps/api";
+import { useMemo, useState, useRef } from "react";
 
 const lib = ['places'];
 const containerStyle = {
@@ -18,16 +18,35 @@ export default function Mapper() {
 }
 
 
-
 function Map() {
-  const center = useMemo(() => ({lat: 30.622370, lng: -96.325851}), []);
+  const center = useMemo(() => ({lat: 30.612259, lng: -96.3415278}), []);
   const [searchBox, setSearchBox] = useState(null);
   const [selected, setSelected] = useState(center);
 
+  const [directionResponse, setDirectionResponse] = useState(null);
+
+  const originRef = useRef();
+
+  async function calculateRoute() {
+    if (originRef.current.value === '') {
+      return 
+    }
+
+    // eslint-disable-next-line no-undef
+    const directionService = new google.maps.DirectionsService();
+    const results = await directionService.route({
+      origin: originRef.current.value,
+      destination: center,
+      // eslint-disable-next-line no-undef
+      travelMode: google.maps.TravelMode.DRIVING
+    });
+
+    setDirectionResponse(results);
+  }
+
   const onPlacesChanged = () => {
-    //searchBox.getPlaces();
-    //console.log(searchBox.getPlaces()[0]);
     setSelected(searchBox.getPlaces()[0].geometry.location.toJSON());
+    calculateRoute();
   };
   
   const onLoad = ref => { setSearchBox(ref); };
@@ -38,7 +57,7 @@ function Map() {
     <div className="Wrapper">
       <div className="MapContainer">
         <GoogleMap
-        zoom={8}
+        zoom={15}
         center={selected}
         mapContainerStyle={containerStyle}>
             <StandaloneSearchBox
@@ -63,9 +82,12 @@ function Map() {
                 top: '40px',
                 marginLeft: '50%'
               }}
+              ref={originRef}
             />
             </StandaloneSearchBox>
             selected && <Marker position={selected}/>
+            <Marker position={center}/>
+            {directionResponse && <DirectionsRenderer directions={directionResponse}/>}
         </GoogleMap>
       </div>
     </div>
