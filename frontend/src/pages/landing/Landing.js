@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUserInfo, useUserInfoUpdate } from "../../contexts/UserContext";
+import { useLang, useLangUpdate } from "../../contexts/LanguageContext";
 import "../../styles/master.scss";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
@@ -7,12 +8,16 @@ import Button from "@mui/material/Button";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { url } from "../../config/global";
+import { translateComponents } from "../../config/translate";
 import axios from "axios";
 import { Box, Stack } from "@mui/material";
 
 export default function Landing() {
   const userInfo = useUserInfo(); // get user info from global state
+  const [userStateInfo, setUserStateInfo] = useState(userInfo);
   const updateUserInfo = useUserInfoUpdate();
+
+  const langInfo = useLang();
 
   const [googleIdentityID, setGoogleIdentityID] = useState(null);
   const [permission, setPermission] = useState(
@@ -27,7 +32,18 @@ export default function Landing() {
     axios.request(options).then((res) => {
       setGoogleIdentityID(res.data.id);
     });
+
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+    // console.log("Language: ", langInfo);
   }, []);
+
+  useEffect(() => {
+    console.log("UPDATE", userInfo);
+    setUserStateInfo(userInfo);
+    setPermission(userInfo === null ? -1 : userInfo.permission);
+  }, [updateUserInfo]);
 
   function googleSignIn(response) {
     let decoded = jwt_decode(response.credential);
@@ -55,7 +71,6 @@ export default function Landing() {
   const content = {
     display: "flex",
     justifyContent: "center",
-    // backgroundColor: "red",
     marginBottom: "15px",
   };
 
@@ -82,6 +97,7 @@ export default function Landing() {
               </GoogleOAuthProvider>
             </div>
           )}
+
 
           <div>
             {permission >= 0 && (

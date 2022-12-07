@@ -13,6 +13,8 @@ import Paper from "@mui/material/Paper";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import IconButton from "@mui/material/IconButton";
 import InventoryDialog from "./InventoryDialog.js";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { Box, Button, Stack } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
@@ -24,6 +26,10 @@ export default function Inventory() {
   const [quantity, setQuantity] = useState("");
   const [id, setId] = useState(0);
 
+  let translated = false;
+
+  const langInfo = useLang();
+  
   const deleteIconStyling = {
     backgroundColor: "#FFD9D9",
     borderRadius: "5px",
@@ -39,6 +45,13 @@ export default function Inventory() {
       setData(rows);
     });
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [data]);
 
   const handleEdit = (dat) => {
     setName(dat.name);

@@ -17,6 +17,8 @@ import { url } from "../../config/global";
 import axios from "axios";
 import { Button, Stack } from "@mui/material";
 import MyMenuDialog from "./MyMenuDialog";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { Link } from "react-router-dom";
 
 function createData(name, id, price, type, ingredients) {
@@ -90,6 +92,10 @@ export default function MyMenu() {
   const [data, setData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const langInfo = useLang();
+
+  let translated = false;
+
   const handleOpen = () => {
     setOpenDialog(true);
   };
@@ -101,9 +107,20 @@ export default function MyMenu() {
   // FIXME: delete int id from database
   function handleDelete(id) {
     console.log(id);
-    // add here
+    
+    let options = {
+      method: "GET",
+      url: `${url}/deleteMenuItem`,
+      params: {
+        id: id
+      }
+    }
 
-    setData(data.filter((d) => d.id !== id));
+    axios.request(options).then((res) => {
+      setData(data.filter((d) => d.id !== id));
+    })
+
+    //setData(data.filter((d) => d.id !== id));
   }
 
   const addMenuItem = (newName, newIngredients, newPrice, newType) => {
@@ -111,9 +128,24 @@ export default function MyMenu() {
     console.log(newName);
     console.log(newIngredients);
     console.log(newType);
+    
+    // Get the menu id from the database
+    let options = {
+      method: "GET",
+      url: `${url}/getMenuID`,
+      params: {
+        name: newName
+      }
+    }
 
-    let d = createData(newName, -1, newPrice, newType, newIngredients);
-    setData([...data, d]);
+    axios.request(options).then((res) => {
+      console.log("New menu ID: ", res.data.rows[0].id);
+      let d = createData(newName, res.data.rows[0].id, newPrice, newType, newIngredients);
+      setData([...data, d]);
+    })
+
+    // let d = createData(newName, -1, newPrice, newType, newIngredients);
+    // setData([...data, d]);
   };
 
   useEffect(() => {
@@ -156,8 +188,19 @@ export default function MyMenu() {
         return items[key];
       });
       setData(items);
+
+      if (langInfo !== "en" && langInfo !== null) {
+        translateComponents(langInfo);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [data]);
 
   return (
     <div>

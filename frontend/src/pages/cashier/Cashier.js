@@ -1,16 +1,13 @@
-import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import OrderView from "../view/OrderView";
-import "../../styles/master.scss";
+import Mapper from "../../components/Map/MapComponent";
 
 export default function Cashier() {
   return (
     <div>
       <Header name={"Cashier"} />
-      <div className="content">
-        <OrderView user={"cashier"} />
-      </div>
+      <OrderView user={"cashier"} />
+      <Mapper/>
     </div>
   );
 }

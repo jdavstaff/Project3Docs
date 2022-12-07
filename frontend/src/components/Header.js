@@ -4,22 +4,72 @@ import { Grid, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
-import { useUserInfo } from "../contexts/UserContext";
-import { langEnglish } from "../config/global.js";
+import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
+import { useLang, useLangUpdate } from "../contexts/LanguageContext";
+import { url, langEnglish } from "../config/global.js"
 import { translateComponents } from "../config/translate";
 import { Link } from "react-router-dom";
 import Panda from "../static/panda.png";
+import axios from "axios";
+
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const [languages, setLanguages] = useState([]);
   const open = Boolean(anchorEl);
+  const openProfileMenu = Boolean(profileAnchorEl);
 
   const userInfo = useUserInfo();
+  const updateUserInfo = useUserInfoUpdate();
+
+  const langInfo = useLang();
+  const [langStateInfo, setLangStateInfo] = useState(langInfo);
+  const updateLangInfo = useLangUpdate();
+
+  const convertLanguageNames = (langs) => {
+    let langList = [...langs];
+    var langsProcessed = 0;
+
+    langs.forEach((element, index) => {
+      // Make the languages written in their own language
+      let options = {
+        method: "GET",
+        url: `${url}/translate`,
+        params: {
+          text: element.name,
+          target: element.code,
+        },
+      };
+
+      axios.request(options).then((res) => {
+        // Set the name to the translated value
+        langList[index].name = res.data;
+
+        langsProcessed++;
+
+        if (langsProcessed === langList.length) {
+          // The last 3 languages are repeats for some reason
+          setLanguages(langList);
+        }
+      });
+    });
+  };
 
   useEffect(() => {
     setLanguages(langEnglish);
+    convertLanguageNames(langEnglish);
+
+    // if (langInfo !== "en" && langInfo !== null) {
+    //   translateComponents(langInfo);
+    // }
+    // console.log("Language: ", langInfo);
   }, []);
+
+  // useEffect(() => {
+  //   console.log("UPDATE:", langInfo);
+  //   setLangStateInfo(langInfo);
+  // }, [updateLangInfo]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,10 +78,23 @@ export default function Header({ name }) {
     setAnchorEl(null);
   };
 
+  const handleProfileClick = (e) => {
+    setProfileAnchorEl(e.currentTarget);
+  };
+  const handleProfileClose = () => {
+    setProfileAnchorEl(null);
+  };
+
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
+    updateLangInfo(language);
     translateComponents(language);
     handleClose();
+  };
+
+  const onLogout = () => {
+    updateUserInfo(null);
+    setProfileAnchorEl(null);
   };
   const headerStyle = {
     textAlign: "center",
@@ -86,20 +149,38 @@ export default function Header({ name }) {
               },
             }}
           >
-            {languages.map((langInfo) => (
-              <MenuItem onClick={() => onSelectLanguage(langInfo.code)}>
+            {languages.map((langInfo, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => onSelectLanguage(langInfo.code)}
+              >
                 {langInfo.name}
               </MenuItem>
             ))}
           </Menu>
           {userInfo && (
-            <Tooltip title="Profile">
-              <IconButton>
-                <Avatar sx={{ bgcolor: deepPurple[500] }}>
-                  {userInfo.name.first.charAt(0)}
-                </Avatar>
-              </IconButton>
-            </Tooltip>
+            <>
+              <Tooltip title="Profile">
+                <IconButton onClick={handleProfileClick}>
+                  <Avatar sx={{ bgcolor: deepPurple[500] }}>
+                    {userInfo.name.first.charAt(0)}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="profile-menu"
+                anchorEl={profileAnchorEl}
+                open={openProfileMenu}
+                onClose={handleProfileClose}
+                MenuListProps={{
+                  "aria-labelledby": "profile-button",
+                }}
+              >
+                <Link to="/">
+                  <MenuItem onClick={onLogout}>Logout</MenuItem>
+                </Link>
+              </Menu>
+            </>
           )}
         </Stack>
       </Grid>
