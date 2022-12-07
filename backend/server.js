@@ -195,19 +195,19 @@ app.get("/placeOrder", (req, response) => {
   let i = 0; // keeps track of how many items have been inserted
 
   // im sorry this has to be nested like this, you can only insert things asynchronously and this is the only way to make sure it is in the right order
-  let query = `WITH INSERT_TICKET AS (INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE, EMAIL) VALUES (NOW() AT TIME ZONE 'US/Central', $1, $2)) SELECT MAX(ID)+1 AS MAX FROM TICKET`;
+  let query = `INSERT INTO TICKET(ORDER_TIME, TOTAL_PRICE) VALUES (NOW() AT TIME ZONE 'US/Central', $1) RETURNING ID`;
   // insert ticket
   pool
-    .query(query, [totalPrice, req.query.data.email])
+    .query(query, [totalPrice])
     .then((res) => {
-      let ticketId = res.rows[0].max;
+      let ticketId = res.rows[0].id;
       input.forEach((order) => {
         // insert orders
-        query = `WITH INSERT_ORDER AS (INSERT INTO ORDERS(TICKET_ID, SIZE_ID) VALUES ($1, (SELECT ID FROM SIZE WHERE NAME = $2))) SELECT MAX(ID)+1 AS MAX FROM ORDERS`;
+        query = `INSERT INTO ORDERS(TICKET_ID, SIZE_ID) VALUES ($1, (SELECT ID FROM SIZE WHERE NAME = $2)) RETURNING ID`;
         pool
           .query(query, [ticketId, order.size])
           .then((res2) => {
-            let orderId = res2.rows[0].max;
+            let orderId = res2.rows[0].id;
             order.items.forEach((item) => {
               // insert items
               query = `INSERT INTO BRIDGE(ORDER_ID, ITEM_ID, AMOUNT) VALUES ($1, $2,
@@ -389,3 +389,126 @@ app.get("/items", (req, response) => {
     }
   );
 });
+
+// Get the item id for a given menu item
+app.get("/getMenuID", (req, response) => {
+  let name = req.query.name;
+
+  //console.log("Requesting ID for: ", name);
+  pool.query(`SELECT ID FROM ITEM WHERE NAME=$1`, [name], 
+
+    (err, res) => {
+      if (err) {
+        console.log(err);
+        response.json({ err: err });
+        return;
+      }
+      console.log(res);
+      response.json({ rows: res.rows });
+    })
+})
+
+// Add a menu item to the database
+app.get("/addMenuItem", (req, response) => {
+  let queryThing = `INSERT INTO ITEM(NAME, CATEGORY, EXTRA_PRICE) VALUES ('${req.query.name}', '${req.query.category}', ${req.query.price})`;
+
+  //console.log(queryThing);
+
+
+  pool.query(queryThing, (err, res) => {
+    if (err) {
+      console.log(err);
+      response.json({err: err});
+      return;
+    }
+    //response.json({ res: res.rows });
+
+    let ingreds = req.query.ingredients;
+
+    // console.log("Menu name: ", req.query.name);
+    // console.log("Menu category: ", req.query.category);
+    // console.log("Menu price: ", req.query.price);
+    // console.log("Menu ingredients: ", req.query.ingredients);
+
+    let ingredientCount = 0;
+
+
+    ingreds.forEach((ingredient) => {
+      let ingredientMapping = `INSERT INTO ITEM_INGREDIENTS(ITEM_ID, INVENTORY_ID, AMOUNT) VALUES ((SELECT ID FROM ITEM WHERE NAME = '${req.query.name}'), (SELECT INGREDIENT_ID FROM INVENTORY WHERE NAME = '${ingredient.name}'), ${ingredient.amount})`
+
+      pool.query(ingredientMapping, (err2, res2) => {
+        if (err2) {
+          console.log(err2);
+          response.json({err: err2});
+          return;
+        }
+
+        ingredientCount++;
+
+        if (ingredientCount === ingreds.length) {
+          response.json({ res: res2.rows });
+        }
+
+        //response.json({ res: res2.rows });
+      })
+    });
+  }
+
+  )
+
+})
+
+app.get("/deleteMenuItem", (req, response) => {
+  let removeConnections = `DELETE FROM ITEM_INGREDIENTS WHERE ITEM_ID = ${req.query.id}`;
+
+  pool.query(removeConnections, (err, res) => {
+    if (err) {
+      console.log(err);
+      response.json({ err: err });
+      return;
+    }
+    //console.log("Deleted all ingredient connections");
+
+    let deleteMenuItem = `DELETE FROM ITEM WHERE ID = ${req.query.id}`
+
+    pool.query(deleteMenuItem, (err2, res2) => {
+      if (err2) {
+        console.log(err2);
+        response.json({ err: err2 });
+        return;
+      }
+
+      //console.log("Deleted menu item");
+      response.json({ rows: res.rows });
+    })
+  })
+})
+
+app.get('/people', (req, response) => {
+  let query = `SELECT FIRST_NAME || ' ' || LAST_NAME AS NAME,
+                  EMAIL,
+                  PERMISSION
+                FROM USERS`
+  pool.query(query, (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({rows: res.rows})
+  })
+})
+
+app.get('/change-perm', (req, response) => {
+  let perm = req.query.perm
+  let email = req.query.email
+  let query = `UPDATE USERS SET PERMISSION = $1 WHERE EMAIL = $2`
+  pool.query(query, [perm, email], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({err: false})
+  })
+})

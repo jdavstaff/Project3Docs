@@ -1,20 +1,21 @@
 
 .MapContainer{
-    width: 95%;
+    width: 100%;
     height: 100%;
 
     background-color: black;
     border-radius: 10px;
-    padding: 7px
+    padding: 7px;
+    margin: 10px
 }
 
 .Wrapper{
-    
+    width: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
 
-    padding: 20px;
-    margin: 15px 10vh 15px 10vh;
+    padding: 10px;
+    margin: 35px auto;
 }

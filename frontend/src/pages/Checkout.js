@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Summary from "../components/Summary/Summary";
 import axios from "axios";
-import { url } from '../config/global'
+import { url } from "../config/global";
 import { translateComponents } from "../config/translate";
-
+import { CenterWrapper } from "../styles/CenterWrapper";
 
 export default function Checkout({ user }) {
   const location = useLocation();
@@ -42,23 +42,23 @@ export default function Checkout({ user }) {
   return (
     <div>
       <Header name={`${user} Checkout`} />
-      <div className="content">
-        <div class="center">
-          <Summary data={location.state.summaryData} />
-        </div>
-        <div class="center">
-          <Link to={`/${user}`}>
-            <Button class="button del">Cancel</Button>
-          </Link>
-          <Link to={`/${user}`}>
-            <Button class="button" onClick={handleOrder}>
-              Order
-            </Button>
-          </Link>
-        </div>
-      </div>
-    <button onClick={translateComponents}>translate</button>
-      
+      <CenterWrapper>
+        <Stack spacing={2}>
+          <div>
+            <Summary data={location.state.summaryData} />
+          </div>
+          <Stack spacing={2} direction="row">
+            <Link to={`/${user}`}>
+              <Button variant="outlined">Cancel</Button>
+            </Link>
+            <Link to={`/${user}`}>
+              <Button variant="contained" onClick={handleOrder}>
+                Order
+              </Button>
+            </Link>
+          </Stack>
+        </Stack>
+      </CenterWrapper>
     </div>
   );
 }

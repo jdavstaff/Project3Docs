@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { Stack } from "@mui/material";
 
 export default function InventoryDialog({
   open,
@@ -47,7 +48,7 @@ export default function InventoryDialog({
     <Dialog open={open} onClose={handleClose} keepMounted>
       <DialogTitle>Update Item</DialogTitle>
       <DialogContent dividers>
-        <div>
+        <Stack spacing={2}>
           <div>
             <TextField
               id="outlined-basic"
@@ -69,7 +70,7 @@ export default function InventoryDialog({
               helperText={errorText}
             />
           </div>
-        </div>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
