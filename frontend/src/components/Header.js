@@ -10,6 +10,11 @@ import { translateComponents } from "../config/translate";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+/**
+ * Creates the header component for the user depending on the name
+ * @param {*} name 
+ * @returns A grid header to populate the header
+ */
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
