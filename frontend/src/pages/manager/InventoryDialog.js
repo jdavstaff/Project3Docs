@@ -9,6 +9,16 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 
+/**
+ * Popup dialog box for changing inventory
+ * @param {Function} open Handler for opening dialog box
+ * @param {Function} onClose Handler for closing dialog box
+ * @param {Function} onUpdate Handler for updating inventory
+ * @param {String} _name Current name of item ("" If new item)
+ * @param {Number} _quantity Current quantity of item (0 if new item)
+ * @param {Number} _id Current id of item (0 if new item)
+ * @returns HTML for dialog menu for inventory changes
+ */
 export default function InventoryDialog({
   open,
   onClose,
@@ -21,14 +31,25 @@ export default function InventoryDialog({
   const [quantity, setQuantity] = useState(_quantity);
   const [errorText, setErrorText] = useState("");
 
+  /**
+   * Handler for name changes
+   * @param {Event} e Event causing change
+   */
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
 
+  /**
+   * Handler for quantity changes
+   * @param {Event} e Event causing change 
+   */
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
 
+  /**
+   * Handler for updating inventory
+   */
   const handleUpdate = () => {
     if (isNaN(quantity)) {
       // if quantity is not a number
@@ -39,6 +60,9 @@ export default function InventoryDialog({
     }
   };
 
+  /**
+   * Handles closing the dialog box
+   */
   const handleClose = () => {
     setErrorText("");
     onClose();

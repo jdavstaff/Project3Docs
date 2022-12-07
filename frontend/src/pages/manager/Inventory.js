@@ -16,6 +16,9 @@ import InventoryDialog from "./InventoryDialog.js";
 import { Box, Button, Stack } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
+/**
+ * Component for table displaying inventory levels
+ */
 export default function Inventory() {
   const [data, setData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -40,6 +43,10 @@ export default function Inventory() {
     });
   }, []);
 
+  /**
+   * Handler for editing inventory entries
+   * @param {*} dat Row to replace in the inventory
+   */
   const handleEdit = (dat) => {
     setName(dat.name);
     setQuantity(dat.quantity);
@@ -47,6 +54,10 @@ export default function Inventory() {
     setDialogOpen(true);
   };
 
+  /**
+   * Handler for removing inventory entries
+   * @param {*} dat Row to remove from the inventory
+   */
   const handleDelete = (dat) => {
     // FIXME: should delete "dat" from db
     // dat: int indgredient_id, string name, int quantity
@@ -59,11 +70,19 @@ export default function Inventory() {
     setData(data.filter((d) => d.ingredient_id !== dat.ingredient_id));
   };
 
+  /**
+   * Closes popup for adding inventory items
+   */
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
 
-  // FIXME: update db with new dat
+  /**
+   * Handles adding inventory entries
+   * @param {String} name Name for the inventory item
+   * @param {Number} quantity Amount of item in inventory
+   * @param {Number} id Numerical identifier for inventory item
+   */
   const handleDialogUpdate = (name, quantity, id) => {
     // FIXME: update db with string name, string quantity
     console.log(name, parseInt(quantity));
@@ -82,15 +101,25 @@ export default function Inventory() {
     setDialogOpen(false);
   };
 
+  /**
+   * Opens dialog box for adding inventory items
+   */
   const handleAddDialogOpen = () => {
     setAddDialogOpen(true);
   };
 
+  /**
+   * Closes dialog box for adding inventory items
+   */
   const handleAddDialogClose = () => {
     setAddDialogOpen(false);
   };
 
-  // FIXME: backend should add the following item
+  /**
+   * Handles adding a new inventory item to the inventory
+   * @param {String} name Name for the inventory item
+   * @param {Number} quantity Amount of item to add to inventory
+   */
   const handleAddDialogUpdate = (name, quantity) => {
     console.log("Add item: ", name, quantity);
 
