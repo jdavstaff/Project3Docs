@@ -21,6 +21,8 @@ import Paper from "@mui/material/Paper";
 import { url } from "../../config/global";
 import axios from "axios";
 import { Stack, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 // Creates a date and time selector
 function MaterialUIDateTimeSelect({ value, handleChange, labelName }) {
@@ -359,6 +361,16 @@ export default function Reports() {
               </TableContainer>
             </AccordionDetails>
           </Accordion>
+
+          <Link to="/">
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ marginTop: "10px" }}
+            >
+              Back
+            </Button>
+          </Link>
         </Box>
       </Stack>
     </div>

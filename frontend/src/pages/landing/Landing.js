@@ -86,7 +86,6 @@ export default function Landing() {
           <div>
             {permission >= 0 && (
               <Stack
-                spacing={2}
                 direction={{ xs: "column", sm: "row" }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
               >

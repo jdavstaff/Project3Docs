@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, Button, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import { Link } from "react-router-dom";
 import Fade from "@mui/material/Fade";
 
 function createData(name, email, id, permission) {
@@ -164,6 +165,12 @@ export default function Access() {
               </TableBody>
             </Table>
           </TableContainer>
+
+          <Link to="/">
+            <Button variant="outlined" color="secondary">
+              Back
+            </Button>
+          </Link>
         </Stack>
       </Stack>
     </>
