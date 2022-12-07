@@ -109,6 +109,21 @@ app.get("/addInventory", (req, response) => {
   );
 })
 
+app.get('/updateInventory', (req, response) => {
+  let id = req.query.id
+  let name = req.query.name
+  let quantity = req.query.quantity
+  let query = `UPDATE INVENTORY SET NAME = $1, QUANTITY = $2 WHERE ID = $3`
+  pool.query(query, [name, quantity, id], (err, res) => {
+    if(err) {
+      console.log(err)
+      response.json({err: err})
+      return
+    }
+    response.json({err: false})
+  })
+})
+
 app.get("/getInvID", (req, response) => {
   let name = req.query.name;
   pool.query(`SELECT INGREDIENT_ID FROM INVENTORY WHERE NAME=$1`, [name],
