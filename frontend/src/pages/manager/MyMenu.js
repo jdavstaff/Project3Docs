@@ -15,8 +15,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { url } from "../../config/global";
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import MyMenuDialog from "./MyMenuDialog";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
+import { Link } from "react-router-dom";
 
 function createData(name, id, price, type, ingredients) {
   return { name, id, price, type, ingredients: [...ingredients] };
@@ -47,8 +50,19 @@ function Row({ row, handleDelete }) {
         <TableCell align="right">{row.price}</TableCell>
         <TableCell align="right">{row.type}</TableCell>
         <TableCell align="center">
-          <IconButton onClick={() => handleDelete(row.id)}>
-            <DeleteOutlineIcon />
+          <IconButton
+            sx={{
+              backgroundColor: "#FFD9D9",
+              borderRadius: "5px",
+            }}
+            onClick={() => handleDelete(row.id)}
+          >
+            <DeleteOutlineIcon
+              sx={{
+                color: "#D91111",
+                backgroundColor: "#FFD9D9",
+              }}
+            />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -62,7 +76,6 @@ function Row({ row, handleDelete }) {
               <ul>
                 {row.ingredients.map((ingr) => (
                   <li key={ingr.id}>
-                    {" "}
                     {ingr.name}: {ingr.amount} oz{" "}
                   </li>
                 ))}
@@ -79,6 +92,10 @@ export default function MyMenu() {
   const [data, setData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
 
+  const langInfo = useLang();
+
+  let translated = false;
+
   const handleOpen = () => {
     setOpenDialog(true);
   };
@@ -90,9 +107,20 @@ export default function MyMenu() {
   // FIXME: delete int id from database
   function handleDelete(id) {
     console.log(id);
-    // add here
+    
+    let options = {
+      method: "GET",
+      url: `${url}/deleteMenuItem`,
+      params: {
+        id: id
+      }
+    }
 
-    setData(data.filter((d) => d.id !== id));
+    axios.request(options).then((res) => {
+      setData(data.filter((d) => d.id !== id));
+    })
+
+    //setData(data.filter((d) => d.id !== id));
   }
 
   const addMenuItem = (newName, newIngredients, newPrice, newType) => {
@@ -100,9 +128,24 @@ export default function MyMenu() {
     console.log(newName);
     console.log(newIngredients);
     console.log(newType);
+    
+    // Get the menu id from the database
+    let options = {
+      method: "GET",
+      url: `${url}/getMenuID`,
+      params: {
+        name: newName
+      }
+    }
 
-    let d = createData(newName, -1, newPrice, newType, newIngredients);
-    setData([...data, d]);
+    axios.request(options).then((res) => {
+      console.log("New menu ID: ", res.data.rows[0].id);
+      let d = createData(newName, res.data.rows[0].id, newPrice, newType, newIngredients);
+      setData([...data, d]);
+    })
+
+    // let d = createData(newName, -1, newPrice, newType, newIngredients);
+    // setData([...data, d]);
   };
 
   useEffect(() => {
@@ -145,39 +188,62 @@ export default function MyMenu() {
         return items[key];
       });
       setData(items);
+
+      if (langInfo !== "en" && langInfo !== null) {
+        translateComponents(langInfo);
+      }
     });
   }, []);
 
-  return (
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [data]);
 
+  return (
     <div>
-     <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="center">Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <Row key={row.id} row={row} handleDelete={handleDelete} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button variant="contained" onClick={handleOpen}>
-        Add Item
-      </Button>
+      <Stack alignItems="center">
+        <Stack spacing={2}>
+          <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+            <Table
+              sx={{ minWidth: "sm", width: "80vw", maxWidth: "md" }}
+              aria-label="collapsible table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell>Name</TableCell>
+                  <TableCell align="right">Price</TableCell>
+                  <TableCell align="right">Type</TableCell>
+                  <TableCell align="center">Edit</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((row) => (
+                  <Row key={row.id} row={row} handleDelete={handleDelete} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Stack direction="row" justifyContent="space-between">
+            <Link to="/">
+              <Button variant="outlined" color="secondary">
+                Back
+              </Button>
+            </Link>
+            <Button variant="contained" onClick={handleOpen}>
+              Add Item
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
       <MyMenuDialog
         open={openDialog}
         onClose={handleClose}
         onAddMenuItem={addMenuItem}
       />
     </div>
-
   );
 }

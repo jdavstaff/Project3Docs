@@ -5,9 +5,13 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
-import { langEnglish } from "../config/global.js";
+import { useLang, useLangUpdate } from "../contexts/LanguageContext";
+import { url, langEnglish } from "../config/global.js"
 import { translateComponents } from "../config/translate";
 import { Link } from "react-router-dom";
+import Panda from "../static/panda.png";
+import axios from "axios";
+
 
 export default function Header({ name }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -19,9 +23,53 @@ export default function Header({ name }) {
   const userInfo = useUserInfo();
   const updateUserInfo = useUserInfoUpdate();
 
+  const langInfo = useLang();
+  const [langStateInfo, setLangStateInfo] = useState(langInfo);
+  const updateLangInfo = useLangUpdate();
+
+  const convertLanguageNames = (langs) => {
+    let langList = [...langs];
+    var langsProcessed = 0;
+
+    langs.forEach((element, index) => {
+      // Make the languages written in their own language
+      let options = {
+        method: "GET",
+        url: `${url}/translate`,
+        params: {
+          text: element.name,
+          target: element.code,
+        },
+      };
+
+      axios.request(options).then((res) => {
+        // Set the name to the translated value
+        langList[index].name = res.data;
+
+        langsProcessed++;
+
+        if (langsProcessed === langList.length) {
+          // The last 3 languages are repeats for some reason
+          setLanguages(langList);
+        }
+      });
+    });
+  };
+
   useEffect(() => {
     setLanguages(langEnglish);
+    convertLanguageNames(langEnglish);
+
+    // if (langInfo !== "en" && langInfo !== null) {
+    //   translateComponents(langInfo);
+    // }
+    // console.log("Language: ", langInfo);
   }, []);
+
+  // useEffect(() => {
+  //   console.log("UPDATE:", langInfo);
+  //   setLangStateInfo(langInfo);
+  // }, [updateLangInfo]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,12 +87,14 @@ export default function Header({ name }) {
 
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
+    updateLangInfo(language);
     translateComponents(language);
     handleClose();
   };
 
   const onLogout = () => {
     updateUserInfo(null);
+    setProfileAnchorEl(null);
   };
   const headerStyle = {
     textAlign: "center",
@@ -62,7 +112,17 @@ export default function Header({ name }) {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Grid item xs={4}></Grid>
+      <Grid item xs={4}>
+        <Link to="/">
+          <img
+            src={Panda}
+            alt="panda logo"
+            width="50px"
+            height="50px"
+            style={{ float: "left", marginLeft: "10px" }}
+          />
+        </Link>
+      </Grid>
       <Grid item xs={4}>
         <h1 style={{ textAlign: "center" }}>{name}</h1>
       </Grid>

@@ -12,6 +12,7 @@ import PlateView from "./pages/view/PlateView";
 import Checkout from "./pages/Checkout";
 import { UserInfoProvider } from "./contexts/UserContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { LangProvider } from "./contexts/LanguageContext";
 
 function App() {
   const theme = createTheme({
@@ -24,43 +25,51 @@ function App() {
       },
       secondary: {
         main: "#373737",
+        dark: "#262525",
+        ligth: "#181717"
       },
       info: {
         main: "#F3F3F3",
+      },
+      icon: {
+        main: "#D7E7FF",
+        secondary: "#FFD9D9",
       },
     },
   });
 
   return (
     <UserInfoProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/cashier" element={<Cashier />} />
-            <Route path="/driver" element={<Driver />} />
-            <Route path="/manager" element={<Manager />} />
-            <Route path="/customer" element={<Customer />} />
-            <Route
-              path="/cashier/plate"
-              element={<PlateView user={"cashier"} />}
-            />
-            <Route
-              path="/customer/plate"
-              element={<PlateView user={"customer"} />}
-            />
-            <Route
-              path="/customer/checkout"
-              element={<Checkout user={"Customer"} />}
-            />
-            <Route
-              path="/cashier/checkout"
-              element={<Checkout user={"Cashier"} />}
-            />
-          </Routes>
-        </Router>
-      </ThemeProvider>
+      <LangProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/cashier" element={<Cashier />} />
+              <Route path="/driver" element={<Driver />} />
+              <Route path="/manager" element={<Manager />} />
+              <Route path="/customer" element={<Customer />} />
+              <Route
+                path="/cashier/plate"
+                element={<PlateView user={"cashier"} />}
+              />
+              <Route
+                path="/customer/plate"
+                element={<PlateView user={"customer"} />}
+              />
+              <Route
+                path="/customer/checkout"
+                element={<Checkout user={"Customer"} />}
+              />
+              <Route
+                path="/cashier/checkout"
+                element={<Checkout user={"Cashier"} />}
+              />
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </LangProvider>
     </UserInfoProvider>
   );
 }

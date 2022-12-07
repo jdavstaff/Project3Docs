@@ -43,7 +43,7 @@ export default function Driver() {
 
   return (
     <div>
-      <Header name={"manager"} />
+      <Header name={"Manager"} />
       <div className="content">
         <Box sx={{ width: "100%", marginTop: "-25px" }}>
           <AppBar position="static" color="info" style={tabStyle}>
@@ -73,9 +73,6 @@ export default function Driver() {
           </TabPanel>
         </Box>
       </div>
-      <Link to="/">
-        <OutlinedButton>Back</OutlinedButton>
-      </Link>
     </div>
   );
 }

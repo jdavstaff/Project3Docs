@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Button, Divider, Stack } from "@mui/material";
 import SelectButtons from "../../components/SelectButtons/SelectButtons";
 import axios from "axios";
 import { url } from "../../config/global.js";
 import "../../styles/master.scss";
 import { OutlinedButton } from "../../styles/StyledButtons";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
+import { CenterWrapper } from "../../styles/CenterWrapper";
 
 function EntreeSelection({ entreeData, handleEntreeSelect }) {
   const secStyle = {
@@ -12,7 +15,7 @@ function EntreeSelection({ entreeData, handleEntreeSelect }) {
   };
   return (
     <div style={secStyle}>
-      <h4>Entrees</h4>
+      <h2>Entrees</h2>
       <div>
         <SelectButtons items={entreeData} handleSelect={handleEntreeSelect} />
       </div>
@@ -27,11 +30,16 @@ export default function PlateView({ handleView, view, addItem }) {
   const [entreeData, setEntreeData] = useState([]);
   const [entreeData2, setEntreeData2] = useState([]);
   const [entreeData3, setEntreeData3] = useState([]);
+  const [appetizerData, setAppetizerData] = useState([]);
+
+  const langInfo = useLang();
+  let translated = false;
 
   const getTitle = () => {
     if (view === 1) return "Bowl";
     else if (view === 2) return "Plate";
     else if (view === 3) return "Bigger Plate";
+    else if (view === -1) return "Appetizer";
     else return "Error";
   };
 
@@ -45,9 +53,7 @@ export default function PlateView({ handleView, view, addItem }) {
     return groups;
   }
 
-
   useEffect(() => {
-    // FIXME: AXIOS call to get entree and side data
     let options = {
       method: "GET",
       url: `${url}/items`,
@@ -58,10 +64,19 @@ export default function PlateView({ handleView, view, addItem }) {
       setEntreeData(extractGroups(data, 0).Entree);
       setEntreeData2(extractGroups(data, 1).Entree);
       setEntreeData3(extractGroups(data, 2).Entree);
+
+      // FIXME: setAppetizerData()
     });
 
     // [ {string name, int id,}]
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [entreeData3]);
 
   const handleSideSelect = (id) => {
     const updatedData = sideData.map((item) => {
@@ -69,6 +84,14 @@ export default function PlateView({ handleView, view, addItem }) {
       return item;
     });
     setSideData(updatedData);
+  };
+
+  const handleAppetizerSelect = (id) => {
+    const updatedData = appetizerData.map((item) => {
+      item.selected = item.id === id;
+      return item;
+    });
+    setAppetizerData(updatedData);
   };
 
   const handleEntreeSelect = (id) => {
@@ -104,58 +127,80 @@ export default function PlateView({ handleView, view, addItem }) {
     handleView(0);
 
     let selectedItems = [];
-    selectedItems.push(getSelectedItems(sideData));
-    selectedItems.push(getSelectedItems(entreeData));
+    view === -1 && selectedItems.push(getSelectedItems(appetizerData));
+    view >= 1 && selectedItems.push(getSelectedItems(sideData));
+    view >= 1 && selectedItems.push(getSelectedItems(entreeData));
     view >= 2 && selectedItems.push(getSelectedItems(entreeData2));
     view >= 3 && selectedItems.push(getSelectedItems(entreeData3));
 
     addItem(getTitle(), selectedItems);
   };
 
-  const sectionStyle = {
-    margin: "30x 0",
-  };
-
   return (
-    <div className="centerContent">
-      <h1>{getTitle()}</h1>
-      <div style={sectionStyle}>
-        <div>
-          <h4>Sides</h4>
-        </div>
-        <div>
-          <SelectButtons items={sideData} handleSelect={handleSideSelect} />
-        </div>
-      </div>
-      <div>
-        <EntreeSelection
-          entreeData={entreeData}
-          handleEntreeSelect={handleEntreeSelect}
-        />
-      </div>
-      <div>
-        {view >= 2 && (
-          <EntreeSelection
-            entreeData={entreeData2}
-            handleEntreeSelect={handleEntreeSelect2}
-          />
+    <div>
+      <h1 style={{ textAlign: "center" }}>{getTitle()}</h1>
+      <Divider />
+      <Stack spacing={5}>
+        {view === -1 && (
+          <div>
+            <div>
+              <h2>Appetizer</h2>
+              <div>
+                <SelectButtons
+                  items={sideData}
+                  handleSelect={handleAppetizerSelect}
+                />
+              </div>
+            </div>
+          </div>
         )}
-      </div>
-      <div>
-        {view >= 3 && (
-          <EntreeSelection
-            entreeData={entreeData3}
-            handleEntreeSelect={handleEntreeSelect3}
-          />
-        )}
-      </div>
-      <div className="bottomButtonBar">
-        <OutlinedButton onClick={() => handleView(0)}>Cancel</OutlinedButton>
-        <Button variant="contained" onClick={handleAddBtn}>
-          Add
-        </Button>
-      </div>
+        {view >= 1 && (
+          <>
+            <div>
+              <div>
+                <h2>Sides</h2>
+              </div>
+              <div>
+                <SelectButtons
+                  items={sideData}
+                  handleSelect={handleSideSelect}
+                />
+              </div>
+            </div>
 
+            <div>
+              <EntreeSelection
+                entreeData={entreeData}
+                handleEntreeSelect={handleEntreeSelect}
+              />
+            </div>
+          </>
+        )}
+        <div>
+          {view >= 2 && (
+            <EntreeSelection
+              entreeData={entreeData2}
+              handleEntreeSelect={handleEntreeSelect2}
+            />
+          )}
+        </div>
+        <div>
+          {view >= 3 && (
+            <EntreeSelection
+              entreeData={entreeData3}
+              handleEntreeSelect={handleEntreeSelect3}
+            />
+          )}
+        </div>
+        <Stack direction="row" spacing={2} sx={{ paddingBottom: "50px" }}>
+          <Button onClick={() => handleView(0)} variant="outlined" size="large">
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleAddBtn} size="large">
+            Add
+          </Button>
+        </Stack>
+      </Stack>
     </div>
   );
 }

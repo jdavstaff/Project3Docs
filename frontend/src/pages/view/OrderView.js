@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Button, Stack } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
+import { CenterWrapper } from "../../styles/CenterWrapper";
 // import axios from 'axios'
 // import { url } from "../../config/global.js";
 
@@ -12,6 +15,14 @@ export default function OrderView({ user }) {
   const [summaryData, setSummaryData] = useState([]);
 
   const navigate = useNavigate();
+
+  const langInfo = useLang();
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, []);
 
   const addItem = (size, item) => {
     let summaryItem = {
@@ -31,48 +42,82 @@ export default function OrderView({ user }) {
     setView(v);
   };
 
+  const btnStyle = {
+    width: "20ch",
+  };
+
   if (view === 0) {
     return (
-      <div>
+      <CenterWrapper>
         <div>
-          <h3>Size:</h3>
-          <div class="center">
-            <Button variant="contained" onClick={() => handleBtnClick(1)}>
-              Bowl
-            </Button>
-            <Button variant="contained" onClick={() => handleBtnClick(2)}>
-              Plate
-            </Button>
-            <Button variant="contained" onClick={() => handleBtnClick(3)}>
-              Bigger Plate
-            </Button>
-          </div>
+          <Stack spacing={5}>
+            <div>
+              <h3>Size:</h3>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(1)}
+                >
+                  Bowl
+                </Button>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(2)}
+                  fullWidth
+                >
+                  Plate
+                </Button>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(3)}
+                  fullWidth
+                >
+                  Bigger Plate
+                </Button>
+              </Stack>
+            </div>
+            <div>
+              <h3>Appetizer</h3>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(-1)}
+                >
+                  Appetizer
+                </Button>
+              </Stack>
+            </div>
+            <div>
+              <Summary data={summaryData} />
+            </div>
+            <Stack direction="row" spacing={2}>
+              <Link to="/">
+                <Button variant="outlined" color="primary">
+                  Back
+                </Button>
+              </Link>
+              <Button variant="contained" color="primary" onClick={toCheckout}>
+                CHECKOUT
+              </Button>
+            </Stack>
+          </Stack>
         </div>
-        <div>
-          <Summary data={summaryData} />
-        </div>
-        <div class="bottomButtonBar">
-          <Link to="/">
-            <Button variant="outlined" color="secondary">
-              Back
-            </Button>
-          </Link>
-          <Button variant="contained" onClick={toCheckout}>
-            CHECKOUT
-          </Button>
-        </div>
-      </div>
+      </CenterWrapper>
     );
   } else {
     return (
-      <div>
+      <CenterWrapper theWidth="90vw">
         <PlateView
           user={user}
           handleView={handleBtnClick}
           view={view}
           addItem={addItem}
         />
-      </div>
+      </CenterWrapper>
     );
   }
 }
