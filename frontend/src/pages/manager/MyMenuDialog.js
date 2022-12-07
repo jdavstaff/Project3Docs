@@ -32,6 +32,13 @@ import axios from "axios";
 //   { name: "yohoo", id: 5 },
 // ];
 
+/**
+ * Renders dialog for menu interactions
+ * @param {Function} open Handler for opening dialog menu
+ * @param {Function} onClose Handler for closing dialog menu
+ * @param {Function} on AddMenuItem Handler for adding menu item
+ * @returns 
+ */
 export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0.0);
@@ -84,20 +91,39 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     // };
   }, [loading]);
 
+  /**
+   * Handler for name changes
+   * @param {Event} e Event causing name change
+   */
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
 
+  /**
+   * Handler for quantity changes
+   * @param {Event} e Event causing quantity change
+   * @returns 
+   */
   const handleQuantityChange = (e) => {
     if (isNaN(e.target.value)) return;
     setQuantity(e.target.value);
   };
 
+  /**
+   * Handler for price changes
+   * @param {Event} e Event causing price change
+   * @returns 
+   */
   const handlePriceChange = (e) => {
     if (isNaN(e.target.value)) return;
     setPrice(e.target.value);
   };
 
+  /**
+   * Handler for type interactions
+   * @param {Event} event Event causing type change
+   * @param {String} newType Type to change to
+   */
   const handleType = (event, newType) => {
     if (newType !== null) {
       console.log("new type", newType);
@@ -105,6 +131,9 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     }
   };
 
+  /**
+   * Handler for closing dialog menu
+   */
   const handleClose = () => {
     setName("");
     setQuantity(10);
@@ -115,8 +144,14 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     onClose();
   };
 
+  /**
+   * Handler for errors on close
+   */
   const handleErrorClose = () => setError(false);
 
+  /**
+   * Handler for adding menu items
+   */
   const handleAdd = () => {
     if (name === "" || selectedIngrs.length === 0) {
       setError(true);
@@ -211,6 +246,10 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     }
   };
 
+  /**
+   * Handler for deleting selectied ingredients
+   * @param {*} ingrToDelete Ingredient object to remove
+   */
   const handleDeleteSelectedIngr = (ingrToDelete) => {
     console.log("deleting", ingrToDelete);
     setSelectedIngrs((ingredients) =>
@@ -218,6 +257,12 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     );
   };
 
+  /**
+   * Handler for adding ingredients
+   * @param {Event} e Event causing the addition of ingredients
+   * @param {*} newVal New ingredient
+   * @returns 
+   */
   const handleAddIngr = (e, newVal) => {
     if (newVal === null) return;
 
