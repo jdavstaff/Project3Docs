@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
+
 
 /**
  * Popup dialog box for changing inventory
@@ -19,6 +20,11 @@ import { Stack } from "@mui/material";
  * @param {Number} _id Current id of item (0 if new item)
  * @returns HTML for dialog menu for inventory changes
  */
+
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
+
+
 export default function InventoryDialog({
   open,
   onClose,
@@ -31,10 +37,21 @@ export default function InventoryDialog({
   const [quantity, setQuantity] = useState(_quantity);
   const [errorText, setErrorText] = useState("");
 
+
   /**
    * Handler for name changes
    * @param {Event} e Event causing change
    */
+
+  const langInfo = useLang();
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, [])
+
+
   const handleNameChange = (e) => {
     setName(e.target.value);
   };

@@ -5,10 +5,13 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import { useUserInfo, useUserInfoUpdate } from "../contexts/UserContext";
-import { url, langEnglish } from "../config/global.js";
+import { useLang, useLangUpdate } from "../contexts/LanguageContext";
+import { url, langEnglish } from "../config/global.js"
 import { translateComponents } from "../config/translate";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import Panda from "../static/panda.png";
+import axios from "axios";
+
 
 /**
  * Creates the header component for the user depending on the name
@@ -24,6 +27,10 @@ export default function Header({ name }) {
 
   const userInfo = useUserInfo();
   const updateUserInfo = useUserInfoUpdate();
+
+  const langInfo = useLang();
+  const [langStateInfo, setLangStateInfo] = useState(langInfo);
+  const updateLangInfo = useLangUpdate();
 
   const convertLanguageNames = (langs) => {
     let langList = [...langs];
@@ -57,7 +64,17 @@ export default function Header({ name }) {
   useEffect(() => {
     setLanguages(langEnglish);
     convertLanguageNames(langEnglish);
+
+    // if (langInfo !== "en" && langInfo !== null) {
+    //   translateComponents(langInfo);
+    // }
+    // console.log("Language: ", langInfo);
   }, []);
+
+  // useEffect(() => {
+  //   console.log("UPDATE:", langInfo);
+  //   setLangStateInfo(langInfo);
+  // }, [updateLangInfo]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,6 +92,7 @@ export default function Header({ name }) {
 
   const onSelectLanguage = (language) => {
     console.log("Translate page to ", language);
+    updateLangInfo(language);
     translateComponents(language);
     handleClose();
   };
@@ -99,7 +117,17 @@ export default function Header({ name }) {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Grid item xs={4}></Grid>
+      <Grid item xs={4}>
+        <Link to="/">
+          <img
+            src={Panda}
+            alt="panda logo"
+            width="50px"
+            height="50px"
+            style={{ float: "left", marginLeft: "10px" }}
+          />
+        </Link>
+      </Grid>
       <Grid item xs={4}>
         <h1 style={{ textAlign: "center" }}>{name}</h1>
       </Grid>

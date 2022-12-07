@@ -1,5 +1,7 @@
-import { textAlign } from "@mui/system";
+import { useEffect } from "react";
 import SummaryCard from "./SummaryCard";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 /**
  * Summary of the data given
@@ -7,8 +9,15 @@ import SummaryCard from "./SummaryCard";
  * @returns Summary card of the data
  */
 export default function Summary({ data }) {
+  const langInfo = useLang();
 
-  if (data) {
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, []);
+
+  if (data.length !== 0) {
     return (
       <div>
         <h3> Summary: </h3>

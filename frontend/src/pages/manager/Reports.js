@@ -20,7 +20,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { url } from "../../config/global";
 import axios from "axios";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { Stack, Box } from "@mui/material";
+import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 /**
  * Renders a date-time selector
@@ -67,6 +71,8 @@ export default function Reports() {
   const [restockData, setRestockData] = useState([]);
   const [sellsTogetherData, setSellsTogetherData] = useState([]);
 
+  const langInfo = useLang();
+
   // Update restock table on page load
   useEffect(() => {
     const options = {
@@ -76,8 +82,18 @@ export default function Reports() {
     axios.request(options).then((res) => {
       let rows = res.data.rows;
       setRestockData(rows);
+
+      if (langInfo !== "en" && langInfo !== null) {
+        translateComponents(langInfo);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, [salesData, excessData, restockData, sellsTogetherData]);
 
   /**
    * Converts javascript timestamp to Postgresql timestamp
@@ -404,6 +420,16 @@ export default function Reports() {
               </TableContainer>
             </AccordionDetails>
           </Accordion>
+
+          <Link to="/">
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{ marginTop: "10px" }}
+            >
+              Back
+            </Button>
+          </Link>
         </Box>
       </Stack>
     </div>

@@ -11,7 +11,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { Box, Button, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import { Link } from "react-router-dom";
 import Fade from "@mui/material/Fade";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { url } from '../../config/global'
 import axios from 'axios'
 
@@ -111,11 +114,19 @@ export default function Access() {
   const theme = useTheme();
   const [rows, setRows] = useState([]);
 
+
   /**
    * Handler for changing permissions for a given user
    * @param {Number} permission Permission level to give the user
    * @param {String} id Email for the specified user
    */
+
+  const langInfo = useLang();
+
+  let translated = false;
+
+  // FIXME: update database to change permission
+
   const handleChangePerm = (permission, id) => {
     console.log(`update email: ${id} to permission ${permission}`);
     let options = {
@@ -139,6 +150,13 @@ export default function Access() {
     .catch((err) => { console.log(err) })
     // setRows([...dummyData]);
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [rows]);
 
   return (
     <>
@@ -186,6 +204,12 @@ export default function Access() {
               </TableBody>
             </Table>
           </TableContainer>
+
+          <Link to="/">
+            <Button variant="outlined" color="secondary">
+              Back
+            </Button>
+          </Link>
         </Stack>
       </Stack>
     </>
