@@ -20,6 +20,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { url } from "../../config/global";
 import axios from "axios";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { Stack, Box } from "@mui/material";
 
 // Creates a date and time selector
@@ -57,6 +59,8 @@ export default function Reports() {
   const [restockData, setRestockData] = useState([]);
   const [sellsTogetherData, setSellsTogetherData] = useState([]);
 
+  const langInfo = useLang();
+
   // Update restock table on page load
   useEffect(() => {
     const options = {
@@ -66,8 +70,18 @@ export default function Reports() {
     axios.request(options).then((res) => {
       let rows = res.data.rows;
       setRestockData(rows);
+
+      if (langInfo !== "en" && langInfo !== null) {
+        translateComponents(langInfo);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, [salesData, excessData, restockData, sellsTogetherData]);
 
   // Convert Javascript timestamp to PostgreSQL timestamp
   function formatTimestamp(time) {

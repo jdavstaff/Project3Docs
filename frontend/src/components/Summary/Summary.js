@@ -1,7 +1,17 @@
+import { useEffect } from "react";
 import { textAlign } from "@mui/system";
 import SummaryCard from "./SummaryCard";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 export default function Summary({ data }) {
+  const langInfo = useLang();
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, []);
 
   if (data) {
     return (

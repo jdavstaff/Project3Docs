@@ -24,6 +24,8 @@ import { Stack } from "@mui/system";
 
 import { url } from "../../config/global.js";
 import axios from "axios";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 
 // const dummyData = [
 //   { name: "kung pao", id: 1 },
@@ -44,6 +46,8 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
   const [count, setCount] = useState(0);
   const [error, setError] = useState(false);
   const loading = openIngrList && ingredients.length === 0;
+
+  const langInfo = useLang();
 
   useEffect(() => {
     //let active = true;
@@ -72,6 +76,10 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
         console.log(ingreds);
 
         setIngredients(ingreds);
+
+        if (langInfo !== "en" && langInfo !== null) {
+          translateComponents(langInfo);
+        }
       });
 
       // if (active) {
@@ -83,6 +91,12 @@ export default function MyMenuDialog({ open, onClose, onAddMenuItem }) {
     //   active = false;
     // };
   }, [loading]);
+
+  useEffect(() => {
+    if (langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+    }
+  }, []);
 
   const handleNameChange = (e) => {
     setName(e.target.value);

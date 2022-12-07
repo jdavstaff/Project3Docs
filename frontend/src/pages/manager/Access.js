@@ -12,6 +12,8 @@ import { Box, Button, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Fade from "@mui/material/Fade";
+import { useLang } from "../../contexts/LanguageContext";
+import { translateComponents } from "../../config/translate";
 import { url } from '../../config/global'
 import axios from 'axios'
 
@@ -108,6 +110,10 @@ export default function Access() {
   const theme = useTheme();
   const [rows, setRows] = useState([]);
 
+  const langInfo = useLang();
+
+  let translated = false;
+
   // FIXME: update database to change permission
   const handleChangePerm = (permission, id) => {
     console.log(`update email: ${id} to permission ${permission}`);
@@ -132,6 +138,13 @@ export default function Access() {
     .catch((err) => { console.log(err) })
     // setRows([...dummyData]);
   }, []);
+
+  useEffect(() => {
+    if (!translated && langInfo !== "en" && langInfo !== null) {
+      translateComponents(langInfo);
+      translated = true;
+    }
+  }, [rows]);
 
   return (
     <>
