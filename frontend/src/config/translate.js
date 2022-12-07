@@ -40,3 +40,4 @@ export function translateComponents(langCode) {
   translate(root, langCode)
 }
 
+
