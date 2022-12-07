@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Stack } from "@mui/material";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Summary from "../../components/Summary/Summary";
 import PlateView from "./PlateView";
 import "../../styles/master.scss";
@@ -80,6 +80,18 @@ export default function OrderView({ user }) {
               </Stack>
             </div>
             <div>
+              <h3>Appetizer</h3>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  sx={btnStyle}
+                  variant="contained"
+                  onClick={() => handleBtnClick(-1)}
+                >
+                  Appetizer
+                </Button>
+              </Stack>
+            </div>
+            <div>
               <Summary data={summaryData} />
             </div>
             <Stack direction="row" spacing={2}>
@@ -95,7 +107,6 @@ export default function OrderView({ user }) {
           </Stack>
         </div>
       </CenterWrapper>
-
     );
   } else {
     return (
