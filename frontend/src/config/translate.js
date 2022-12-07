@@ -4,8 +4,8 @@ import axios from 'axios'
 
 /**
  * Recursively translates all children of a given HTML element
- * @param {*} element Current HTML element
- * @param {*} langCode Code corresponding to a language to translate to using Google Translate API
+ * @param {HTMLDivElement} element Current HTML element
+ * @param {String} langCode Code corresponding to a language to translate to using Google Translate API
  */
 function translate(element, langCode) {
     let children = element.childNodes
@@ -33,7 +33,7 @@ function translate(element, langCode) {
 
 /**
  * Translates all page components to a given language code using the given code
- * @param {*} langCode Code for the language to be translated to using the Google Translate API
+ * @param {String} langCode Code for the language to be translated to using the Google Translate API
  */
 export function translateComponents(langCode) {
   let root = document.querySelector('div')
