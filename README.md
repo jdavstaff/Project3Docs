@@ -19,7 +19,7 @@ There are several components and **routes** that website currently runs in
 Found in `frontend/src/pages/manager/Manager.js`
 `Manager.js` displays 4 tabs with a list of tables
   - [`./Inventory.js`](./OtherPages/Inventory.md)
-  - `./MyMenu.js`
+  - [`./MyMenu.js`](./OtherPages/MyMenu.md)
   - `./Reports.js`
   - `./Access.js`
 
