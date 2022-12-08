@@ -6,6 +6,8 @@
 const handleClick = (event) => {}
 ```
 Handler for closing the user dropdown menu
+### Parameters
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**event** - Event caused by clicking the dropdown menu
 
 -----
 
