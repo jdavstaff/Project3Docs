@@ -18,14 +18,14 @@ There are several components and **routes** that website currently runs in
 ## Manager
 Found in `frontend/src/pages/manager/Manager.js`
 `Manager.js` displays 4 tabs with a list of tables
-  - [`./Inventory.js`](./OtherPages/Inventory.md)
-  - [`./MyMenu.js`](./OtherPages/MyMenu.md)
-  - [`./Reports.js`](./OtherPages/Reports.md)
-  - [`./Access.js`](./OtherPages/Access.md)
+  - [`Inventory`](./OtherPages/Inventory.md)
+  - [`MyMenu`](./OtherPages/MyMenu.md)
+  - [`Reports`](./OtherPages/Reports.md)
+  - [`Access`](./OtherPages/Access.md)
 
 There are also some components that are used for user input
-  - [`./InventoryDialog.js`](./OtherPages/InventoryDialog.md)
-  - [`./MyMenuDialog.js`](./OtherPages/MyMenuDialog.md)
+  - [`InventoryDialog`](./OtherPages/InventoryDialog.md)
+  - [`MyMenuDialog`](./OtherPages/MyMenuDialog.md)
   
 ## Customer
 Found in `frontend/src/pages/customer/Customer.js`
