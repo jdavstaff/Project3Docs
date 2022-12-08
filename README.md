@@ -21,7 +21,7 @@ Found in `frontend/src/pages/manager/Manager.js`
   - [`./Inventory.js`](./OtherPages/Inventory.md)
   - [`./MyMenu.js`](./OtherPages/MyMenu.md)
   - [`./Reports.js`](./OtherPages/Reports.md)
-  - `./Access.js`
+  - [`./Access.js`](./OtherPages/Access.md)
 
 There are also some components that are used for user input
   - [`./InventoryDialog.js`](./OtherPages/InventoryDialog.md)
