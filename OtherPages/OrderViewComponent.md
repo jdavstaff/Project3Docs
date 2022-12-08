@@ -8,6 +8,7 @@ const addItem = (size, item) => {}
 Places an order for a given item
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**size** - Size of the item being ordered (Bowl, Plate, Bigger Plate, or Appetizer)'
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**item** List of menu items composing the order
 
 -----
