@@ -15,6 +15,13 @@ You need a `.env` file with secret keys for **Google Translate** and the **SQL D
 Frontend currently uses React.js 
 There are several components and **routes** that website currently runs in 
 
+## Landing
+Found in `frontend/src/pages/landing/Landing.js`
+[`Landing`](./OtherPages/Landing.md) asks the user to sign-in, providing 1, 2, or 3 views depending on their permissions
+  - [`Manager`](./OtherPages/Manager.md) if user is a manager
+  - [`Cashier`](./OtherPages/Cashier.md) if user a manager or cashier'
+  - [`Customer`](./OtherPages/Customer.md) for all users
+
 ## Manager
 Found in `frontend/src/pages/manager/Manager.js`
 [`Manager`](./OtherPages/Manager.md) displays 4 tabs with a list of tables
