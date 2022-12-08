@@ -8,4 +8,4 @@ export default function Driver() {}
 ```
 Renders a manager tab. [Functions](./ManagerComponent.md)
 ### Returns 
-React component for rendering a manager tab
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;React component for rendering a manager tab
