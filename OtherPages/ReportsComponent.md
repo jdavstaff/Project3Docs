@@ -29,6 +29,7 @@ function getSalesQuery(startTime, endTime) {}
 Gets sales data between 2 timestamps and populates the sales report
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**startTime** - Javacript timestamp to start at
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**endTime** - Javascript timestamp to end at
 
 -----
@@ -48,6 +49,7 @@ function getSellsTogetherQuery(startTime, endTime) {}
 Gets sells together data between 2 timestamps and populates the sells together report
 ### Paramters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**startTime** - Timestamp to start at
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**endTime** - Timestamp to end at
 
 -----
