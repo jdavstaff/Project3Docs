@@ -30,11 +30,11 @@ There are also some components that are used for user input
 ## Customer
 Found in `frontend/src/pages/customer/Customer.js`
 `Customer.js` displays 2 views
-  - `frontend/src/pages/view/OrderView.js`
-  - `frontend/src/pages/view/PlateView.js`
+  - [`OrderView`](./OtherPages/OrderView.md)
+  - [`PlateView`](./OtherPages/PlateView.md)
 
 ## Cashier 
 Found in `frontend/src/pages/cashier/Cashier.js`
 `Cashier.js` displays 2 views
-  - `frontend/src/pages/view/OrderView.js`
-  - `frontend/src/pages/view/PlateView.js`
+  - [`OrderView`](./OtherPages/OrderView.md)
+  - [`PlateView`](./OtherPages/PlateView.md)
