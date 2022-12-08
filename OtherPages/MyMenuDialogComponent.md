@@ -35,6 +35,7 @@ const handleType = (event, newType) => {}
 Handler for type changing types
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**event** - Event causing type change
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newType** - Type to change to
 
 -----
@@ -75,4 +76,5 @@ const handleAddIngr = (e, newVal) => {}
 Handler for adding ingredients to new menu item
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**e** - Event causing the addition of an ingredient
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newVal** - New ingredient to add
