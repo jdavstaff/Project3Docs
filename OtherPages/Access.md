@@ -33,6 +33,6 @@ React component for a user permissions dropdown menu
 ```js
 export default function Access() {}
 ```
-React component for displaying user permissions for web application. [Functions](./AccessComponent)
+React component for displaying user permissions for web application. [Functions](./AccessComponent.md)
 ### Returns
 React componenet that renders a user access tab
