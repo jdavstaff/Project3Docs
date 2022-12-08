@@ -35,6 +35,6 @@ Found in `frontend/src/pages/customer/Customer.js`
 
 ## Cashier 
 Found in `frontend/src/pages/cashier/Cashier.js`
-`Cashier.js` displays 2 views
+[`Cashier`](./OtherPages/Cashier.md) displays 2 views
   - [`OrderView`](./OtherPages/OrderView.md)
   - [`PlateView`](./OtherPages/PlateView.md)
