@@ -17,7 +17,7 @@ There are several components and **routes** that website currently runs in
 
 ## Manager
 Found in `frontend/src/pages/manager/Manager.js`
-`Manager.js` displays 4 tabs with a list of tables
+[`Manager`](./OtherPages/Manager.md) displays 4 tabs with a list of tables
   - [`Inventory`](./OtherPages/Inventory.md)
   - [`MyMenu`](./OtherPages/MyMenu.md)
   - [`Reports`](./OtherPages/Reports.md)
