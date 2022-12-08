@@ -23,7 +23,9 @@ function SelectPermission({permission, handleChangePerm, id}) {}
 React component for rendering a dropdown menu for assigning user permissions. [Functions](./SelectPermissionComponent.md)
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**permission** - Current numerical permission level
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**handleChangePerm** - Handler for permission changes
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**id** - Email for the user
 ### Returns
 React component for a user permissions dropdown menu
