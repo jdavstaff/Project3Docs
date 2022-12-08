@@ -19,7 +19,7 @@ There are several components and **routes** that website currently runs in
 Found in `frontend/src/pages/landing/Landing.js`
 [`Landing`](./OtherPages/Landing.md) asks the user to sign-in, providing 1, 2, or 3 views depending on their permissions
   - [`Manager`](./OtherPages/Manager.md) if user is a manager
-  - [`Cashier`](./OtherPages/Cashier.md) if user a manager or cashier'
+  - [`Cashier`](./OtherPages/Cashier.md) if user is a manager or cashier'
   - [`Customer`](./OtherPages/Customer.md) for all users
 
 ## Manager
