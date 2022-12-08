@@ -29,7 +29,7 @@ There are also some components that are used for user input
   
 ## Customer
 Found in `frontend/src/pages/customer/Customer.js`
-`Customer.js` displays 2 views
+[`Customer`](./OtherPages/Customer.md) displays 2 views
   - [`OrderView`](./OtherPages/OrderView.md)
   - [`PlateView`](./OtherPages/PlateView.md)
 
