@@ -20,7 +20,7 @@ Found in `frontend/src/pages/manager/Manager.js`
 `Manager.js` displays 4 tabs with a list of tables
   - [`./Inventory.js`](./OtherPages/Inventory.md)
   - [`./MyMenu.js`](./OtherPages/MyMenu.md)
-  - `./Reports.js`
+  - [`./Reports.js`](../OtherPages/Reports.md)
   - `./Access.js`
 
 There are also some components that are used for user input
