@@ -25,7 +25,7 @@ Found in `frontend/src/pages/manager/Manager.js`
 
 There are also some components that are used for user input
   - [`./InventoryDialog.js`](./OtherPages/InventoryDialog.md)
-  - [`./MyMenuDialog.js`](./OtherPages/MenuDialog.md)
+  - [`./MyMenuDialog.js`](./OtherPages/MyMenuDialog.md)
   
 ## Customer
 Found in `frontend/src/pages/customer/Customer.js`
