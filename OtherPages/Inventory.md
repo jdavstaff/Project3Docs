@@ -1,4 +1,4 @@
-# Inventory
+# Inventory Functions
 Stores information on current count of ingredients and materials in stock. Information is retrieved from the database hosted on AWS. Uses [InventoryDialog](./InventoryDialog.md) to take in user input.
 
 -----
