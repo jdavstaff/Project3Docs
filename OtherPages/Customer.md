@@ -8,4 +8,4 @@ export default function Customer() {}
 ```
 Renders a customer page
 ### Returns
-React component for rendering a customer page
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;React component for rendering a customer page
