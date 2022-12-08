@@ -1,5 +1,5 @@
 # MyMenu
-React component for creating a menu table view. Allows for viewing current menu items, and can add and remove menu items.
+React component for creating a menu table view. Allows for viewing current menu items, and can add and remove menu items. Uses [MyMenuDialog](./MyMenuDialog.md) for taking in user input.
 
 -----
 
