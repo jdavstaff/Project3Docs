@@ -29,6 +29,9 @@ const addMenuItem = (newName, newIngredients, newPrice, newType) => {}
 Handler for adding a new menu item
 #### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newName** - Name of new menu item
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newIngredients** - List of ingredients used in menu item
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newPrice** - New price of menu item
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**newType** - New type of menu item
