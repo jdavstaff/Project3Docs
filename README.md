@@ -45,3 +45,14 @@ Found in `frontend/src/pages/cashier/Cashier.js`
 [`Cashier`](./OtherPages/Cashier.md) displays 2 views
   - [`OrderView`](./OtherPages/OrderView.md)
   - [`PlateView`](./OtherPages/PlateView.md)
+
+## Components
+Found in `frontend/src/components`
+The application uses several components for custom rendering tasks
+  - [`Header`](./OtherPages/Header.md)
+  - [`MapComponent`](./OtherPages/MapComponent.md)
+  - [`SelectButton`](./OtherPages/SelectButton.md)
+  - [`SelectButtons`](./OtherPages/SelectButtons.md)
+  - [`Summary`](./OtherPages/Summary.md)
+  - [`SummaryCard`](./OtherPages/SummaryCard.md)
+  
