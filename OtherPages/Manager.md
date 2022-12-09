@@ -1,5 +1,5 @@
 # Manager
-React component for rendering a manager page with [Inventory](./Inventory.md), [Menu](./Menu.md), [Reports](./Reports.md), and [Access](./Access.md) tabs for managing the vendor location.
+React component for rendering a manager page with [Inventory](./Inventory.md), [Menu](./MyMenu.md), [Reports](./Reports.md), and [Access](./Access.md) tabs for managing the vendor location.
 
 -----
 
