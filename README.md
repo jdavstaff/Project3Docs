@@ -39,12 +39,14 @@ Found in `frontend/src/pages/customer/Customer.js`
 [`Customer`](./OtherPages/Customer.md) displays 2 views
   - [`OrderView`](./OtherPages/OrderView.md)
   - [`PlateView`](./OtherPages/PlateView.md)
+  - [`Checkout`](./OtherPages/Checkout.md)
 
 ## Cashier 
 Found in `frontend/src/pages/cashier/Cashier.js`
 [`Cashier`](./OtherPages/Cashier.md) displays 2 views
   - [`OrderView`](./OtherPages/OrderView.md)
   - [`PlateView`](./OtherPages/PlateView.md)
+  - [`Checkout`](./OtherPages/Checkout.md)
 
 ## Components
 Found in `frontend/src/components`
@@ -56,3 +58,8 @@ The application uses several components for custom rendering tasks
   - [`Summary`](./OtherPages/Summary.md)
   - [`SummaryCard`](./OtherPages/SummaryCard.md)
   
+## Other Features
+Several other none React component features were used for supporting the frontend
+  - [`Translate`](./OtherPages/Translate.md)
+  - [`LanguageContext`](./OtherPages/LanguageContext.md)
+  - [`UserContext`](./OtherPages/UserContext.md)
