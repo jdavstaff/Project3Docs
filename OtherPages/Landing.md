@@ -6,4 +6,4 @@ React component for landing page. Displays a sign-in box using [Google OAuth](ht
 ```js
 export default function Landing() {}
 ```
-Renders the initial landing page for the application. Asks user to sign in before allowing them access to different web pages. [Functions](./LandingComponents.md)
+Renders the initial landing page for the application. Asks user to sign in before allowing them access to different web pages. [Functions](./LandingComponent.md)
