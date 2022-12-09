@@ -1,7 +1,3 @@
-layout: page
-title: "Team 15 Project 3"
-permalink: /
-
 # Team-15-Project_3
 
 
