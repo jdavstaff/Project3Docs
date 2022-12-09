@@ -1,5 +1,5 @@
 # Sumamry
-Renders a summary for all current items to checkout
+Renders a summary for all current items to checkout. Summary is populated with [`SummaryCard`](./SummaryCard.md) components
 
 -----
 
