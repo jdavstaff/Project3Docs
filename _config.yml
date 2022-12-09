@@ -5,3 +5,40 @@ relative_links:
   collections: true
 include:
   - README.md
+  - Access.md
+  - AccessComponent.md
+  - Cashier.md
+  - Customer.md
+  - Header.md
+  - HeaderComponent.md
+  - Inventory.md
+  - InventoryComponent.md
+  - InventoryDialog.md
+  - InventoryDialogComponent.md
+  - Landing.md
+  - LandingComponent.md
+  - LanguageContext.md
+  - LanguageProvider.md
+  - Manager.md
+  - ManagerComponent.md
+  - MapComponent.md
+  - MapFuncs.md
+  - MyMenu.md
+  - MyMenuComponent.md
+  - MyMenuDialog.md
+  - MyMenuDialodComponent.md
+  - OrderView.md
+  - OrderViewComponent.md
+  - PlateView.md
+  - PlateViewComponent.md
+  - Reports.md
+  - ReportsComponent.md
+  - SelectButton.md
+  - SelectButtonComponent.md
+  - SelectButtons.md
+  - SelectButtonsComponent.md
+  - Summary.md
+  - SummaryCard.md
+  - Translate.md
+  - UserContext.md
+  - UserInfoProvider.md
