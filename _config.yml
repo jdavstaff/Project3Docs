@@ -8,6 +8,8 @@ include:
   - Access.md
   - AccessComponent.md
   - Cashier.md
+  - Checkout.md
+  - CheckoutComponent.md
   - Customer.md
   - Header.md
   - HeaderComponent.md
