@@ -4,7 +4,7 @@ relative_links:
   enabled: true
   collections: true
 include:
-  - README.md
+  - index.md
   - Access.md
   - AccessComponent.md
   - Cashier.md
