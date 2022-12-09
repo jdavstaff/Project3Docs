@@ -24,7 +24,7 @@ Setter for current language choice
 ```js
 export function LangProvider({children}) {}
 ```
-React component for maintaining language value in a component. [Functions](./LanguageProvider)
+React component for maintaining language value in a component. [Functions](./LanguageProvider.md)
 ### Parameters
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**children** - Child components to maintain context for
 ### Returns
